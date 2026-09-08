@@ -4,11 +4,12 @@ import type { Item, ItemState, Step, StepResult } from '../../engine/types'
 import { loadUnitById, loadUnitItems } from '../../engine/items'
 import { buildSession, maxStageFor, stepFor } from '../../engine/session'
 import { advance, edb, getStates, newState, saveState } from '../../engine/store'
-import { db } from '../../db/db'
+import { db, getSetting } from '../../db/db'
 import { newCard } from '../../srs/scheduler'
 import { AudioButton } from '../../components/AudioButton'
 import { fmt, useLang, useT } from '../../i18n'
-import { ChoiceStep, ClozeStep, IntroStep, ListenTypeStep, MatchStep, PairABStep, TilesStep, TypeWordStep } from './Steps'
+import { DONE_COVER, WINNER_COVER } from '../../lib/covers'
+import { ChoiceStep, ClozeStep, DialogueIntroStep, IntroStep, ListenTypeStep, MatchStep, PairABStep, ReplyStep, SpeakStep, TilesStep, TypeWordStep } from './Steps'
 
 type Phase = 'loading' | 'running' | 'done'
 
@@ -21,6 +22,7 @@ export function LessonSession() {
   const [i, setI] = useState(0)
   const [result, setResult] = useState<StepResult | null>(null)
   const [stats, setStats] = useState({ correct: 0, wrong: 0, advanced: 0 })
+  const [speechCheck, setSpeechCheck] = useState(true)
   const states = useRef<Map<string, ItemState>>(new Map())
   const items = useRef<Item[]>([])
   const requeued = useRef<Set<string>>(new Set())
@@ -31,7 +33,9 @@ export function LessonSession() {
       const unit = await loadUnitById(id); if (!unit) return
       const its = await loadUnitItems(unit); items.current = its
       states.current = await getStates(id)
-      const plan = buildSession(its, states.current, id, lang)
+      const [speaking, check] = await Promise.all([getSetting('speaking', true), getSetting('speechCheck', true)])
+      setSpeechCheck(check)
+      const plan = buildSession(its, states.current, id, lang, { speaking })
       setSteps(plan.steps); setI(0); setPhase(plan.steps.length ? 'running' : 'done')
     })()
   }, [id, lang])
@@ -42,7 +46,7 @@ export function LessonSession() {
 
   const onAnswer = async (r: StepResult) => {
     if (!step || result) return
-    const isIntro = step.type === 'intro'
+    const isIntro = step.type === 'intro', isSpeak = step.type === 'speak'
     // intro cards have no feedback bar: record and move straight on
     if (!isIntro) setResult(r)
     const affected: Item[] = step.type === 'match' ? step.items : [step.item]
@@ -50,18 +54,19 @@ export function LessonSession() {
     for (const it of affected) {
       const st = states.current.get(it.ref.id) ?? newState(it.ref, unitIdRef.current)
       const before = st.stage
-      if (step.type === 'intro') { st.stage = Math.max(st.stage, 1); st.seen++; st.lastAt = Date.now() }
+      if (isIntro) { st.stage = Math.max(st.stage, 1); st.seen++; st.lastAt = Date.now() }
+      else if (isSpeak) { st.seen++; st.lastAt = Date.now(); if (r.correct) st.streak++ }   // practice, not a test: the stage stays
       else advance(st, r.correct, maxStageFor(it.ref.kind, unitIdRef.current))
       if (st.stage > before) advanced++
       states.current.set(it.ref.id, st); await saveState(st)
-      // mastered chunks/sentences hand over to the long-term FSRS card
+      // mastered sentences hand over to the long-term FSRS card
       if (st.stage >= maxStageFor(it.ref.kind, unitIdRef.current) && (it.ref.kind === 'sentence') && it.sentence && !(await db.cards.get(it.ref.id)))
         await db.cards.put(newCard(it.sentence, unitIdRef.current))
     }
-    setStats(s => ({ correct: s.correct + (r.correct ? 1 : 0), wrong: s.wrong + (r.correct ? 0 : 1), advanced: s.advanced + advanced }))
+    if (!isSpeak) setStats(s => ({ correct: s.correct + (r.correct ? 1 : 0), wrong: s.wrong + (r.correct ? 0 : 1), advanced: s.advanced + advanced }))
     if (isIntro) { await next(); return }
     // a miss comes back at the end, one stage down (once per item per session)
-    if (!r.correct && step.type !== 'match') {
+    if (!r.correct && step.type !== 'match' && !isSpeak) {
       const it = step.item
       if (!requeued.current.has(it.ref.id)) {
         requeued.current.add(it.ref.id)
@@ -81,11 +86,14 @@ export function LessonSession() {
   if (phase === 'loading') return <div className="page">{t.loading}</div>
   if (phase === 'done' || !step) {
     const mastered = items.current.filter(it => (states.current.get(it.ref.id)?.stage ?? 0) >= maxStageFor(it.ref.kind, id)).length
+    const allDone = items.current.length > 0 && mastered >= items.current.length
     return (
       <div className="page fade"><div className="card center">
+        <img className="hero" src={allDone ? WINNER_COVER : DONE_COVER} alt="" style={{ maxHeight: 130 }} />
         <h2>{steps.length ? t.session_done : t.nothing_here}</h2>
         {steps.length > 0 && <p className="muted">{fmt(t.session_summary, { ok: stats.correct, bad: stats.wrong, adv: stats.advanced })}</p>}
         <p className="small muted">{fmt(t.unit_progress, { done: mastered, total: items.current.length })}</p>
+        {allDone && <p className="small">{t.lessons_done}</p>}
         <div className="row" style={{ justifyContent: 'center' }}>
           <button className="btn primary" onClick={() => { setPhase('loading'); setSteps([]); setStats({ correct: 0, wrong: 0, advanced: 0 }); requeued.current.clear(); nav(0) }}>{t.another_session}</button>
           <Link to={`/unit/${id}`} className="btn ghost">{t.back}</Link>
@@ -96,20 +104,23 @@ export function LessonSession() {
   const it = stepItem(step)
   const showFeedback = result && step.type !== 'intro'
   const tone = !result ? '' : result.correct ? (result.tier === 'diacritics' ? 'warn' : 'ok') : 'bad'
+  const heading = !result ? '' : step.type === 'speak' ? (result.correct ? t.fb_speak_ok : t.fb_speak_meh) : result.correct ? (result.tier === 'diacritics' ? t.fb_diacritics : t.fb_correct) : t.fb_wrong
   return (
     <div className="page lesson-page fade" key={i}>
       <div className="topbar"><Link to={`/unit/${id}`} className="back" aria-label={t.back}>✕</Link><div className="progress"><i style={{ width: `${(i / Math.max(1, total)) * 100}%` }} /></div><span className="muted small">{i + 1}/{total}</span></div>
-      {step.type === 'intro' && <IntroStep step={step} onAnswer={onAnswer} locked={!!result} />}
+      {step.type === 'intro' && (step.item.ref.kind === 'dialogue' ? <DialogueIntroStep step={step} onAnswer={onAnswer} locked={!!result} /> : <IntroStep step={step} onAnswer={onAnswer} locked={!!result} />)}
       {(step.type === 'meaning' || step.type === 'form' || step.type === 'letterpick' || step.type === 'anchor') && <ChoiceStep step={step} onAnswer={onAnswer} locked={!!result} />}
+      {step.type === 'reply' && <ReplyStep step={step} onAnswer={onAnswer} locked={!!result} />}
       {step.type === 'match' && <MatchStep step={step} onAnswer={onAnswer} locked={!!result} />}
       {step.type === 'tiles' && <TilesStep step={step} onAnswer={onAnswer} locked={!!result} />}
       {step.type === 'cloze' && <ClozeStep step={step} onAnswer={onAnswer} locked={!!result} />}
       {step.type === 'typeword' && <TypeWordStep step={step} onAnswer={onAnswer} locked={!!result} />}
       {step.type === 'listentype' && <ListenTypeStep step={step} onAnswer={onAnswer} locked={!!result} />}
       {step.type === 'pairab' && <PairABStep step={step} onAnswer={onAnswer} locked={!!result} />}
+      {step.type === 'speak' && <SpeakStep step={step} onAnswer={onAnswer} locked={!!result} speechCheck={speechCheck} />}
       {showFeedback && (
         <div className={`feedback ${tone}`}>
-          <h3>{result!.correct ? (result!.tier === 'diacritics' ? t.fb_diacritics : t.fb_correct) : t.fb_wrong}</h3>
+          <h3>{heading}</h3>
           {it && step.type !== 'match' && <div className="row between" style={{ alignItems: 'flex-start' }}>
             <div><div className="ans">{it.sk}</div>{it.spell && it.ref.kind !== 'letter' && <div className="guide-ro small">{it.spell}</div>}<div className="small muted">{lang === 'ro' ? it.meaning.ro : it.meaning.en}</div></div>
             {it.audio && <AudioButton src={it.audio} slowSrc={it.audioSlow} compact />}

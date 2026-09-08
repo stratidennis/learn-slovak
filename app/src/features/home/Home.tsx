@@ -7,6 +7,7 @@ import { CoverageMeter } from '../../components/CoverageMeter'
 import { ThemeToggle } from '../../components/ThemeToggle'
 import { LanguageToggle } from '../../components/LanguageToggle'
 import { fmt, useLang, useT } from '../../i18n'
+import { maxStageFor } from '../../engine/session'
 
 type Stats = { due: Record<string, number>; dueAll: number; known: number; learning: number; coverage: number; chunksSeen: Record<string, number>; mastered: Record<string, number> }
 
@@ -19,8 +20,7 @@ export function Home() {
     ;(async () => {
       const [cards, lemmas, chunks, cov, itemRows, unitList] = await Promise.all([db.cards.toArray(), db.lemmas.toArray(), db.chunks.toArray(), loadCoverage(), db.items.toArray(), loadUnits()])
       const now = Date.now(), due: Record<string, number> = {}, chunksSeen: Record<string, number> = {}, mastered: Record<string, number> = {}
-      const maxFor = (kind: string, unitId: string) => kind === 'pair' ? 1 : kind === 'letter' ? 3 : kind === 'cognate' ? 3 : kind === 'word' ? 2 : unitId.startsWith('0.') ? 4 : 6
-      for (const r of itemRows) if (r.stage >= maxFor(r.kind, r.unitId)) mastered[r.unitId] = (mastered[r.unitId] ?? 0) + 1
+      for (const r of itemRows) if (r.stage >= maxStageFor(r.kind, r.unitId)) mastered[r.unitId] = (mastered[r.unitId] ?? 0) + 1
       void unitList
       for (const c of cards) if (c.due <= now) due[c.unitId] = (due[c.unitId] ?? 0) + 1
       for (const c of chunks) chunksSeen[c.unitId] = (chunksSeen[c.unitId] ?? 0) + 1

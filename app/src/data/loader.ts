@@ -1,4 +1,4 @@
-import type { Alphabet, Chunk, GrammarNote, Lexeme, MinimalPair, Sentence, Unit } from './types'
+import type { Alphabet, Chunk, Dialogue, GrammarNote, Lexeme, MinimalPair, Sentence, Unit } from './types'
 
 const cache = new Map<string, Promise<unknown>>()
 function load<T>(path: string): Promise<T> {
@@ -14,6 +14,7 @@ function load<T>(path: string): Promise<T> {
 export const loadUnits = () => load<Unit[]>('units.json')
 export const loadChunks = (unit: string) => load<Chunk[]>(`chunks/${unit}.json`).catch(() => [] as Chunk[])
 export const loadSentences = (unit: string) => load<Sentence[]>(`sentences/${unit}.json`).catch(() => [] as Sentence[])
+export const loadDialogues = (unit: string) => load<Dialogue[]>(`dialogues/${unit}.json`).catch(() => [] as Dialogue[])
 export const loadGrammar = () => load<GrammarNote[]>('grammar_notes.json')
 export const loadMinimalPairs = () => load<MinimalPair[]>('minimal_pairs.json')
 export const loadCoverage = () => load<Record<string, number>>('coverage.json')

@@ -36,7 +36,7 @@ const en = {
   your_data: 'Your data', data_hint: '{cards} cards · {reviews} reviews · {lemmas} lemmas. Everything lives in this browser — no account, no cloud. Export regularly.',
   export: 'Export JSON', import: 'Import JSON', exported: 'Exported. Keep the file somewhere safe — it is the only copy of your progress.', imported: 'Imported. Reloading…', import_failed: 'Import failed: ',
   sources: 'Sources & licences',
-  sources_text: 'Sentences: Tatoeba contributors, CC BY 2.0 FR · Dictionary: English Wiktionary via kaikki.org, CC BY-SA 3.0 · Paradigms & spell-check: hunspell-sk (sk-spell), MPL-2.0 · Audio: Microsoft Edge neural voices (Viktória, Lukáš), personal use · Syllabus: Studia Academica Slovaca, Univerzita Komenského, Témy a ciele A1/A2, CC BY-NC-SA 4.0 · Illustrations: unDraw · Chunks, glosses and notes are drafts by this project and are marked "draft" until a native speaker reviews them.',
+  sources_text: 'Sentences: Tatoeba contributors, CC BY 2.0 FR · Dictionary: English Wiktionary via kaikki.org, CC BY-SA 3.0 · Paradigms & spell-check: hunspell-sk (sk-spell), MPL-2.0 · Audio: Microsoft Edge neural voices (Viktória, Lukáš), personal use · Syllabus: Studia Academica Slovaca, Univerzita Komenského, Témy a ciele A1/A2, CC BY-NC-SA 4.0 · Illustrations: unDraw · Pictures: Noto Color Emoji (Google), Apache-2.0 · Chunks, glosses and notes are drafts by this project and are marked "draft" until a native speaker reviews them.',
   personal_use: 'Personal, non-commercial use.',
   // alphabet
   abeceda_sub: "46 letters · 🔊 = the letter's name (for spelling your name) · tap a word to hear it",
@@ -50,6 +50,14 @@ const en = {
   session_summary: '{ok} correct · {bad} to revisit · {adv} steps up', unit_progress: '{done} of {total} items mastered', another_session: 'Another session',
   start_lesson: 'Start lesson', continue_lesson: 'Continue', items_word: 'items', minutes_est: '~{n} min',
   lessons_done: 'This unit is mastered — sessions now just keep it fresh.',
+  // dialogue + speaking + pictures
+  step_dialogue_intro: 'A short exchange. Listen to both lines.', replay_both: 'Play both', step_reply: 'Pick the reply', step_reply_audio: 'Listen. What do you answer?', step_tiles_reply: 'Build your reply',
+  step_speak: 'Say it out loud', speak_tap: 'tap to record, tap again to stop', speak_recording: 'recording… speak now', speak_processing: 'one moment…', speak_record: 'Record',
+  speak_model: 'Model', speak_you: 'You', speak_heard: 'Heard', speak_again: 'Again', speak_selfcheck: 'Did it sound like the model?', speak_not_yet: 'Not yet', speak_close: 'Close enough',
+  speak_nomic: 'No microphone available. Listen, say it out loud twice, then judge yourself.', fb_speak_ok: 'Sounds good!', fb_speak_meh: 'Keep at it — it comes back',
+  speaking_title: 'Speaking', speaking_hint: 'Up to two speaking steps per session: record yourself and compare with the model. Never affects your progress.',
+  speech_check: 'Word check with speech recognition', speech_check_hint: "Uses your phone's speech recognition (Google/Apple — audio leaves the device for that step only). Off = you judge yourself.",
+  on: 'On', off: 'Off',
 }
 const ro: typeof en = {
   app: 'Slovenčina',
@@ -80,7 +88,7 @@ const ro: typeof en = {
   your_data: 'Datele tale', data_hint: '{cards} carduri · {reviews} recapitulări · {lemmas} leme. Totul stă în acest browser — fără cont, fără cloud. Exportă regulat.',
   export: 'Exportă JSON', import: 'Importă JSON', exported: 'Exportat. Păstrează fișierul într-un loc sigur — e singura copie a progresului tău.', imported: 'Importat. Se reîncarcă…', import_failed: 'Importul a eșuat: ',
   sources: 'Surse și licențe',
-  sources_text: 'Propoziții: contribuitorii Tatoeba, CC BY 2.0 FR · Dicționar: Wiktionary în engleză via kaikki.org, CC BY-SA 3.0 · Paradigme și corector: hunspell-sk (sk-spell), MPL-2.0 · Audio: vocile neurale Microsoft Edge (Viktória, Lukáš), uz personal · Programă: Studia Academica Slovaca, Univerzita Komenského, Témy a ciele A1/A2, CC BY-NC-SA 4.0 · Ilustrații: unDraw · Expresiile, sensurile și notele sunt schițe ale acestui proiect și sunt marcate „schiță” până le verifică un vorbitor nativ.',
+  sources_text: 'Propoziții: contribuitorii Tatoeba, CC BY 2.0 FR · Dicționar: Wiktionary în engleză via kaikki.org, CC BY-SA 3.0 · Paradigme și corector: hunspell-sk (sk-spell), MPL-2.0 · Audio: vocile neurale Microsoft Edge (Viktória, Lukáš), uz personal · Programă: Studia Academica Slovaca, Univerzita Komenského, Témy a ciele A1/A2, CC BY-NC-SA 4.0 · Ilustrații: unDraw · Pictograme: Noto Color Emoji (Google), Apache-2.0 · Expresiile, sensurile și notele sunt schițe ale acestui proiect și sunt marcate „schiță” până le verifică un vorbitor nativ.',
   personal_use: 'Uz personal, necomercial.',
   abeceda_sub: '46 de litere · 🔊 = numele literei (pentru a-ți spune numele pe litere) · atinge un cuvânt ca să-l auzi',
   guide_how: 'Cum citești ghidul de sub fiecare cuvânt:', guide_text: 'o transcriere doar cu sunete pe care le ai deja. MAJUSCULE = silaba accentuată (mereu prima), vocală dublată = lungă, ɦ = h-ul sonor, y = i-ul semivocalic din „iar”. Cele patru lucruri de antrenat: lungimea, ť/ď/ň/ľ, h vs ch, accentul pe prima silabă.',
@@ -92,6 +100,13 @@ const ro: typeof en = {
   session_summary: '{ok} corecte · {bad} de revăzut · {adv} trepte în plus', unit_progress: '{done} din {total} elemente stăpânite', another_session: 'Încă o sesiune',
   start_lesson: 'Începe lecția', continue_lesson: 'Continuă', items_word: 'elemente', minutes_est: '~{n} min',
   lessons_done: 'Unitatea e stăpânită — sesiunile doar o mai împrospătează.',
+  step_dialogue_intro: 'Un scurt schimb de replici. Ascultă ambele.', replay_both: 'Redă ambele', step_reply: 'Alege răspunsul', step_reply_audio: 'Ascultă. Ce răspunzi?', step_tiles_reply: 'Construiește răspunsul',
+  step_speak: 'Spune-o cu voce tare', speak_tap: 'atinge pentru a înregistra, atinge din nou pentru a opri', speak_recording: 'se înregistrează… vorbește acum', speak_processing: 'o clipă…', speak_record: 'Înregistrează',
+  speak_model: 'Model', speak_you: 'Tu', speak_heard: 'Am auzit', speak_again: 'Din nou', speak_selfcheck: 'A sunat ca modelul?', speak_not_yet: 'Nu încă', speak_close: 'Destul de aproape',
+  speak_nomic: 'Nu e microfon disponibil. Ascultă, spune-o cu voce tare de două ori, apoi apreciază singur.', fb_speak_ok: 'Sună bine!', fb_speak_meh: 'Continuă — revine',
+  speaking_title: 'Vorbire', speaking_hint: 'Până la doi pași de vorbire pe sesiune: te înregistrezi și compari cu modelul. Nu afectează niciodată progresul.',
+  speech_check: 'Verificarea cuvintelor cu recunoașterea vocală', speech_check_hint: 'Folosește recunoașterea vocală a telefonului (Google/Apple — sunetul pleacă de pe telefon doar pentru acest pas). Oprit = te apreciezi singur.',
+  on: 'Pornit', off: 'Oprit',
 }
 export const STRINGS = { en, ro }
 export type Strings = typeof en

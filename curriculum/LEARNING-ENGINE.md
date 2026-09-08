@@ -23,23 +23,27 @@ right in practice.
 
 ## 2. The mastery ladder (per item)
 
-An *item* is a chunk, a lesson sentence, a letter, a minimal pair or a cognate. Each has a stage
-stored on the device.
+An *item* is a chunk, a lesson sentence, a two-line dialogue, a letter, a minimal pair or a cognate. Each
+has a stage stored on the device.
 
 | Stage | Step type | Learner sees | Learner does | Kind |
 |---|---|---|---|---|
-| 0 | **Intro** | Slovak big + audio auto-plays + meaning + respelling (+ emoji) | listens, taps *Got it* | all |
-| 1 | **Meaning choice** | Slovak text + audio | picks the meaning from 4 | chunk, sentence, cognate |
-| 2 | **Form choice** | audio only (or the meaning) | picks the Slovak from 4 | chunk, sentence, letter (hear the name → pick the letter) |
-| 3 | **Match / Tiles** | 4–5 pairs to match, or the meaning + shuffled word tiles (+1–2 distractors) | matches / arranges | chunk, sentence |
+| 0 | **Intro** | Slovak big + audio auto-plays + meaning + respelling (+ picture); for a dialogue, two chat bubbles A → B in two voices | listens, taps *Got it* | all |
+| 1 | **Meaning choice** / **Pick the reply** | Slovak text + audio; for a dialogue, line A (text + audio) and an empty B bubble | picks the meaning from 4 / picks the reply from 4 | chunk, sentence, cognate / dialogue |
+| 2 | **Form choice** / **Pick the reply by ear** | audio only (or the meaning); for a dialogue, line A by ear only | picks the Slovak from 4 / picks the reply from 4 | chunk, sentence, letter (hear the name → pick the letter), dialogue |
+| 3 | **Match / Tiles** | 4–5 pairs to match, or the meaning + shuffled word tiles (+1–2 distractors); for a dialogue, build the reply from tiles | matches / arranges | chunk, sentence, dialogue |
 | 4 | **Cloze / Type a word** | sentence with one blank (3 choices), or one missing word to type | picks / types (diacritics lenient) | chunk, sentence |
 | 5 | **Listen & type** | audio | types the whole thing (lenient → strict as it matures) | chunk, sentence |
 | 6 | **Mastered** | — | hands over to the FSRS sentence card for long-term review | all |
+| — | **Say it** *(off-ladder)* | the model clip + a mic button; after the take: model vs. you, optional per-word hint from the speech recogniser | records, listens to both, self-checks (or accepts the ≥ 60 % hint) | chunk, sentence, dialogue, cognate at stage ≥ 2 |
 
 Rules: correct → +1 stage; wrong → −1 (never below 1) and the item returns at the end of the
 session; an item advances at most 2 stages per day; stages ≥ 4 require a previous day's success.
 Minimal pairs use a single step type (A/B listening) and "mastered" = 3 correct in a row per pair.
 Letters: hear the name → pick the letter; see the letter → pick its sound anchor; then mastered.
+Dialogues master at stage 3 in Phase 0 and 4 elsewhere (no dictation of a reply). *Say it* never moves
+the stage: speech recognition for Slovak is too unreliable to grade with, so it is practice with a hint,
+not a test (and it can be switched off in Settings, with or without the recogniser).
 
 ## 3. A session
 
@@ -50,8 +54,10 @@ Letters: hear the name → pick the letter; see the letter → pick its sound an
    step, then reappears 3–6 steps later at stage 2.
 3. **Due items** from earlier sessions at their current stage (up to 8).
 4. One **Match** step grouping 4–5 items that are at stage ≥ 2.
-5. **Misses** return at the end, one stage down.
-6. **Summary**: items advanced, accuracy, what comes back tomorrow; the unit's grammar note is
+5. One or two **Say it** steps (output strand) on items already recognised (stage ≥ 2), never on
+   new ones, placed around 40 % and 80 % of the session. Skipped when speaking is off.
+6. **Misses** return at the end, one stage down.
+7. **Summary**: items advanced, accuracy, what comes back tomorrow; the unit's grammar note is
    offered (not forced) if a step touched its pattern.
 
 Interleaving: never the same item twice in a row; never more than two steps of the same type in
@@ -66,10 +72,15 @@ respelling.
 | 0.2 Sounds | 64 minimal pairs | A/B listening only; contrast accuracy tracked; weakest contrast first |
 | 0.3 Words you already own | 84 cognates | Intro → which Romanian word is this related to? (4 choices) → hear it → pick the Slovak |
 | 0.4 Type it | the letters' example words | see it + respelling + hear it → type it (diacritics required, hints on) |
-| 0.5 First twenty chunks | 20 chunks from 1.1–1.2 | full ladder to stage 3 only (no typing yet) |
+| 0.5 First twenty chunks | 20 chunks from 1.1–1.2 + 6 two-line dialogues | full ladder to stage 3 only (no typing yet); dialogues: hear A → pick the reply, by ear, then tiles |
 
 Nothing in Phase 0 asks the learner to produce a sentence. Typing appears in 0.4 on *single*
-words that are on screen.
+words that are on screen. *Say it* appears once items are at stage ≥ 2 — repeating a model, not producing.
+
+From Phase 1 on, every unit also carries 5–7 hand-authored two-line dialogues built from its own
+chunks (`pipeline/author_dialogues.py` → `content/dialogues.jsonl`, 151 exchanges over 26 units).
+Line A is spoken by the unit's *other* voice and line B by the unit's own, so the two speakers are
+audibly different. The learner always learns the reply (B); A is context.
 
 ## 5. What is kept from the earlier build
 

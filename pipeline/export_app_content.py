@@ -8,6 +8,11 @@ Writes app/public/content/…  and copies ONLY the audio clips the app actually 
 gitignored and regenerated at build. Shipping referenced clips instead of all 5,000+ keeps the
 deploy at ~1,300 files / ~17 MB, well inside Vercel Hobby limits and fast on a phone.
 
+Also written: dialogues/<unit>.json (two-line exchanges for the "pick the reply" step, A spoken by
+the unit's other voice), Romanian for every lesson sentence (Tatoeba's where it exists, else the
+drafts in data/sentences_ro.json, marked ro_src="draft"), and app/public/img/ — Noto Color Emoji
+SVGs for every picture cue (so cues look the same on every phone) plus the unDraw unit covers.
+
 Lesson-sentence selection per unit follows lessons.jsonl `sentence_selection`: within the unit's
 pool band, contains one of the unit's target lemmas, prefers native-authored + English
 translation + audio, no register flags, spread across target lemmas.
@@ -86,6 +91,59 @@ def alphabet_json(audio_refs: set) -> list:
                     "note": {"en": n_en, "ro": n_ro}, "audio_name": name_rel, "audio_example": ex_rel})
     return [{"letters": out, "diphthongs": [{"d": d, "ipa": i, "anchor": {"en": DIPHTHONGS_I18N.get(d, (r, r))[0], "ro": DIPHTHONGS_I18N.get(d, (r, r))[1]}, "example": e} for d, i, r, e in DIPHTHONGS]}]
 
+IMG_OUT = os.path.join(APP_PUBLIC, "img")
+NOTO_RAW = "https://raw.githubusercontent.com/googlefonts/noto-emoji/main/svg/"
+
+def graphemes(s: str) -> list[str]:
+    """Split an emoji string into emoji clusters (ZWJ sequences, modifiers, keycaps, flag pairs stay together)."""
+    out, cur, prev_ri = [], "", False
+    for ch in s:
+        cp = ord(ch)
+        joiner = cp in (0x200D, 0xFE0F, 0x20E3) or 0x1F3FB <= cp <= 0x1F3FF
+        is_ri = 0x1F1E6 <= cp <= 0x1F1FF
+        if cur and not joiner and not (cur.endswith("\u200d")) and not (is_ri and prev_ri):
+            out.append(cur); cur = ""
+        cur += ch; prev_ri = is_ri and not (prev_ri and is_ri)
+    if cur: out.append(cur)
+    return [g for g in out if g.strip()]
+
+def noto_name(g: str) -> str:
+    return "emoji_u" + "_".join(f"{ord(c):x}" for c in g if ord(c) != 0xFE0F)
+
+def emoji_svgs(used: set) -> tuple[int, int, int]:
+    """Bundle Noto Color Emoji SVGs (Apache-2.0) for every cue the app shows. Cached in
+    content/img/emoji (committed, so a build needs no network), copied to app/public/img/emoji."""
+    import urllib.request
+    from concurrent.futures import ThreadPoolExecutor
+    from .common import SSL_CTX
+    cache = os.path.join(CONTENT, "img", "emoji"); os.makedirs(cache, exist_ok=True)
+    out = os.path.join(IMG_OUT, "emoji"); shutil.rmtree(out, ignore_errors=True); os.makedirs(out)
+    names = {noto_name(g) for e in used if e for g in graphemes(e)}
+    def get(n):
+        src = os.path.join(cache, n + ".svg")
+        if os.path.exists(src): return "cached"
+        try:
+            req = urllib.request.Request(NOTO_RAW + n + ".svg", headers={"User-Agent": "learn-slovak build"})
+            with urllib.request.urlopen(req, timeout=20, context=SSL_CTX) as r: data = r.read()
+            with open(src, "wb") as fh: fh.write(data)
+            return "fetched"
+        except Exception:
+            return "missing"                       # not in Noto (or offline): the app falls back to the text emoji
+    with ThreadPoolExecutor(max_workers=8) as ex: results = list(ex.map(get, sorted(names)))
+    for n in sorted(names):
+        src = os.path.join(cache, n + ".svg")
+        if os.path.exists(src): shutil.copy2(src, os.path.join(out, n + ".svg"))
+    return len(names), results.count("fetched"), results.count("missing")
+
+def undraw_covers() -> int:
+    """design/illustrations/*.svg (already recoloured to the primary token) -> app/public/img/undraw/."""
+    src = os.path.join(ROOT, "design", "illustrations"); out = os.path.join(IMG_OUT, "undraw")
+    shutil.rmtree(out, ignore_errors=True); os.makedirs(out)
+    n = 0
+    for f in os.listdir(src):
+        if f.endswith(".svg"): shutil.copy2(os.path.join(src, f), os.path.join(out, f)); n += 1
+    return n
+
 _voice = None
 def ensure_audio(picked, voice=TTS_VOICE):
     """Render clips for selected sentences that have none yet (or whose file vanished after a
@@ -108,8 +166,11 @@ def main():
     units = list(read_jsonl(f"{CONTENT}/lessons.jsonl"))
     pairs = list(read_jsonl(f"{CONTENT}/minimal_pairs.jsonl"))
     sizes, audio_refs = {}, set()
-    emoji = json.load(open(os.path.join(ROOT, "data", "emoji.json"), encoding="utf-8"))["map"]
-    emoji = {k.strip(): v for k, v in emoji.items()}
+    emoji_data = json.load(open(os.path.join(ROOT, "data", "emoji.json"), encoding="utf-8"))
+    emoji = {k.strip(): v for k, v in emoji_data["map"].items()}
+    chunk_emoji = {k.strip(): v for k, v in emoji_data.get("chunks", {}).items()}   # one cue per chunk, keyed by its Slovak
+    ro_draft = json.load(open(os.path.join(ROOT, "data", "sentences_ro.json"), encoding="utf-8"))["translations"]
+    used_emoji: set = set()
     pos_of = {r["lemma"]: r["pos"] for r in lex}
     def emoji_for(lemmas):
         ls = [l for l in lemmas if l]
@@ -155,7 +216,8 @@ def main():
     for c in chunks:
         by_unit[c["unit"]].append(c)
         c["guide"] = {"ro": respell_ro(c["sk"]), "ipa": ipa_of(c["sk"])}
-        c["emoji"] = emoji_for([forms_index.get(w.lower().strip(".,!?…")) for w in c["sk"].split()] + [w.lower().strip(".,!?…") for w in c["sk"].split()])
+        c["emoji"] = chunk_emoji.get(c["sk"]) or emoji_for([forms_index.get(w.lower().strip(".,!?…")) for w in c["sk"].split()] + [w.lower().strip(".,!?…") for w in c["sk"].split()])
+        used_emoji.add(c["emoji"])
         stem = c["id"].replace(":", "-").replace(".", "_")
         if not c.get("audio"):
             c["audio"] = tts_render(c["sk"], os.path.join(CONTENT, "audio", stem), voice=unit_voice(c["unit"])); chunks_changed = True
@@ -241,12 +303,13 @@ def main():
             audio_refs.add(s["audio"]["file"]); used.add(s["id"])
         n_sent += len(picked)
         sizes[f"sentences/{u['id']}.json"] = dump(f"sentences/{u['id']}.json",
-            [{"id": s["id"], "sk": s["sk"], "en": s["en"][:1], "ro": s["ro"][:1], "lemmas": s["content_lemmas"],
+            [{"id": s["id"], "sk": s["sk"], "en": s["en"][:1], "ro": s["ro"][:1] or ([ro_draft[s["id"]]] if s["id"] in ro_draft else []),
+              "ro_src": "tatoeba" if s["ro"] else ("draft" if s["id"] in ro_draft else None), "lemmas": s["content_lemmas"],
               "audio": s["audio"]["file"], "audio_slow": slow_clip(s["audio"]["file"], s["sk"], unit_voice(u["id"])),
               "guide": {"ro": respell_ro(s["sk"]), "ipa": ipa_of(s["sk"])}, "emoji": emoji_for(s["content_lemmas"]),
               "native": s["native_author"], "band": s["band"],
               "attr": s["attribution"], "lic": s["licence"]} for s in picked])
-        for s in picked: audio_refs.add(slow_clip(s["audio"]["file"], s["sk"], unit_voice(u["id"])))
+        for s in picked: audio_refs.add(slow_clip(s["audio"]["file"], s["sk"], unit_voice(u["id"]))); used_emoji.add(emoji_for(s["content_lemmas"]))
 
     if getattr(slow_clip, "rendered", 0):
         print(f"  rendered {slow_clip.rendered} slow clips (length_scale 1.4)")
@@ -255,14 +318,34 @@ def main():
         _w(f"{CONTENT}/sentences.jsonl", sents)
         print(f"  synthesized {ensure_audio.rendered} new clips for selected sentences (persisted to content/sentences.jsonl)")
 
+    # ---- dialogues: two-line exchanges for the "pick the reply" step --------------------
+    # A (the other person) is spoken by the unit's *other* voice, B (the reply) by the unit's own,
+    # so the two speakers are always distinguishable by ear.
+    dlg_path = f"{CONTENT}/dialogues.jsonl"
+    dialogues = list(read_jsonl(dlg_path)) if os.path.exists(dlg_path) else []
+    dlg_by_unit = collections.defaultdict(list)
+    for x in dialogues:
+        stem = x["id"].replace(":", "-").replace(".", "_")
+        for side, other in (("a", True), ("b", False)):
+            line = x[side]; voice = unit_voice(x["unit"], other=other)
+            rel = _existing(f"{stem}-{side}") or tts_render(line["sk"], os.path.join(CONTENT, "audio", f"{stem}-{side}"), voice=voice)["file"]
+            line["audio"] = rel; line["audio_slow"] = slow_clip(rel, line["sk"], voice)
+            line["guide"] = {"ro": respell_ro(line["sk"]), "ipa": ipa_of(line["sk"])}
+            audio_refs.add(rel); audio_refs.add(line["audio_slow"])
+        dlg_by_unit[x["unit"]].append({k: x.get(k) for k in ("id", "unit", "a", "b", "note", "note_ro")})
+    for uid, xs in dlg_by_unit.items():
+        sizes[f"dialogues/{uid}.json"] = dump(f"dialogues/{uid}.json", xs)
+
     def unit_items(u):
         uid = u["id"]
+        dlg = [{"kind": "dialogue", "id": x["id"]} for x in dlg_by_unit.get(uid, [])]
         if uid == "0.1": return [{"kind": "letter", "id": f"letter:{l[0]}"} for l in ALPHABET]
         if uid == "0.2": return [{"kind": "pair", "id": p["id"]} for p in pairs if p["kind"] == "pair"]
         if uid == "0.3": return [{"kind": "cognate", "id": f"cog:{c['sk_lemmas'][0]}"} for c in cog]
         if uid == "0.4": return [{"kind": "word", "id": f"word:{l[4]}"} for l in ALPHABET if l[4] and l[4] != "—"]
-        if uid == "0.5": return [{"kind": "chunk", "id": c["id"]} for c in chunks if c["unit"] in ("1.1", "1.2")][:20]
+        if uid == "0.5": return [{"kind": "chunk", "id": c["id"]} for c in chunks if c["unit"] in ("1.1", "1.2")][:20] + dlg
         items = [{"kind": "chunk", "id": c["id"]} for c in chunks if c["unit"] == uid]
+        items += dlg                                   # replies come after the chunks they reuse
         items += [{"kind": "sentence", "id": sid} for sid in unit_sentence_ids.get(uid, [])]
         return items
     sizes["units.json"] = dump("units.json", [{**{k: u.get(k) for k in ("id","title","title_ro","sas_area","can_do","can_do_ro","grammar_notes",
@@ -284,7 +367,14 @@ def main():
             missing += 1
     audio_mb = sum(os.path.getsize(os.path.join(AUDIO_OUT, f)) for f in os.listdir(AUDIO_OUT)) / 1e6
 
+    # ---- pictures: Noto emoji SVGs for every cue + unDraw unit covers -----------------------
+    used_emoji |= {r["emoji"] for r in lite if r.get("emoji")} | {c["emoji"] for c in json.load(open(os.path.join(OUT, "cognates.json"), encoding="utf-8")) if c.get("emoji")}
+    n_names, n_fetched, n_missing = emoji_svgs({e for e in used_emoji if e})
+    n_undraw = undraw_covers()
+
     tot = sum(sizes.values())
+    print(f"  pictures: {n_names} emoji SVGs ({n_fetched} fetched, {n_missing} not in Noto -> text fallback), {n_undraw} unDraw covers -> {IMG_OUT}")
+    print(f"  dialogues: {len(dialogues)} exchanges over {len(dlg_by_unit)} units")
     print(f"  content: {len(sizes)} files, {tot/1e6:.1f} MB -> {OUT}")
     for k in ("lexemes.json","forms_index.json","coverage.json","units.json","grammar_notes.json","minimal_pairs.json"):
         print(f"    {k:22s} {sizes[k]/1e3:7.0f} KB")

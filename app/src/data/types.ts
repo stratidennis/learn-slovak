@@ -20,7 +20,7 @@ export type Chunk = {
   audio: AudioRef | null; audio_slow?: string; guide?: Guide; review_status: string
 }
 export type Sentence = {
-  id: string; sk: string; en: string[]; ro: string[]; lemmas: string[]
+  id: string; sk: string; en: string[]; ro: string[]; ro_src?: 'tatoeba' | 'draft' | null; lemmas: string[]
   audio: string; audio_slow?: string; guide?: Guide; native: boolean; band: number; attr: string; lic: string
 }
 export type L2 = { en: string | null; ro: string | null }
@@ -35,3 +35,6 @@ export type MinimalPair = {
   gloss: string; kind: 'pair' | 'prosody'; both_real?: boolean
   audio: { a: AudioRef; b?: AudioRef } | null
 }
+export type DialogueLine = { sk: string; ro: string; en: string; audio: string; audio_slow?: string; guide?: Guide }
+/** A two-line exchange: A is the other person (other voice), B the coherent reply (unit voice). */
+export type Dialogue = { id: string; unit: string; a: DialogueLine; b: DialogueLine; note: string | null; note_ro: string | null }

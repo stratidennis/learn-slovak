@@ -29,3 +29,4 @@ app/.vercel/
 app/.env.deploy
 app/.env*.local
 content/audio_old/
+app/public/img/

@@ -3,6 +3,7 @@ import { Link, useParams } from 'react-router-dom'
 import { loadGrammar, loadUnits } from '../../data/loader'
 import type { GrammarNote, Unit } from '../../data/types'
 import { useLang, useT } from '../../i18n'
+import { coverFor } from '../../lib/covers'
 
 function Md({ text }: { text: string }) {
   // enough markdown for the notes: paragraphs, **bold**, *italic*
@@ -52,6 +53,7 @@ export function UnitPage() {
   return (
     <div className="page fade">
       <div className="topbar"><Link to="/" className="back" aria-label={t.back}>←</Link><div><h1>{unit.id} {title}</h1></div></div>
+      {coverFor(unit.id) && <img className="hero" src={coverFor(unit.id)!} alt="" />}
       <div className="stack">
         <div className="row">
           {unit.chunks.length > 0 && <Link to={`/unit/${unit.id}/chunks`} className="btn ghost">🗣 {t.chunks_btn} · {unit.chunks.length}</Link>}

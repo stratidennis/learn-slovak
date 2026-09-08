@@ -5,11 +5,27 @@ import { useT } from '../i18n'
 // element means every later programmatic play() inherits that permission.
 const player = typeof Audio !== 'undefined' ? new Audio() : null
 
+let gen = 0   // bumps on every play, so a sequence knows when something else took the player
 export function playAudio(src: string, rate = 1): Promise<boolean> {
   if (!player) return Promise.resolve(false)
+  gen++
   player.pause(); player.src = src; player.playbackRate = rate; player.currentTime = 0
   ;(player as HTMLAudioElement & { preservesPitch?: boolean }).preservesPitch = true
   return player.play().then(() => true).catch(() => false)
+}
+
+/** Play clips one after another (dialogue A then B). Stops if another play() takes over. */
+export async function playSequence(srcs: string[], gapMs = 400): Promise<boolean> {
+  for (let i = 0; i < srcs.length; i++) {
+    const ok = await playAudio(srcs[i]); if (!ok || !player) return false
+    const my = gen
+    await new Promise<void>(res => { const done = () => { player.removeEventListener('ended', done); player.removeEventListener('pause', done); res() }
+      player.addEventListener('ended', done); player.addEventListener('pause', done); setTimeout(done, 15000) })
+    if (gen !== my) return false
+    if (i < srcs.length - 1) await new Promise(r => setTimeout(r, gapMs))
+    if (gen !== my) return false
+  }
+  return true
 }
 
 type Props = {

@@ -26,6 +26,15 @@ export function stepFor(item: Item, stage: number, pool: Item[], lang: Lang): St
     if (stage === 2) return { type: 'form', item, options: shuffle([item, ...pickDistractors(item, pool, 3, lang)]), audioOnly: true }
     return null
   }
+  if (k === 'dialogue') {
+    // hear/see A → pick the reply; then A by ear only; then build the reply from tiles (Ling's best exercise, then output)
+    const opts = () => shuffle([item, ...pickDistractors(item, pool, 3, lang)])
+    if (stage <= 0) return { type: 'intro', item }
+    if (stage === 1) return { type: 'reply', item, options: opts(), audioOnly: false }
+    if (stage === 2) return { type: 'reply', item, options: opts(), audioOnly: true }
+    if (stage === 3) return words(item) >= 2 ? { type: 'tiles', item, tiles: tilesFor(item, pool) } : { type: 'reply', item, options: opts(), audioOnly: true }
+    return null
+  }
   // chunk / sentence: the full ladder
   const n = words(item)
   switch (stage) {
@@ -38,11 +47,12 @@ export function stepFor(item: Item, stage: number, pool: Item[], lang: Lang): St
     default: return null
   }
 }
-export const maxStageFor = (kind: Item['ref']['kind'], unitId: string) =>
-  kind === 'pair' ? 1 : kind === 'letter' ? 3 : kind === 'cognate' ? 3 : kind === 'word' ? 2 : unitId.startsWith('0.') ? 4 : 6
+export const maxStageFor = (kind: Item['ref']['kind'] | string, unitId: string) =>
+  kind === 'pair' ? 1 : kind === 'letter' ? 3 : kind === 'cognate' ? 3 : kind === 'word' ? 2 : kind === 'dialogue' ? (unitId.startsWith('0.') ? 3 : 4) : unitId.startsWith('0.') ? 4 : 6
+const SPEAKABLE = new Set(['chunk', 'sentence', 'dialogue', 'cognate'])
 
 /** Build a ~12–18 step session: warm-up, new items (intro + first step, later a second step), due items, one match block, misses re-queued by the runner. */
-export function buildSession(items: Item[], states: Map<string, ItemState>, unitId: string, lang: Lang, opts: { newPerSession?: number; maxDue?: number } = {}): Plan {
+export function buildSession(items: Item[], states: Map<string, ItemState>, unitId: string, lang: Lang, opts: { newPerSession?: number; maxDue?: number; speaking?: boolean } = {}): Plan {
   const newPerSession = opts.newPerSession ?? (unitId.startsWith('0.') ? 4 : 5)
   const maxDue = opts.maxDue ?? 8
   const today = dayKey()
@@ -80,6 +90,12 @@ export function buildSession(items: Item[], states: Map<string, ItemState>, unit
   const rest = interleave(shuffle([...dueSteps, ...later]))
   const all = [...steps, ...rest]
   if (matchStep) all.splice(Math.max(2, all.length - 2), 0, matchStep)
+  // 5. output strand: up to two "say it" steps on items already recognised (stage >= 2), never on new ones.
+  //    They never move the stage — recognition is unreliable and speaking is practice, not a test.
+  if (opts.speaking !== false) {
+    const speakable = shuffle(items.filter(it => SPEAKABLE.has(it.ref.kind) && stage(it) >= 2 && !fresh.includes(it))).slice(0, all.length >= 8 ? 2 : 1)
+    speakable.forEach((it, k) => all.splice(Math.min(all.length, Math.max(2, Math.round(all.length * (k === 0 ? 0.4 : 0.8)))), 0, { type: 'speak', item: it }))
+  }
   return { steps: all, newItems: fresh, dueItems: due }
 }
 

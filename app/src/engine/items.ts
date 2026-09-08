@@ -1,5 +1,5 @@
-import { loadAlphabet, loadChunks, loadMinimalPairs, loadSentences, loadUnits } from '../data/loader'
-import type { Chunk, Sentence, Unit } from '../data/types'
+import { loadAlphabet, loadChunks, loadDialogues, loadMinimalPairs, loadSentences, loadUnits } from '../data/loader'
+import type { Chunk, Dialogue, Sentence, Unit } from '../data/types'
 import type { Cognate, Item, ItemRef } from './types'
 
 let cognates: Promise<Cognate[]> | null = null
@@ -15,6 +15,12 @@ const sentenceItem = (s: Sentence): Item => ({
   ref: { kind: 'sentence', id: s.id }, sk: s.sk, meaning: { ro: s.ro[0] ?? s.en[0] ?? '', en: s.en[0] ?? s.ro[0] ?? '' },
   audio: `/${s.audio}`, audioSlow: s.audio_slow ? `/${s.audio_slow}` : null, spell: s.guide?.ro ?? null, ipa: s.guide?.ipa ?? null,
   emoji: (s as Sentence & { emoji?: string | null }).emoji ?? null, note: { ro: null, en: null }, sentence: s,
+})
+
+const dialogueItem = (x: Dialogue): Item => ({
+  ref: { kind: 'dialogue', id: x.id }, sk: x.b.sk, meaning: { ro: x.b.ro, en: x.b.en },
+  audio: `/${x.b.audio}`, audioSlow: x.b.audio_slow ? `/${x.b.audio_slow}` : null, spell: x.b.guide?.ro ?? null, ipa: x.b.guide?.ipa ?? null,
+  emoji: null, note: { ro: x.note_ro, en: x.note }, dialogue: x,
 })
 
 /** Resolve a unit's item refs into full Items (all pools loaded once per call). */
@@ -47,6 +53,10 @@ export async function loadUnitItems(unit: Unit): Promise<Item[]> {
     const chunks = (await Promise.all([...unitsNeeded].map(u => loadChunks(u)))).flat()
     const want = new Set(refs.filter(r => r.kind === 'chunk').map(r => r.id))
     for (const c of chunks) if (want.has(c.id)) out.push(chunkItem(c))
+  }
+  if (kinds.has('dialogue')) {
+    const want = new Set(refs.filter(r => r.kind === 'dialogue').map(r => r.id))
+    for (const x of await loadDialogues(unit.id)) if (want.has(x.id)) out.push(dialogueItem(x))
   }
   if (kinds.has('sentence')) {
     const want = new Set(refs.filter(r => r.kind === 'sentence').map(r => r.id))

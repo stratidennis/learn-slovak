@@ -84,6 +84,23 @@ Design rules that apply to all of them:
   pronunciation micro-drill. (Optional Web Speech API transcription shown as a hint, never as a
   score — it is too unreliable for Slovak to grade with.)
 - **Needs:** audio, MediaRecorder.
+- **Built (2026-09-08) as the *Say it* step** of the lesson engine: model clip + mic, 7 s auto-stop,
+  "model / you" playback, per-word hit/miss colouring from the recogniser when one exists
+  (`sk-SK`, diacritics-insensitive, one typo allowed on words ≥ 4 letters), ≥ 60 % passes;
+  without a recogniser the learner self-checks. Never changes an item's stage. Settings: Speaking
+  on/off, speech check on/off. `app/src/lib/speech.ts`.
+
+### A7 ★ Pick the reply *(dialogue)*
+- **See:** a two-line exchange as chat bubbles. Line A (text + audio, or audio only at the next
+  stage) is spoken by the unit's *other* voice; B's bubble is empty; four candidate replies below.
+- **Do:** tap the reply that fits. The chosen line drops into B's bubble; a right pick plays B in the
+  unit's own voice. Stage 3 builds the reply from word tiles instead.
+- **Grade:** exact pick. Distractors are other replies from the same unit, so the test is *meaning*,
+  not vocabulary spotting.
+- **Needs:** `content/dialogues.jsonl` (151 hand-authored exchanges over 26 units, built from each
+  unit's own chunks; `pipeline/author_dialogues.py`), two clips per exchange + slow variants.
+- **Why:** the exercise learners rate best in Ling; it is the only recognition step that trains
+  *what to say next* rather than what a string means. Intro shows both bubbles and auto-plays A → B.
 
 ---
 
@@ -179,7 +196,7 @@ Design rules that apply to all of them:
 ### D1 ★ Chunk shadow
 - **See:** a chunk card (SK big, RO under it, register chip, colloquial variant on tap); audio.
 - **Do:** listen, repeat aloud, tap "next". Optionally record and compare (A6). This is the
-  Phase 0/1 workhorse — 20 chunks a day, out loud.
+  Phase 0/1 workhorse — 20 chunks a day, out loud. Inside lessons this is the *Say it* step (A6).
 
 ### D2 Answer the question
 - **See:** a spoken question (*Odkiaľ si?*, *Čo si dáš?*, *Koľko je hodín?*); 8 seconds.

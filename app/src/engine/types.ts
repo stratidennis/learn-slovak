@@ -1,6 +1,6 @@
-import type { Chunk, Sentence, AlphabetLetter, MinimalPair } from '../data/types'
+import type { Chunk, Dialogue, Sentence, AlphabetLetter, MinimalPair } from '../data/types'
 
-export type ItemKind = 'chunk' | 'sentence' | 'letter' | 'pair' | 'cognate' | 'word'
+export type ItemKind = 'chunk' | 'sentence' | 'letter' | 'pair' | 'cognate' | 'word' | 'dialogue'
 export type ItemRef = { kind: ItemKind; id: string }
 
 export type Cognate = { id: string; sk: string; sk_all: string; ro: string; en: string; note: string; shift: boolean; spell: string; emoji: string | null; audio: string }
@@ -23,9 +23,10 @@ export type Item = {
   chunk?: Chunk
   sentence?: Sentence
   cognate?: Cognate
+  dialogue?: Dialogue      // for kind 'dialogue': sk/meaning/audio describe line B (the reply); A is in here
 }
 
-export type StepType = 'intro' | 'meaning' | 'form' | 'match' | 'tiles' | 'cloze' | 'typeword' | 'listentype' | 'pairab' | 'letterpick' | 'anchor'
+export type StepType = 'intro' | 'meaning' | 'form' | 'match' | 'tiles' | 'cloze' | 'typeword' | 'listentype' | 'pairab' | 'letterpick' | 'anchor' | 'reply' | 'speak'
 
 export type Step =
   | { type: 'intro'; item: Item }
@@ -39,8 +40,10 @@ export type Step =
   | { type: 'pairab'; item: Item; playB: boolean }                // which of the two did you hear?
   | { type: 'letterpick'; item: Item; options: Item[] }           // hear the letter name → pick the letter
   | { type: 'anchor'; item: Item; options: Item[] }               // see the letter → pick its sound anchor
+  | { type: 'reply'; item: Item; options: Item[]; audioOnly: boolean } // hear/see line A → pick the reply (B) from 4
+  | { type: 'speak'; item: Item }                                 // say it: record, compare with the model, optional speech check
 
-export type StepResult = { correct: boolean; tier?: 'exact' | 'diacritics' | 'wrong'; typed?: string }
+export type StepResult = { correct: boolean; tier?: 'exact' | 'diacritics' | 'wrong'; typed?: string; heard?: string | null; score?: number }
 
 /** Mastery state per item, persisted. Stages: see curriculum/LEARNING-ENGINE.md §2. */
 export type ItemState = {
