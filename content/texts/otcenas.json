@@ -1,0 +1,58 @@
+{
+  "id": "text:otcenas",
+  "title": "Otče náš (Modlitba Pána)",
+  "title_ro": "Tatăl nostru",
+  "title_en": "The Lord's Prayer",
+  "unit": "1.13",
+  "kind": "fixed_text",
+  "why": "A text the learner already knows by heart in Romanian — every word's meaning is given in advance, so all attention goes to pronunciation, rhythm and the case endings (nebesiach = loc. pl., kráľovstvo, vôľa, chlieb, viny = acc. pl., vinníkom = dat. pl., pokušenie, zlého = gen.). Research §9.1, §11.3.",
+  "versions": [
+    {
+      "label": "Roháček (1936) — Matúš 6:9–13",
+      "register": "archaic",
+      "source": "https://biblia.sk/citanie/roh/mt/6",
+      "licence": "public domain (translator Jozef Roháček d. 1948)",
+      "note": "Archaic spellings kept as published: tedy (=teda), jako (=ako), prijde (=príde), Ameň. Marked archaic; the liturgical form below is what people actually say.",
+      "verses": [
+        {"n": 9,  "sk": "Vy sa tedy modlite takto: Náš Otče, ktorý si v nebesiach, nech sa posvätí tvoje meno!"},
+        {"n": 10, "sk": "Nech prijde tvoje kráľovstvo! Nech sa stane tvoja vôľa jako v nebi, tak aj na zemi!"},
+        {"n": 11, "sk": "Daj nám dnes náš každodenný chlieb"},
+        {"n": 12, "sk": "a odpusť nám naše viny, jako aj my odpúšťame svojim vinníkom,"},
+        {"n": 13, "sk": "a neuvoď nás v pokušenie, ale nás zbav zlého, lebo tvoje je kráľovstvo i moc i sláva na veky. Ameň."}
+      ]
+    },
+    {
+      "label": "Liturgical form (what is said in church, both traditions)",
+      "register": "formal",
+      "source": "common liturgical text; wording shared by Catholic and Lutheran use in Slovakia",
+      "licence": "traditional text, not under copyright",
+      "review_status": "needs_review — a native should confirm the exact wording their congregation uses (Catholic: 'Otče náš, ktorý si na nebesiach…'; Lutheran ECAV wording differs slightly)",
+      "lines": [
+        {"sk": "Otče náš, ktorý si na nebesiach,",            "ro": "Tatăl nostru, care ești în ceruri,",             "en": "Our Father, who art in heaven,"},
+        {"sk": "posväť sa meno tvoje,",                       "ro": "sfințească-se numele Tău,",                     "en": "hallowed be thy name,"},
+        {"sk": "príď kráľovstvo tvoje,",                      "ro": "vie împărăția Ta,",                              "en": "thy kingdom come,"},
+        {"sk": "buď vôľa tvoja ako v nebi, tak i na zemi.",   "ro": "facă-se voia Ta, precum în cer așa și pe pământ.","en": "thy will be done, on earth as it is in heaven."},
+        {"sk": "Chlieb náš každodenný daj nám dnes",          "ro": "Pâinea noastră cea de toate zilele dă-ne-o nouă astăzi", "en": "Give us this day our daily bread"},
+        {"sk": "a odpusť nám naše viny,",                     "ro": "și ne iartă nouă greșelile noastre,",            "en": "and forgive us our trespasses,"},
+        {"sk": "ako i my odpúšťame svojim vinníkom,",         "ro": "precum și noi iertăm greșiților noștri,",        "en": "as we forgive those who trespass against us,"},
+        {"sk": "a neuveď nás do pokušenia,",                  "ro": "și nu ne duce pe noi în ispită,",                "en": "and lead us not into temptation,"},
+        {"sk": "ale zbav nás zlého.",                         "ro": "ci ne izbăvește de cel rău.",                    "en": "but deliver us from evil."},
+        {"sk": "Amen.",                                        "ro": "Amin.",                                          "en": "Amen."}
+      ]
+    }
+  ],
+  "glossary": [
+    {"sk": "nebesia / v nebesiach", "ro": "ceruri / în ceruri", "note": "locative plural of a plural-only noun"},
+    {"sk": "posvätiť sa", "ro": "a se sfinți", "note": "reflexive imperative: posväť sa"},
+    {"sk": "kráľovstvo", "ro": "împărăție", "note": "kráľ = rege"},
+    {"sk": "vôľa", "ro": "voie / voință", "note": "ô = [uo]"},
+    {"sk": "každodenný", "ro": "de toate zilele", "note": "každý + deň + -ný"},
+    {"sk": "vina / viny", "ro": "vină / vini (greșeli)", "note": "cognate — RO vină is Slavic"},
+    {"sk": "vinník / vinníkom", "ro": "vinovat / vinovaților", "note": "dative plural"},
+    {"sk": "pokušenie", "ro": "ispită", "note": "pokúšať = a ispiti"},
+    {"sk": "zbaviť", "ro": "a izbăvi", "note": "cognate — RO a izbăvi is from the same Slavic root (§4.3)"},
+    {"sk": "zlé / zlého", "ro": "rău / răul", "note": "genitive after zbaviť"}
+  ],
+  "audio": null,
+  "review_status": "needs_review"
+}

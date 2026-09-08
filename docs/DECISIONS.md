@@ -142,3 +142,27 @@ Then hunspell-sk turned out to be better than the §7.4 fallback assumed: its af
 **Decision** All 300 band-1 Romanian glosses drafted into `data/glosses_manual.json` with `reviewed_ro: false`.
 **Why** Per the agreed split (hand-write band 1 English, draft the rest). Romanian had zero coverage from any source.
 **Consequence** Twelve carry a `notes` field flagging a judgement call rather than burying it: `no`/`nuž` (discourse particles, not "no"), `hej` (informal yes — §11.2 measured `áno` 32 / `hej` 58, so they are equals), `fajn`, `chlap` (`tip` colloquial vs `bărbat` neutral), `ok`, `kurva` (vulgar, recognition only), `rád` (`rád + verb` = "îmi place să"), `páčiť` (`páči sa mi` ≈ `îmi place` — dative experiencer in both, per §11.9), `stať` (almost always reflexive), `však` (two distinct uses), and `ký`, which looks like a lemmatiser artefact that may not belong in band 1 at all.
+
+## D114 — The SAS A1/A2 standards are the unit skeleton (they are CC BY-NC-SA)
+**Date** 2026-09-08
+**Decision** `curriculum/LEARNING-MAP.md` and `content/lessons.jsonl` follow the eight thematic areas of *Témy a ciele jazykového kurzu A1* and *A2* (Comenius University / SAS, 2025), re-ordered by communicative need. Their can-do statements, lexical minimum and grammatical minimum are used directly.
+**Why** The research assumed these were link-only references. Fetching them showed both are published under **CC BY-NC-SA 4.0**, which permits this personal, non-commercial use with attribution. They are the official syllabus Slovak textbooks are written to, so aligning to them means the course can be checked against a real exam standard.
+**Consequence** Every unit carries `sas_area`. Attribution: "Studia Academica Slovaca, Univerzita Komenského v Bratislave, CC BY-NC-SA 4.0". The PDFs live in `pipeline/work/reference/` (gitignored — they are reference, not content).
+
+## D115 — Band-1 and band-2 glosses drafted in full by the build assistant; nothing native-reviewed
+**Date** 2026-09-08
+**Decision** All 300 band-1 EN+RO and all 700 band-2 RO glosses, plus 310 band-2 EN glosses, are drafted (`data/glosses_manual.json`, every one `reviewed_*: false`). 40 band-2 "lemmas" are excluded as subtitle junk (`data/lexicon_overrides.json`).
+**Why** The learner asked to defer all review and keep building. Drafting everything unblocks the app; the review CSVs still exist for when a native is available.
+**Consequence** `content/lexemes.jsonl` reports 100% gloss coverage for bands 1–2, but every record is `needs_review`. The app must show the review state honestly (a small chip), not hide it.
+
+## D116 — Roleplay prompts are tested on a weaker model, and roleplay output never auto-enters the SRS
+**Date** 2026-09-08
+**Decision** Prompts live in `curriculum/ai-roleplay/`, are rendered by `pipeline/render_prompt.py`, and are tested with a scripted learner on Claude Sonnet before use (`TEST-LOG.md`). Phrases the model proposes as flashcards enter the app as `needs_review`.
+**Why** The first test showed the scaffolding (commands, register, debrief) survives a smaller model, but the model's own Slovak does not: it invented *"Dobrý deň, pán!"* and *"Tu iba peniaze"* and then offered the latter as a flashcard. Correcting the *learner* was accurate in both runs; the model's *own* production is the weak point.
+**Consequence** v1.1 prompts add "never invent a phrase", canonical lines per scenario, and a flashcard standard/colloquial tag. Recommend the strongest available model for roleplay.
+
+## D117 — Domain packs are hand-ordered and carry the rank only as metadata
+**Date** 2026-09-08
+**Decision** `content/domain_packs.jsonl` (food/market 109, work/tech 73, church 65) is ordered by real-life need within sections; `spoken_rank` is stored per entry but never used for ordering.
+**Why** §15.3. Only 6/109 food-market entries are inside bands 1–2 — the frequency list would have taught none of *deko, bryndza, akcia, zľava, pokladňa* in the first year.
+**Consequence** Pack entries outside the 3,000 need a kaikki/hunspell join for paradigms and IPA (pipeline task); RO glosses are drafted inline.

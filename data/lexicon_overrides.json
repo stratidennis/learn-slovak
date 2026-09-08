@@ -1,0 +1,45 @@
+{
+  "_comment": [
+    "Hand-authored corrections to lexicon_bands.csv + kaikki joins. Applied by build_lexicon.",
+    "exclude: the lemma is not teachable vocabulary — subtitle artefacts (English names, English",
+    "leakage, diacritic-less typos, inflected forms that escaped lemmatisation). They stay in the",
+    "lexicon (their subtitle_count still feeds the coverage meter) but are hidden from lessons/SRS.",
+    "pos / gloss_en fixes: cases where kaikki's entry pick was wrong (a surname entry for `možný`).",
+    "Every exclusion was checked against the §15.2 bug-#1 rule: is this actually a Slovak word?",
+    "  `co`/`ze`/`ked`/`ano` are Czech-or-typo variants of čo/že/keď/áno; `jo` is Czech `yes`",
+    "  (heard in SK speech — kept, tagged colloquial, not excluded); `kámo`, `sranda`, `decko`,",
+    "  `chalan`, `kamoš` are genuine Slovak colloquialisms — kept."
+  ],
+  "exclude": {
+    "john": "English name", "charlie": "English name", "jack": "English name", "joe": "English name",
+    "sarah": "English name", "henry": "English name", "paul": "English name", "mike": "English name",
+    "david": "English name", "george": "English name", "frank": "English name", "york": "English place name",
+    "new": "English leakage (New York)", "amerika": "proper noun — Amerika; teach in the countries lesson, not SRS",
+    "peter": "Slovak given name", "michaela": "Slovak given name", "anna": "given name",
+    "co": "Czech/typo for čo", "ze": "typo for že", "ked": "typo for keď", "ano": "typo for áno",
+    "oci": "typo for oči (eyes) — the real lemma is oko", "mam": "typo for mám",
+    "sam": "typo for sám / English name", "ta": "typo for tá", "aut": "sports 'out' / typo",
+    "rýchle": "inflected form of rýchly", "malá": "inflected form of malý", "zlé": "inflected form of zlý",
+    "krásne": "inflected form of krásny", "milá": "inflected form of milý", "drahá": "inflected form of drahý",
+    "chlape": "vocative of chlap", "dna": "DNA (crime-drama acronym), not vocabulary",
+    "uh": "English filler", "ah": "interjection, not vocabulary", "ha": "interjection", "hm": "interjection",
+    "och": "interjection", "wow": "English interjection"
+  },
+  "fix": {
+    "zlatko":  {"pos": "NOUN", "gloss_en": ["sweetheart", "darling (dim. of zlato)"], "why": "kaikki picked the given-name entry"},
+    "možný":   {"pos": "ADJ",  "gloss_en": ["possible"], "why": "kaikki picked a surname entry"},
+    "vracať":  {"pos": "VERB", "gloss_en": ["to give back", "to return (sth)", "vracať sa = to come back"], "why": "kaikki led with the 'vomit' sense"},
+    "vytvoriť":{"pos": "VERB", "gloss_en": ["to create", "to make (pf.)"], "why": "kaikki says 'imperfective' — it is the perfective"},
+    "stan":    {"pos": "NOUN", "gloss_en": ["tent"], "why": "drop the vulgar secondary sense from the gloss"},
+    "stop":    {"pos": "INTJ", "gloss_en": ["stop!", "stopnúť = to hitch a ride"], "why": "kaikki led with 'hitchhiking'"},
+    "moc":     {"pos": "NOUN", "gloss_en": ["power", "colloquial: a lot / very (Czech-influenced)"], "why": "spoken sense missing"},
+    "riť":     {"pos": "NOUN", "gloss_en": ["arse (vulgar)"], "why": "kaikki's gloss is clinical"},
+    "vianoce": {"pos": "NOUN", "gloss_en": ["Christmas"], "why": "plural-only noun, not a proper name for SRS purposes"},
+    "ľudia":   {"pos": "NOUN", "gloss_en": ["people"], "why": "kaikki adds the form-of note"},
+    "a":       {"pos": "CCONJ", "why": "already fixed by POS_PRIORITY; recorded for completeness"}
+  },
+  "register_flags_extra": {
+    "sračka": "vulgar", "bastard": "insult", "prekliaty": "mild_expletive", "preboha": "mild_expletive",
+    "zadok": "colloquial_body", "sex": "adult_topic"
+  }
+}

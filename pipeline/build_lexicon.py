@@ -96,6 +96,11 @@ def main() -> None:
     friends = load_json("false_friends_ro.json").get("entries", [])
     reg = load_json("register_flags.json")
     manual = load_json("glosses_manual.json").get("glosses", {})
+    overrides = load_json("lexicon_overrides.json")
+    excluded = overrides.get("exclude", {})
+    fixes = overrides.get("fix", {})
+    for lem, fl in overrides.get("register_flags_extra", {}).items():
+        reg.setdefault("flags", {}).setdefault(lem, fl)
     # kaikki's Slovak noun tables are untagged and lossy (D107); hunspell-sk's
     # affix rules carry the cases, so nouns get their paradigm from there.
     try:
@@ -172,6 +177,13 @@ def main() -> None:
                 forms, forms_source = hf, "hunspell-sk"
                 stats["forms_from_hunspell"] += 1
 
+        fix = fixes.get(lemma, {})
+        if fix.get("gloss_en") and not man.get("en"):
+            gloss_en = list(fix["gloss_en"]); gloss_status = REVIEW_NEEDS
+            if "authored" not in sources: sources.append("authored")
+        if fix.get("pos"):
+            rec_pos = fix["pos"]; pos_source = "override"
+
         flag = reg.get("flags", {}).get(lemma)
         cog = cog_by_sk.get(lemma)
         ff = ff_by_sk.get(lemma)
@@ -203,6 +215,9 @@ def main() -> None:
             "false_friend_ro": [{"ro": f["ro"], "ro_means": f["ro_means"],
                                  "sk_means": f["sk_means"]} for f in ff] if ff else None,
             "register_flag": flag,
+            # subtitle artefacts (English names, typos, escaped inflected forms):
+            # kept for the coverage meter, hidden from lessons and SRS.
+            "exclude_from_teaching": excluded.get(lemma),
             "corpus_bias": corpus_bias(rec_pos, meta["band"]),
             "domains": ["core"] if meta["band"] == 1 else [],
             "source": sorted(set(sources + (["kaikki"] if kk else [])
@@ -219,6 +234,8 @@ def main() -> None:
         }
         if flag:
             stats[f"flag_{flag}"] += 1
+        if lemma in excluded:
+            stats["excluded"] += 1
         if cog:
             stats["has_cognate_ro"] += 1
         if ff:

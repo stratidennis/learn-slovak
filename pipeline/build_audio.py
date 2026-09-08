@@ -51,6 +51,7 @@ def main() -> None:
                     help="render only the N highest-value sentences (default 200)")
     ap.add_argument("--all", action="store_true", help="render everything")
     ap.add_argument("--band", type=int, default=1, help="max band to render")
+    ap.add_argument("--chunks", action="store_true", help="render content/chunks.jsonl instead")
     args = ap.parse_args()
 
     from piper import PiperVoice, SynthesisConfig
@@ -63,6 +64,9 @@ def main() -> None:
     except ImportError:
         can_ogg = False
         print("  note: soundfile not installed — keeping WAV (pip install soundfile)")
+
+    if args.chunks:
+        return render_chunks(voice, cfg, can_ogg)
 
     path = os.path.join(CONTENT, "sentences.jsonl")
     records = list(read_jsonl(path))
@@ -115,6 +119,44 @@ def main() -> None:
         print(f"  skipped {len(skipped)} with number forms needing hand-written Slovak:")
         for sid, text, probs in skipped[:10]:
             print(f"    {sid}  {text}   ({', '.join(probs)})")
+
+
+def _render_one(voice, cfg, can_ogg, text, stem):
+    """Synthesize one string -> content/audio/<stem>.ogg; returns the audio record or None."""
+    if has_digits(text) and unexpandable(text):
+        return None
+    spoken = expand_numbers(text) if has_digits(text) else text
+    # chunks contain "…" placeholders and slashes ("Doľava. / Doprava."); TTS reads
+    # neither well, so speak the text without them.
+    spoken_tts = spoken.replace("…", "").replace(" / ", ". ").strip()
+    wav = os.path.join(AUDIO_DIR, stem + ".wav")
+    with wave.open(wav, "wb") as wf:
+        voice.synthesize_wav(spoken_tts, wf, syn_config=cfg)
+    out_name = stem + ".wav"
+    if can_ogg:
+        ogg = os.path.join(AUDIO_DIR, stem + ".ogg")
+        if to_ogg(wav, ogg):
+            os.remove(wav)
+            out_name = stem + ".ogg"
+    return {"file": f"audio/{out_name}", "spoken_text": spoken_tts if spoken_tts != text else None,
+            "tts_voice": f"piper:{VOICE}",
+            **{k: v for k, v in LICENCES["piper"].items() if k != "url"}}
+
+
+def render_chunks(voice, cfg, can_ogg):
+    """Every chunk and every variant gets its own clip (M3: 'each chunk: audio')."""
+    path = os.path.join(CONTENT, "chunks.jsonl")
+    records = list(read_jsonl(path))
+    n = 0
+    for r in records:
+        stem = r["id"].replace(":", "-").replace(".", "_")
+        r["audio"] = _render_one(voice, cfg, can_ogg, r["sk"], stem)
+        n += bool(r["audio"])
+        for i, v in enumerate(r.get("variants", [])):
+            v["audio"] = _render_one(voice, cfg, can_ogg, v["sk"], f"{stem}-v{i+1}")
+            n += bool(v["audio"])
+    write_jsonl(path, records)
+    print(f"  rendered {n} chunk/variant clips -> {AUDIO_DIR}")
 
 
 if __name__ == "__main__":

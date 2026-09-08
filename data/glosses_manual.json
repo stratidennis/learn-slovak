@@ -14,10 +14,56 @@
       ]
     },
     "aby": {
+      "en": [
+        "so that",
+        "in order to"
+      ],
+      "reviewed_en": false,
       "reviewed_ro": false,
       "ro": [
         "ca să",
         "pentru ca"
+      ]
+    },
+    "ach": {
+      "reviewed_ro": false,
+      "ro": [
+        "ah",
+        "vai"
+      ]
+    },
+    "adresa": {
+      "reviewed_ro": false,
+      "ro": [
+        "adresă"
+      ]
+    },
+    "agent": {
+      "en": [
+        "agent"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "agent"
+      ]
+    },
+    "ah": {
+      "reviewed_ro": false,
+      "ro": [
+        "ah"
+      ]
+    },
+    "aha": {
+      "en": [
+        "I see",
+        "aha"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "aha",
+        "am înțeles"
       ]
     },
     "ahoj": {
@@ -40,6 +86,14 @@
         "dacă"
       ]
     },
+    "akcia": {
+      "reviewed_ro": false,
+      "ro": [
+        "acțiune",
+        "ofertă (reducere)",
+        "eveniment"
+      ]
+    },
     "ako": {
       "reviewed_ro": false,
       "ro": [
@@ -47,11 +101,28 @@
         "ca"
       ]
     },
+    "akoby": {
+      "en": [
+        "as if"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "ca și cum"
+      ]
+    },
     "aký": {
       "reviewed_ro": false,
       "ro": [
         "ce fel de",
         "cum"
+      ]
+    },
+    "akýkoľvek": {
+      "reviewed_ro": false,
+      "ro": [
+        "oricare",
+        "orice fel de"
       ]
     },
     "ale": {
@@ -71,10 +142,44 @@
         "sau"
       ]
     },
+    "americký": {
+      "reviewed_ro": false,
+      "ro": [
+        "american"
+      ]
+    },
+    "amerika": {
+      "reviewed_ro": false,
+      "ro": [
+        "America"
+      ]
+    },
     "ani": {
       "reviewed_ro": false,
       "ro": [
         "nici"
+      ]
+    },
+    "anna": {
+      "reviewed_ro": false,
+      "ro": [
+        "Anna"
+      ]
+    },
+    "ano": {
+      "reviewed_ro": false,
+      "ro": [
+        "da (greșit; corect: áno)"
+      ]
+    },
+    "armáda": {
+      "en": [
+        "army"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "armată"
       ]
     },
     "asi": {
@@ -84,6 +189,22 @@
         "cam"
       ]
     },
+    "aspoň": {
+      "en": [
+        "at least"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "cel puțin"
+      ]
+    },
+    "aut": {
+      "reviewed_ro": false,
+      "ro": [
+        "aut (sport)"
+      ]
+    },
     "auto": {
       "reviewed_ro": false,
       "ro": [
@@ -91,11 +212,50 @@
       ]
     },
     "až": {
+      "en": [
+        "until",
+        "as far as",
+        "only (až zajtra = not until tomorrow)"
+      ],
+      "reviewed_en": false,
       "reviewed_ro": false,
       "ro": [
         "până",
         "abia",
         "chiar"
+      ]
+    },
+    "baba": {
+      "reviewed_ro": false,
+      "ro": [
+        "babă",
+        "tipă / fată (colocv.)"
+      ]
+    },
+    "bar": {
+      "reviewed_ro": false,
+      "ro": [
+        "bar"
+      ]
+    },
+    "bastard": {
+      "en": [
+        "bastard (insult)"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "nemernic (insultă)"
+      ]
+    },
+    "baviť": {
+      "en": [
+        "to amuse (baví ma = I enjoy)"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "a distra (baví ma = îmi place)"
       ]
     },
     "bez": {
@@ -104,11 +264,105 @@
         "fără"
       ]
     },
+    "bezpečie": {
+      "reviewed_ro": false,
+      "ro": [
+        "siguranță"
+      ]
+    },
+    "bezpečný": {
+      "reviewed_ro": false,
+      "ro": [
+        "sigur (în siguranță)"
+      ]
+    },
+    "bežať": {
+      "reviewed_ro": false,
+      "ro": [
+        "a alerga"
+      ]
+    },
+    "biely": {
+      "reviewed_ro": false,
+      "ro": [
+        "alb"
+      ]
+    },
+    "biť": {
+      "reviewed_ro": false,
+      "ro": [
+        "a bate"
+      ]
+    },
+    "blázon": {
+      "reviewed_ro": false,
+      "ro": [
+        "nebun"
+      ]
+    },
+    "blízko": {
+      "en": [
+        "near",
+        "close by"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "aproape"
+      ]
+    },
+    "blízky": {
+      "reviewed_ro": false,
+      "ro": [
+        "apropiat"
+      ]
+    },
+    "bod": {
+      "en": [
+        "point",
+        "dot"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "punct"
+      ]
+    },
     "boh": {
       "reviewed_ro": false,
       "ro": [
         "Dumnezeu",
         "zeu"
+      ]
+    },
+    "boj": {
+      "reviewed_ro": false,
+      "ro": [
+        "luptă"
+      ]
+    },
+    "bojovať": {
+      "reviewed_ro": false,
+      "ro": [
+        "a lupta"
+      ]
+    },
+    "bolesť": {
+      "reviewed_ro": false,
+      "ro": [
+        "durere"
+      ]
+    },
+    "bolieť": {
+      "reviewed_ro": false,
+      "ro": [
+        "a durea"
+      ]
+    },
+    "bomba": {
+      "reviewed_ro": false,
+      "ro": [
+        "bombă"
       ]
     },
     "brat": {
@@ -123,10 +377,48 @@
         "a lua (imperfectiv)"
       ]
     },
+    "brána": {
+      "en": [
+        "gate"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "poartă"
+      ]
+    },
+    "budiť": {
+      "reviewed_ro": false,
+      "ro": [
+        "a trezi (impf.)"
+      ]
+    },
+    "budova": {
+      "reviewed_ro": false,
+      "ro": [
+        "clădire"
+      ]
+    },
+    "budúcnosť": {
+      "en": [
+        "future"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "viitor"
+      ]
+    },
     "by": {
       "reviewed_ro": false,
       "ro": [
         "particulă de condițional: ar"
+      ]
+    },
+    "byt": {
+      "reviewed_ro": false,
+      "ro": [
+        "apartament"
       ]
     },
     "byť": {
@@ -141,11 +433,36 @@
         "a se teme"
       ]
     },
+    "bývať": {
+      "reviewed_ro": false,
+      "ro": [
+        "a locui"
+      ]
+    },
+    "celkom": {
+      "en": [
+        "quite",
+        "completely"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "destul de",
+        "complet"
+      ]
+    },
     "celý": {
       "reviewed_ro": false,
       "ro": [
         "întreg",
         "tot"
+      ]
+    },
+    "cena": {
+      "reviewed_ro": false,
+      "ro": [
+        "preț",
+        "valoare"
       ]
     },
     "cesta": {
@@ -163,6 +480,19 @@
         "peste"
       ]
     },
+    "chalan": {
+      "reviewed_ro": false,
+      "ro": [
+        "băiat",
+        "tip"
+      ]
+    },
+    "charlie": {
+      "reviewed_ro": false,
+      "ro": [
+        "Charlie"
+      ]
+    },
     "chcieť": {
       "reviewed_ro": false,
       "ro": [
@@ -178,10 +508,28 @@
         "tip"
       ]
     },
+    "chlape": {
+      "reviewed_ro": false,
+      "ro": [
+        "omule (vocativ)"
+      ]
+    },
     "chlapec": {
       "reviewed_ro": false,
       "ro": [
         "băiat"
+      ]
+    },
+    "chlapík": {
+      "en": [
+        "guy",
+        "fellow"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "tip",
+        "individ"
       ]
     },
     "chodiť": {
@@ -191,6 +539,36 @@
         "a merge (repetat)"
       ]
     },
+    "chorý": {
+      "reviewed_ro": false,
+      "ro": [
+        "bolnav"
+      ]
+    },
+    "chrbát": {
+      "reviewed_ro": false,
+      "ro": [
+        "spate"
+      ]
+    },
+    "chrániť": {
+      "en": [
+        "to protect"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "a proteja",
+        "a apăra"
+      ]
+    },
+    "chuť": {
+      "reviewed_ro": false,
+      "ro": [
+        "gust",
+        "poftă"
+      ]
+    },
     "chvíľa": {
       "reviewed_ro": false,
       "ro": [
@@ -198,17 +576,120 @@
         "moment"
       ]
     },
+    "chvíľka": {
+      "reviewed_ro": false,
+      "ro": [
+        "clipă",
+        "momentel"
+      ]
+    },
+    "chyba": {
+      "reviewed_ro": false,
+      "ro": [
+        "greșeală",
+        "eroare",
+        "bug"
+      ]
+    },
+    "chystať": {
+      "en": [
+        "to prepare",
+        "to be about to (chystať sa)"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "a pregăti",
+        "a se pregăti să (chystať sa)"
+      ]
+    },
+    "chytiť": {
+      "en": [
+        "to catch",
+        "to grab (pf.)"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "a prinde"
+      ]
+    },
     "chápať": {
+      "en": [
+        "to understand",
+        "to get it"
+      ],
+      "reviewed_en": false,
       "reviewed_ro": false,
       "ro": [
         "a înțelege",
         "a pricepe"
       ]
     },
+    "chýbať": {
+      "en": [
+        "to be missing",
+        "to miss (chýbaš mi = I miss you)"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "a lipsi",
+        "chýbaš mi = mi-e dor de tine"
+      ]
+    },
+    "cieľ": {
+      "reviewed_ro": false,
+      "ro": [
+        "scop",
+        "țintă",
+        "destinație"
+      ]
+    },
+    "cit": {
+      "en": [
+        "feeling",
+        "emotion"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "sentiment"
+      ]
+    },
+    "co": {
+      "reviewed_ro": false,
+      "ro": [
+        "ce (greșit; corect: čo)"
+      ]
+    },
     "cítiť": {
+      "en": [
+        "to feel",
+        "to smell"
+      ],
+      "reviewed_en": false,
       "reviewed_ro": false,
       "ro": [
         "a simți"
+      ]
+    },
+    "dariť": {
+      "reviewed_ro": false,
+      "ro": [
+        "a merge bine (darí sa mi = îmi merge bine)"
+      ]
+    },
+    "darček": {
+      "reviewed_ro": false,
+      "ro": [
+        "cadou"
+      ]
+    },
+    "david": {
+      "reviewed_ro": false,
+      "ro": [
+        "David"
       ]
     },
     "dať": {
@@ -218,6 +699,39 @@
         "a pune"
       ]
     },
+    "dcéra": {
+      "reviewed_ro": false,
+      "ro": [
+        "fiică"
+      ]
+    },
+    "decko": {
+      "en": [
+        "kid (colloq.)"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "copil",
+        "puști (colocv.)"
+      ]
+    },
+    "desať": {
+      "reviewed_ro": false,
+      "ro": [
+        "zece"
+      ]
+    },
+    "detektív": {
+      "en": [
+        "detective"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "detectiv"
+      ]
+    },
     "deň": {
       "reviewed_ro": false,
       "ro": [
@@ -225,9 +739,20 @@
       ]
     },
     "diať": {
+      "en": [
+        "to happen (diať sa)",
+        "Čo sa deje? = What's going on?"
+      ],
+      "reviewed_en": false,
       "reviewed_ro": false,
       "ro": [
         "a se întâmpla"
+      ]
+    },
+    "diera": {
+      "reviewed_ro": false,
+      "ro": [
+        "gaură"
       ]
     },
     "dievča": {
@@ -242,10 +767,32 @@
         "copil"
       ]
     },
+    "divný": {
+      "reviewed_ro": false,
+      "ro": [
+        "ciudat"
+      ]
+    },
     "dlho": {
+      "en": [
+        "for a long time"
+      ],
+      "reviewed_en": false,
       "reviewed_ro": false,
       "ro": [
         "mult timp"
+      ]
+    },
+    "dlhý": {
+      "reviewed_ro": false,
+      "ro": [
+        "lung"
+      ]
+    },
+    "dna": {
+      "reviewed_ro": false,
+      "ro": [
+        "ADN"
       ]
     },
     "dnes": {
@@ -255,11 +802,30 @@
         "astăzi"
       ]
     },
+    "dnešný": {
+      "reviewed_ro": false,
+      "ro": [
+        "de azi"
+      ]
+    },
     "do": {
       "reviewed_ro": false,
       "ro": [
         "în",
         "până la"
+      ]
+    },
+    "doba": {
+      "en": [
+        "time",
+        "era",
+        "period"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "perioadă",
+        "epocă"
       ]
     },
     "dobre": {
@@ -268,10 +834,62 @@
         "bine"
       ]
     },
+    "dobro": {
+      "reviewed_ro": false,
+      "ro": [
+        "bine (binele)"
+      ]
+    },
     "dobrý": {
       "reviewed_ro": false,
       "ro": [
         "bun"
+      ]
+    },
+    "dohoda": {
+      "en": [
+        "agreement",
+        "deal"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "înțelegere",
+        "acord"
+      ]
+    },
+    "dohodnúť": {
+      "en": [
+        "to arrange",
+        "to agree on (dohodnúť sa, pf.)"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "a conveni",
+        "a stabili (dohodnúť sa)"
+      ]
+    },
+    "dokonca": {
+      "en": [
+        "even"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "chiar (și)",
+        "ba chiar"
+      ]
+    },
+    "dokončiť": {
+      "en": [
+        "to finish (pf.)"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "a termina",
+        "a finaliza"
       ]
     },
     "doktor": {
@@ -288,10 +906,44 @@
         "a reuși"
       ]
     },
+    "dole": {
+      "en": [
+        "down",
+        "downstairs"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "jos"
+      ]
+    },
+    "dolu": {
+      "reviewed_ro": false,
+      "ro": [
+        "jos",
+        "în jos"
+      ]
+    },
+    "dolár": {
+      "en": [
+        "dollar"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "dolar"
+      ]
+    },
     "dom": {
       "reviewed_ro": false,
       "ro": [
         "casă"
+      ]
+    },
+    "doma": {
+      "reviewed_ro": false,
+      "ro": [
+        "acasă"
       ]
     },
     "domov": {
@@ -299,6 +951,28 @@
       "ro": [
         "acasă",
         "cămin"
+      ]
+    },
+    "doniesť": {
+      "en": [
+        "to bring (pf.)"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "a aduce"
+      ]
+    },
+    "dosiahnuť": {
+      "en": [
+        "to achieve",
+        "to reach (pf.)"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "a atinge",
+        "a obține"
       ]
     },
     "dostať": {
@@ -315,6 +989,75 @@
         "suficient"
       ]
     },
+    "dotknúť": {
+      "en": [
+        "to touch (dotknúť sa, pf.)"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "a atinge (dotknúť sa)"
+      ]
+    },
+    "dovoliť": {
+      "en": [
+        "to allow",
+        "to afford (dovoliť si)"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "a permite",
+        "a-și permite"
+      ]
+    },
+    "dozvedieť": {
+      "en": [
+        "to find out (dozvedieť sa, pf.)"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "a afla (dozvedieť sa)"
+      ]
+    },
+    "drahá": {
+      "reviewed_ro": false,
+      "ro": [
+        "dragă (fem.)"
+      ]
+    },
+    "drahý": {
+      "reviewed_ro": false,
+      "ro": [
+        "drag",
+        "scump"
+      ]
+    },
+    "droga": {
+      "en": [
+        "drug"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "drog"
+      ]
+    },
+    "druh": {
+      "en": [
+        "kind",
+        "sort",
+        "type"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "fel",
+        "tip",
+        "specie"
+      ]
+    },
     "druhý": {
       "reviewed_ro": false,
       "ro": [
@@ -328,11 +1071,36 @@
         "a ține"
       ]
     },
+    "duch": {
+      "en": [
+        "spirit",
+        "ghost"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "spirit",
+        "duh",
+        "fantomă"
+      ]
+    },
+    "duša": {
+      "reviewed_ro": false,
+      "ro": [
+        "suflet"
+      ]
+    },
     "dva": {
       "reviewed_ro": false,
       "ro": [
         "doi",
         "două"
+      ]
+    },
+    "dvere": {
+      "reviewed_ro": false,
+      "ro": [
+        "ușă"
       ]
     },
     "dáma": {
@@ -348,10 +1116,81 @@
         "a da (imperfectiv)"
       ]
     },
+    "dávno": {
+      "en": [
+        "long ago"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "de mult (timp)"
+      ]
+    },
+    "dôjsť": {
+      "reviewed_ro": false,
+      "ro": [
+        "a ajunge",
+        "a se întâmpla (došlo k)"
+      ]
+    },
+    "dôkaz": {
+      "en": [
+        "proof",
+        "evidence"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "dovadă"
+      ]
+    },
+    "dôležitý": {
+      "reviewed_ro": false,
+      "ro": [
+        "important"
+      ]
+    },
+    "dôvod": {
+      "reviewed_ro": false,
+      "ro": [
+        "motiv",
+        "cauză"
+      ]
+    },
     "dúfať": {
+      "en": [
+        "to hope"
+      ],
+      "reviewed_en": false,
       "reviewed_ro": false,
       "ro": [
         "a spera"
+      ]
+    },
+    "dýchať": {
+      "reviewed_ro": false,
+      "ro": [
+        "a respira"
+      ]
+    },
+    "energia": {
+      "en": [
+        "energy"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "energie"
+      ]
+    },
+    "existovať": {
+      "en": [
+        "to exist"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "a exista"
       ]
     },
     "ešte": {
@@ -361,11 +1200,92 @@
       ]
     },
     "fajn": {
+      "en": [
+        "fine",
+        "nice",
+        "cool (colloq.)"
+      ],
       "notes": "colloquial, borrowed from German 'fein'. RO 'fain' is a genuine cognate-feel match.",
+      "reviewed_en": false,
       "reviewed_ro": false,
       "ro": [
         "bine",
         "fain"
+      ]
+    },
+    "fakt": {
+      "reviewed_ro": false,
+      "ro": [
+        "fapt",
+        "fakt? = serios?"
+      ]
+    },
+    "film": {
+      "reviewed_ro": false,
+      "ro": [
+        "film"
+      ]
+    },
+    "firma": {
+      "en": [
+        "company",
+        "firm"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "firmă",
+        "companie"
+      ]
+    },
+    "fotka": {
+      "reviewed_ro": false,
+      "ro": [
+        "poză"
+      ]
+    },
+    "frank": {
+      "reviewed_ro": false,
+      "ro": [
+        "Frank"
+      ]
+    },
+    "fungovať": {
+      "en": [
+        "to work (function)"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "a funcționa"
+      ]
+    },
+    "generál": {
+      "en": [
+        "general (mil.)"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "general"
+      ]
+    },
+    "george": {
+      "reviewed_ro": false,
+      "ro": [
+        "George"
+      ]
+    },
+    "ha": {
+      "reviewed_ro": false,
+      "ro": [
+        "ha"
+      ]
+    },
+    "haló": {
+      "reviewed_ro": false,
+      "ro": [
+        "alo"
       ]
     },
     "hej": {
@@ -376,6 +1296,26 @@
         "hei"
       ]
     },
+    "henry": {
+      "reviewed_ro": false,
+      "ro": [
+        "Henry"
+      ]
+    },
+    "hladný": {
+      "reviewed_ro": false,
+      "ro": [
+        "flămând",
+        "înfometat"
+      ]
+    },
+    "hlas": {
+      "reviewed_ro": false,
+      "ro": [
+        "voce",
+        "vot"
+      ]
+    },
     "hlava": {
       "reviewed_ro": false,
       "ro": [
@@ -383,7 +1323,37 @@
         "capitol"
       ]
     },
+    "hlavne": {
+      "en": [
+        "mainly",
+        "above all"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "mai ales",
+        "în principal"
+      ]
+    },
+    "hlúpy": {
+      "reviewed_ro": false,
+      "ro": [
+        "prost",
+        "prostuț"
+      ]
+    },
+    "hm": {
+      "reviewed_ro": false,
+      "ro": [
+        "hm"
+      ]
+    },
     "hneď": {
+      "en": [
+        "right away",
+        "immediately"
+      ],
+      "reviewed_en": false,
       "reviewed_ro": false,
       "ro": [
         "imediat"
@@ -396,11 +1366,45 @@
         "ceas (durată)"
       ]
     },
+    "hodiť": {
+      "en": [
+        "to throw (pf.)"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "a arunca"
+      ]
+    },
     "hora": {
       "reviewed_ro": false,
       "ro": [
         "munte",
         "pădure"
+      ]
+    },
+    "hotel": {
+      "reviewed_ro": false,
+      "ro": [
+        "hotel"
+      ]
+    },
+    "hovno": {
+      "reviewed_ro": false,
+      "ro": [
+        "rahat (vulgar)"
+      ]
+    },
+    "hovor": {
+      "en": [
+        "call (phone)",
+        "talk"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "convorbire",
+        "apel"
       ]
     },
     "hovoriť": {
@@ -410,6 +1414,20 @@
         "a spune"
       ]
     },
+    "hra": {
+      "reviewed_ro": false,
+      "ro": [
+        "joc",
+        "piesă (teatru)"
+      ]
+    },
+    "hranica": {
+      "reviewed_ro": false,
+      "ro": [
+        "graniță",
+        "limită"
+      ]
+    },
     "hrať": {
       "reviewed_ro": false,
       "ro": [
@@ -417,10 +1435,70 @@
         "a cânta (la instrument)"
       ]
     },
+    "hrdina": {
+      "reviewed_ro": false,
+      "ro": [
+        "erou"
+      ]
+    },
+    "hrozný": {
+      "reviewed_ro": false,
+      "ro": [
+        "groaznic",
+        "îngrozitor"
+      ]
+    },
+    "huba": {
+      "reviewed_ro": false,
+      "ro": [
+        "ciupercă"
+      ]
+    },
+    "hudba": {
+      "reviewed_ro": false,
+      "ro": [
+        "muzică"
+      ]
+    },
+    "hviezda": {
+      "reviewed_ro": false,
+      "ro": [
+        "stea",
+        "vedetă"
+      ]
+    },
+    "hádať": {
+      "reviewed_ro": false,
+      "ro": [
+        "a ghici",
+        "a se certa (hádať sa)"
+      ]
+    },
+    "hýbať": {
+      "en": [
+        "to move (hýbať sa)"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "a mișca"
+      ]
+    },
     "hľadať": {
       "reviewed_ro": false,
       "ro": [
         "a căuta"
+      ]
+    },
+    "i": {
+      "en": [
+        "and",
+        "also (formal/literary)"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "și (formal)"
       ]
     },
     "iba": {
@@ -430,11 +1508,42 @@
         "numai"
       ]
     },
+    "idiot": {
+      "reviewed_ro": false,
+      "ro": [
+        "idiot"
+      ]
+    },
+    "inak": {
+      "reviewed_ro": false,
+      "ro": [
+        "altfel",
+        "de altfel"
+      ]
+    },
+    "informácia": {
+      "reviewed_ro": false,
+      "ro": [
+        "informație"
+      ]
+    },
     "iný": {
       "reviewed_ro": false,
       "ro": [
         "alt",
         "diferit"
+      ]
+    },
+    "iste": {
+      "en": [
+        "certainly",
+        "surely"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "sigur",
+        "desigur"
       ]
     },
     "istý": {
@@ -444,13 +1553,42 @@
         "anumit"
       ]
     },
+    "izba": {
+      "reviewed_ro": false,
+      "ro": [
+        "cameră"
+      ]
+    },
     "ja": {
       "reviewed_ro": false,
       "ro": [
         "eu"
       ]
     },
+    "jack": {
+      "reviewed_ro": false,
+      "ro": [
+        "Jack"
+      ]
+    },
+    "jasne": {
+      "en": [
+        "clearly",
+        "sure! (colloq.)"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "clar",
+        "sigur (colocv.)"
+      ]
+    },
     "jasný": {
+      "en": [
+        "clear",
+        "jasné! = sure!"
+      ],
+      "reviewed_en": false,
       "reviewed_ro": false,
       "ro": [
         "clar",
@@ -471,6 +1609,42 @@
         "unic"
       ]
     },
+    "jedlo": {
+      "reviewed_ro": false,
+      "ro": [
+        "mâncare"
+      ]
+    },
+    "jednoducho": {
+      "en": [
+        "simply"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "simplu",
+        "pur și simplu"
+      ]
+    },
+    "jednoduchý": {
+      "reviewed_ro": false,
+      "ro": [
+        "simplu"
+      ]
+    },
+    "jednotka": {
+      "en": [
+        "unit",
+        "the number one",
+        "top grade"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "unitate",
+        "nota 1 (cea mai bună)"
+      ]
+    },
     "jeho": {
       "reviewed_ro": false,
       "ro": [
@@ -478,7 +1652,46 @@
         "său"
       ]
     },
+    "jesť": {
+      "reviewed_ro": false,
+      "ro": [
+        "a mânca"
+      ]
+    },
+    "ježiš": {
+      "reviewed_ro": false,
+      "ro": [
+        "Iisus"
+      ]
+    },
+    "jo": {
+      "en": [
+        "yeah (Czech-influenced colloq.)"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "da (colocv., ceh)"
+      ]
+    },
+    "joe": {
+      "reviewed_ro": false,
+      "ro": [
+        "Joe"
+      ]
+    },
+    "john": {
+      "reviewed_ro": false,
+      "ro": [
+        "John"
+      ]
+    },
     "k": {
+      "en": [
+        "to",
+        "towards"
+      ],
+      "reviewed_en": false,
       "reviewed_ro": false,
       "ro": [
         "către",
@@ -486,10 +1699,72 @@
       ]
     },
     "kam": {
+      "en": [
+        "where (to)"
+      ],
+      "reviewed_en": false,
       "reviewed_ro": false,
       "ro": [
         "încotro",
         "unde (cu mișcare)"
+      ]
+    },
+    "kamarát": {
+      "en": [
+        "friend",
+        "buddy"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "prieten",
+        "amic"
+      ]
+    },
+    "kamera": {
+      "reviewed_ro": false,
+      "ro": [
+        "cameră (video)"
+      ]
+    },
+    "kameň": {
+      "reviewed_ro": false,
+      "ro": [
+        "piatră"
+      ]
+    },
+    "kamoš": {
+      "reviewed_ro": false,
+      "ro": [
+        "amic",
+        "prieten (colocv.)"
+      ]
+    },
+    "kancelária": {
+      "en": [
+        "office"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "birou (încăpere)"
+      ]
+    },
+    "kapitán": {
+      "en": [
+        "captain"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "căpitan"
+      ]
+    },
+    "karta": {
+      "reviewed_ro": false,
+      "ro": [
+        "card",
+        "carte de joc"
       ]
     },
     "každý": {
@@ -505,9 +1780,19 @@
       ]
     },
     "keby": {
+      "en": [
+        "if (hypothetical)"
+      ],
+      "reviewed_en": false,
       "reviewed_ro": false,
       "ro": [
         "dacă (ireal)"
+      ]
+    },
+    "ked": {
+      "reviewed_ro": false,
+      "ro": [
+        "când (greșit; corect: keď)"
       ]
     },
     "kedy": {
@@ -523,11 +1808,81 @@
         "dacă"
       ]
     },
+    "keďže": {
+      "reviewed_ro": false,
+      "ro": [
+        "deoarece",
+        "întrucât"
+      ]
+    },
+    "klamať": {
+      "reviewed_ro": false,
+      "ro": [
+        "a minți"
+      ]
+    },
+    "klub": {
+      "en": [
+        "club"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "club"
+      ]
+    },
+    "kniha": {
+      "reviewed_ro": false,
+      "ro": [
+        "carte"
+      ]
+    },
+    "konečne": {
+      "en": [
+        "finally",
+        "at last"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "în sfârșit"
+      ]
+    },
     "koniec": {
       "reviewed_ro": false,
       "ro": [
         "sfârșit",
         "capăt"
+      ]
+    },
+    "kontakt": {
+      "en": [
+        "contact"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "contact"
+      ]
+    },
+    "kontrola": {
+      "en": [
+        "check",
+        "inspection",
+        "control"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "control",
+        "verificare"
+      ]
+    },
+    "končiť": {
+      "reviewed_ro": false,
+      "ro": [
+        "a termina",
+        "a se termina"
       ]
     },
     "koľko": {
@@ -537,10 +1892,79 @@
         "câți"
       ]
     },
+    "krajina": {
+      "reviewed_ro": false,
+      "ro": [
+        "țară",
+        "peisaj"
+      ]
+    },
+    "kričať": {
+      "reviewed_ro": false,
+      "ro": [
+        "a striga",
+        "a țipa"
+      ]
+    },
+    "krk": {
+      "reviewed_ro": false,
+      "ro": [
+        "gât"
+      ]
+    },
+    "krok": {
+      "reviewed_ro": false,
+      "ro": [
+        "pas"
+      ]
+    },
+    "krv": {
+      "reviewed_ro": false,
+      "ro": [
+        "sânge"
+      ]
+    },
+    "krásne": {
+      "reviewed_ro": false,
+      "ro": [
+        "frumos (adv./neutru)"
+      ]
+    },
+    "krásny": {
+      "reviewed_ro": false,
+      "ro": [
+        "frumos",
+        "minunat"
+      ]
+    },
+    "krát": {
+      "reviewed_ro": false,
+      "ro": [
+        "ori (înmulțire)",
+        "-krát = de … ori"
+      ]
+    },
+    "kráľ": {
+      "reviewed_ro": false,
+      "ro": [
+        "rege"
+      ]
+    },
     "kto": {
       "reviewed_ro": false,
       "ro": [
         "cine"
+      ]
+    },
+    "ktokoľvek": {
+      "en": [
+        "anyone",
+        "whoever"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "oricine"
       ]
     },
     "ktorý": {
@@ -557,6 +1981,12 @@
         "la naiba (interjecție vulgară)"
       ]
     },
+    "kus": {
+      "reviewed_ro": false,
+      "ro": [
+        "bucată"
+      ]
+    },
     "kvôli": {
       "reviewed_ro": false,
       "ro": [
@@ -564,10 +1994,72 @@
         "de dragul"
       ]
     },
+    "kámo": {
+      "en": [
+        "dude",
+        "mate (slang)"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "frate",
+        "băi (slang)"
+      ]
+    },
+    "káva": {
+      "reviewed_ro": false,
+      "ro": [
+        "cafea"
+      ]
+    },
+    "kôň": {
+      "reviewed_ro": false,
+      "ro": [
+        "cal"
+      ]
+    },
+    "kúpiť": {
+      "reviewed_ro": false,
+      "ro": [
+        "a cumpăra"
+      ]
+    },
+    "kúsok": {
+      "en": [
+        "piece",
+        "a bit"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "bucată",
+        "un pic"
+      ]
+    },
     "ký": {
+      "en": [
+        "which (archaic — likely a lemmatizer artefact)"
+      ],
+      "reviewed_en": false,
       "reviewed_ro": false,
       "ro": [
         "care (arhaic)"
+      ]
+    },
+    "kľud": {
+      "en": [
+        "calm (Czech-influenced colloq.; std. pokoj)"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "liniște (colocv.)"
+      ]
+    },
+    "kľúč": {
+      "reviewed_ro": false,
+      "ro": [
+        "cheie"
       ]
     },
     "lebo": {
@@ -590,16 +2082,101 @@
         "mai bun"
       ]
     },
+    "les": {
+      "reviewed_ro": false,
+      "ro": [
+        "pădure"
+      ]
+    },
+    "let": {
+      "en": [
+        "flight"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "zbor"
+      ]
+    },
+    "letieť": {
+      "reviewed_ro": false,
+      "ro": [
+        "a zbura"
+      ]
+    },
+    "liek": {
+      "reviewed_ro": false,
+      "ro": [
+        "medicament"
+      ]
+    },
+    "lietadlo": {
+      "reviewed_ro": false,
+      "ro": [
+        "avion"
+      ]
+    },
+    "list": {
+      "reviewed_ro": false,
+      "ro": [
+        "scrisoare",
+        "frunză"
+      ]
+    },
+    "loď": {
+      "reviewed_ro": false,
+      "ro": [
+        "navă",
+        "corabie"
+      ]
+    },
+    "láska": {
+      "reviewed_ro": false,
+      "ro": [
+        "dragoste",
+        "iubire"
+      ]
+    },
+    "madam": {
+      "reviewed_ro": false,
+      "ro": [
+        "doamnă"
+      ]
+    },
+    "malá": {
+      "reviewed_ro": false,
+      "ro": [
+        "mică"
+      ]
+    },
     "malý": {
       "reviewed_ro": false,
       "ro": [
         "mic"
       ]
     },
+    "mam": {
+      "reviewed_ro": false,
+      "ro": [
+        "am (greșit; corect: mám)"
+      ]
+    },
     "mama": {
       "reviewed_ro": false,
       "ro": [
         "mamă"
+      ]
+    },
+    "manžel": {
+      "reviewed_ro": false,
+      "ro": [
+        "soț"
+      ]
+    },
+    "manželka": {
+      "reviewed_ro": false,
+      "ro": [
+        "soție"
       ]
     },
     "matka": {
@@ -622,6 +2199,18 @@
         "printre"
       ]
     },
+    "mena": {
+      "reviewed_ro": false,
+      "ro": [
+        "monedă (valută)"
+      ]
+    },
+    "meniť": {
+      "reviewed_ro": false,
+      "ro": [
+        "a schimba"
+      ]
+    },
     "meno": {
       "reviewed_ro": false,
       "ro": [
@@ -641,10 +2230,46 @@
         "oraș"
       ]
     },
+    "meškať": {
+      "en": [
+        "to be late",
+        "to be delayed"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "a întârzia"
+      ]
+    },
+    "michaela": {
+      "reviewed_ro": false,
+      "ro": [
+        "Michaela"
+      ]
+    },
+    "miestnosť": {
+      "reviewed_ro": false,
+      "ro": [
+        "încăpere",
+        "sală"
+      ]
+    },
     "miesto": {
       "reviewed_ro": false,
       "ro": [
         "loc"
+      ]
+    },
+    "mike": {
+      "reviewed_ro": false,
+      "ro": [
+        "Mike"
+      ]
+    },
+    "milión": {
+      "reviewed_ro": false,
+      "ro": [
+        "milion"
       ]
     },
     "milovať": {
@@ -653,16 +2278,161 @@
         "a iubi"
       ]
     },
+    "milá": {
+      "reviewed_ro": false,
+      "ro": [
+        "dragă (fem.)"
+      ]
+    },
+    "miláčik": {
+      "en": [
+        "darling",
+        "sweetheart"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "dragule / draga mea",
+        "iubire"
+      ]
+    },
+    "milý": {
+      "reviewed_ro": false,
+      "ro": [
+        "drăguț",
+        "amabil",
+        "drag"
+      ]
+    },
+    "mimo": {
+      "reviewed_ro": false,
+      "ro": [
+        "în afara",
+        "pe lângă"
+      ]
+    },
+    "mimochodom": {
+      "en": [
+        "by the way"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "apropo"
+      ]
+    },
+    "minulosť": {
+      "en": [
+        "past"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "trecut"
+      ]
+    },
+    "minulý": {
+      "en": [
+        "last",
+        "past (minulý rok)"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "trecut",
+        "(anul) trecut"
+      ]
+    },
     "minúta": {
       "reviewed_ro": false,
       "ro": [
         "minut"
       ]
     },
+    "misia": {
+      "en": [
+        "mission"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "misiune"
+      ]
+    },
+    "mladý": {
+      "reviewed_ro": false,
+      "ro": [
+        "tânăr"
+      ]
+    },
+    "mnoho": {
+      "reviewed_ro": false,
+      "ro": [
+        "mult",
+        "mulți"
+      ]
+    },
+    "mobil": {
+      "en": [
+        "mobile phone"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "telefon mobil"
+      ]
+    },
+    "moc": {
+      "reviewed_ro": false,
+      "ro": [
+        "putere",
+        "(colocv.) mult"
+      ]
+    },
+    "moment": {
+      "en": [
+        "moment",
+        "just a moment"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "moment"
+      ]
+    },
+    "mozog": {
+      "reviewed_ro": false,
+      "ro": [
+        "creier"
+      ]
+    },
     "možno": {
       "reviewed_ro": false,
       "ro": [
         "poate"
+      ]
+    },
+    "možnosť": {
+      "reviewed_ro": false,
+      "ro": [
+        "posibilitate",
+        "opțiune"
+      ]
+    },
+    "možný": {
+      "reviewed_ro": false,
+      "ro": [
+        "posibil"
+      ]
+    },
+    "mrzieť": {
+      "en": [
+        "to be sorry (mrzí ma = I'm sorry about)"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "a părea rău (mrzí ma)"
       ]
     },
     "musieť": {
@@ -697,6 +2467,19 @@
         "a crede"
       ]
     },
+    "myšlienka": {
+      "reviewed_ro": false,
+      "ro": [
+        "gând",
+        "idee"
+      ]
+    },
+    "málo": {
+      "reviewed_ro": false,
+      "ro": [
+        "puțin"
+      ]
+    },
     "môcť": {
       "reviewed_ro": false,
       "ro": [
@@ -709,6 +2492,16 @@
       "ro": [
         "meu",
         "mea"
+      ]
+    },
+    "mýliť": {
+      "en": [
+        "to be wrong (mýliť sa)"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "a se înșela (mýliť sa)"
       ]
     },
     "mŕtvy": {
@@ -724,6 +2517,61 @@
         "la"
       ]
     },
+    "nabudúce": {
+      "en": [
+        "next time"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "data viitoare"
+      ]
+    },
+    "nad": {
+      "en": [
+        "above",
+        "over"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "deasupra",
+        "peste"
+      ]
+    },
+    "najprv": {
+      "en": [
+        "first (of all)"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "întâi",
+        "mai întâi"
+      ]
+    },
+    "nakoniec": {
+      "en": [
+        "in the end",
+        "finally"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "în final",
+        "la urmă"
+      ]
+    },
+    "namiesto": {
+      "en": [
+        "instead of"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "în loc de"
+      ]
+    },
     "naozaj": {
       "reviewed_ro": false,
       "ro": [
@@ -731,26 +2579,186 @@
         "chiar"
       ]
     },
+    "napadnúť": {
+      "en": [
+        "to attack",
+        "to occur to (napadlo mi)"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "a ataca",
+        "a-i veni în minte"
+      ]
+    },
+    "naposledy": {
+      "en": [
+        "(for) the last time"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "ultima dată"
+      ]
+    },
+    "napríklad": {
+      "reviewed_ro": false,
+      "ro": [
+        "de exemplu"
+      ]
+    },
+    "napísať": {
+      "reviewed_ro": false,
+      "ro": [
+        "a scrie (pf.)"
+      ]
+    },
+    "narodiť": {
+      "en": [
+        "to be born (narodiť sa)"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "a se naște (narodiť sa)"
+      ]
+    },
+    "naspäť": {
+      "en": [
+        "back"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "înapoi"
+      ]
+    },
+    "naučiť": {
+      "reviewed_ro": false,
+      "ro": [
+        "a învăța (pe cineva)",
+        "naučiť sa = a învăța (pf.)"
+      ]
+    },
+    "navštíviť": {
+      "en": [
+        "to visit (pf.)"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "a vizita"
+      ]
+    },
+    "navždy": {
+      "en": [
+        "forever"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "pentru totdeauna"
+      ]
+    },
+    "nažive": {
+      "en": [
+        "alive"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "în viață"
+      ]
+    },
     "nech": {
+      "en": [
+        "let (nech sa páči = here you are)",
+        "may"
+      ],
+      "reviewed_en": false,
       "reviewed_ro": false,
       "ro": [
         "să (lasă să)"
       ]
     },
     "nechať": {
+      "en": [
+        "to leave (sth)",
+        "to let"
+      ],
+      "reviewed_en": false,
       "reviewed_ro": false,
       "ro": [
         "a lăsa"
       ]
     },
+    "nehoda": {
+      "reviewed_ro": false,
+      "ro": [
+        "accident"
+      ]
+    },
+    "nejako": {
+      "en": [
+        "somehow"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "cumva"
+      ]
+    },
     "nejaký": {
+      "en": [
+        "some",
+        "a certain",
+        "any"
+      ],
+      "reviewed_en": false,
       "reviewed_ro": false,
       "ro": [
         "vreun",
         "un oarecare"
       ]
     },
+    "nejsť": {
+      "en": [
+        "not to go (artefact — negation of ísť)"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "a nu merge"
+      ]
+    },
+    "nemocnica": {
+      "reviewed_ro": false,
+      "ro": [
+        "spital"
+      ]
+    },
+    "nenávidieť": {
+      "en": [
+        "to hate"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "a urî"
+      ]
+    },
+    "new": {
+      "reviewed_ro": false,
+      "ro": [
+        "new"
+      ]
+    },
     "než": {
+      "en": [
+        "than",
+        "before (než prídeš)"
+      ],
+      "reviewed_en": false,
       "reviewed_ro": false,
       "ro": [
         "decât",
@@ -763,17 +2771,46 @@
         "nu"
       ]
     },
+    "niekde": {
+      "en": [
+        "somewhere"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "undeva"
+      ]
+    },
     "niekedy": {
+      "en": [
+        "sometimes",
+        "someday"
+      ],
+      "reviewed_en": false,
       "reviewed_ro": false,
       "ro": [
         "câteodată",
         "cândva"
       ]
     },
+    "niekoľko": {
+      "reviewed_ro": false,
+      "ro": [
+        "câțiva",
+        "câteva"
+      ]
+    },
     "niekto": {
       "reviewed_ro": false,
       "ro": [
         "cineva"
+      ]
+    },
+    "niektorý": {
+      "reviewed_ro": false,
+      "ro": [
+        "vreunul",
+        "unii"
       ]
     },
     "niečo": {
@@ -783,6 +2820,10 @@
       ]
     },
     "nikdy": {
+      "en": [
+        "never"
+      ],
+      "reviewed_en": false,
       "reviewed_ro": false,
       "ro": [
         "niciodată"
@@ -819,6 +2860,31 @@
         "noapte"
       ]
     },
+    "noha": {
+      "reviewed_ro": false,
+      "ro": [
+        "picior"
+      ]
+    },
+    "normálne": {
+      "en": [
+        "normally",
+        "(colloq.) like, totally"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "normal",
+        "(colocv.) pur și simplu"
+      ]
+    },
+    "nosiť": {
+      "reviewed_ro": false,
+      "ro": [
+        "a purta",
+        "a duce (repetat)"
+      ]
+    },
     "nový": {
       "reviewed_ro": false,
       "ro": [
@@ -826,17 +2892,64 @@
       ]
     },
     "nuž": {
+      "en": [
+        "well…",
+        "well then"
+      ],
       "notes": "same family as `no`, slightly more old-fashioned/narrative. Register call.",
+      "reviewed_en": false,
       "reviewed_ro": false,
       "ro": [
         "ei bine",
         "păi"
       ]
     },
+    "nádej": {
+      "reviewed_ro": false,
+      "ro": [
+        "speranță"
+      ]
+    },
+    "nádherný": {
+      "reviewed_ro": false,
+      "ro": [
+        "superb",
+        "minunat"
+      ]
+    },
+    "náhodou": {
+      "en": [
+        "by chance",
+        "by any chance (nemáte náhodou…?)"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "din întâmplare",
+        "nu cumva (nemáte náhodou…?)"
+      ]
+    },
     "nájsť": {
       "reviewed_ro": false,
       "ro": [
         "a găsi"
+      ]
+    },
+    "nápad": {
+      "en": [
+        "idea"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "idee"
+      ]
+    },
+    "názor": {
+      "reviewed_ro": false,
+      "ro": [
+        "opinie",
+        "părere"
       ]
     },
     "náš": {
@@ -852,11 +2965,205 @@
         "la (oră)"
       ]
     },
+    "oba": {
+      "reviewed_ro": false,
+      "ro": [
+        "amândoi"
+      ]
+    },
+    "obchod": {
+      "reviewed_ro": false,
+      "ro": [
+        "magazin",
+        "comerț"
+      ]
+    },
+    "obed": {
+      "reviewed_ro": false,
+      "ro": [
+        "prânz"
+      ]
+    },
+    "obeť": {
+      "en": [
+        "victim",
+        "sacrifice"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "victimă",
+        "sacrificiu"
+      ]
+    },
+    "objaviť": {
+      "en": [
+        "to discover (pf.)"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "a descoperi"
+      ]
+    },
+    "oblasť": {
+      "reviewed_ro": false,
+      "ro": [
+        "zonă",
+        "domeniu"
+      ]
+    },
+    "obrovský": {
+      "en": [
+        "huge",
+        "enormous"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "uriaș",
+        "enorm"
+      ]
+    },
+    "obávať": {
+      "en": [
+        "to fear (obávať sa)"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "a se teme (obávať sa)"
+      ]
+    },
+    "obľúbený": {
+      "en": [
+        "favourite",
+        "popular"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "preferat",
+        "popular"
+      ]
+    },
+    "och": {
+      "reviewed_ro": false,
+      "ro": [
+        "oh"
+      ]
+    },
+    "oci": {
+      "en": [
+        "eyes (typo for oči)"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "ochi (greșit; corect: oči)"
+      ]
+    },
+    "ocko": {
+      "en": [
+        "daddy"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "tati"
+      ]
+    },
     "od": {
       "reviewed_ro": false,
       "ro": [
         "de la",
         "din"
+      ]
+    },
+    "odchádzať": {
+      "reviewed_ro": false,
+      "ro": [
+        "a pleca (impf.)"
+      ]
+    },
+    "odkaz": {
+      "en": [
+        "message",
+        "link (web)",
+        "legacy"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "mesaj",
+        "link",
+        "moștenire"
+      ]
+    },
+    "odkedy": {
+      "en": [
+        "since when"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "de când"
+      ]
+    },
+    "odkiaľ": {
+      "en": [
+        "from where"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "de unde"
+      ]
+    },
+    "odpovedať": {
+      "en": [
+        "to answer"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "a răspunde"
+      ]
+    },
+    "odpoveď": {
+      "reviewed_ro": false,
+      "ro": [
+        "răspuns"
+      ]
+    },
+    "odpustiť": {
+      "en": [
+        "to forgive (pf.)"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "a ierta"
+      ]
+    },
+    "odtiaľ": {
+      "en": [
+        "from there"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "de acolo"
+      ]
+    },
+    "odtiaľto": {
+      "en": [
+        "from here"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "de aici"
       ]
     },
     "odísť": {
@@ -865,18 +3172,81 @@
         "a pleca"
       ]
     },
+    "oheň": {
+      "reviewed_ro": false,
+      "ro": [
+        "foc"
+      ]
+    },
+    "ohľad": {
+      "en": [
+        "regard",
+        "consideration (bez ohľadu na)"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "considerație",
+        "bez ohľadu na = indiferent de"
+      ]
+    },
     "ok": {
+      "en": [
+        "OK"
+      ],
       "notes": "anglicism, extremely common in speech. Kept as-is.",
+      "reviewed_en": false,
       "reviewed_ro": false,
       "ro": [
         "ok",
         "bine"
       ]
     },
+    "okamžite": {
+      "en": [
+        "immediately"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "imediat"
+      ]
+    },
+    "okej": {
+      "en": [
+        "okay"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "ok"
+      ]
+    },
+    "okno": {
+      "reviewed_ro": false,
+      "ro": [
+        "fereastră"
+      ]
+    },
     "oko": {
       "reviewed_ro": false,
       "ro": [
         "ochi"
+      ]
+    },
+    "okolo": {
+      "reviewed_ro": false,
+      "ro": [
+        "în jurul",
+        "pe la",
+        "cam"
+      ]
+    },
+    "okrem": {
+      "reviewed_ro": false,
+      "ro": [
+        "în afară de",
+        "cu excepția"
       ]
     },
     "on": {
@@ -891,10 +3261,189 @@
         "ea"
       ]
     },
+    "ono": {
+      "reviewed_ro": false,
+      "ro": [
+        "el/ea (neutru)",
+        "asta"
+      ]
+    },
+    "operácia": {
+      "en": [
+        "operation",
+        "surgery"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "operație"
+      ]
+    },
+    "opustiť": {
+      "reviewed_ro": false,
+      "ro": [
+        "a părăsi"
+      ]
+    },
+    "opäť": {
+      "reviewed_ro": false,
+      "ro": [
+        "din nou",
+        "iarăși"
+      ]
+    },
+    "opýtať": {
+      "en": [
+        "to ask (opýtať sa, pf.)"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "a întreba (opýtať sa)"
+      ]
+    },
+    "osoba": {
+      "reviewed_ro": false,
+      "ro": [
+        "persoană"
+      ]
+    },
+    "osobne": {
+      "en": [
+        "personally",
+        "in person"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "personal",
+        "în persoană"
+      ]
+    },
+    "osobný": {
+      "en": [
+        "personal"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "personal"
+      ]
+    },
+    "ospravedlniť": {
+      "en": [
+        "to apologise (ospravedlniť sa, pf.)",
+        "to excuse"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "a-și cere scuze (ospravedlniť sa)",
+        "a scuza"
+      ]
+    },
+    "ospravedlňovať": {
+      "en": [
+        "to apologise (impf.)"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "a se scuza (impf.)"
+      ]
+    },
+    "ostatný": {
+      "reviewed_ro": false,
+      "ro": [
+        "celălalt",
+        "restul"
+      ]
+    },
+    "ostať": {
+      "reviewed_ro": false,
+      "ro": [
+        "a rămâne"
+      ]
+    },
+    "osud": {
+      "en": [
+        "fate",
+        "destiny"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "destin",
+        "soartă"
+      ]
+    },
     "otec": {
       "reviewed_ro": false,
       "ro": [
         "tată"
+      ]
+    },
+    "otočiť": {
+      "en": [
+        "to turn (pf.)"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "a întoarce",
+        "a roti"
+      ]
+    },
+    "otvor": {
+      "en": [
+        "opening",
+        "hole"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "deschizătură",
+        "gaură"
+      ]
+    },
+    "otvorený": {
+      "en": [
+        "open",
+        "opened"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "deschis"
+      ]
+    },
+    "otvoriť": {
+      "reviewed_ro": false,
+      "ro": [
+        "a deschide"
+      ]
+    },
+    "otázka": {
+      "reviewed_ro": false,
+      "ro": [
+        "întrebare"
+      ]
+    },
+    "oveľa": {
+      "reviewed_ro": false,
+      "ro": [
+        "mult mai"
+      ]
+    },
+    "očakávať": {
+      "en": [
+        "to expect"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "a aștepta (ceva)",
+        "a se aștepta la"
       ]
     },
     "pamätať": {
@@ -910,6 +3459,61 @@
         "doamnă"
       ]
     },
+    "papier": {
+      "en": [
+        "paper"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "hârtie"
+      ]
+    },
+    "park": {
+      "en": [
+        "park"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "parc"
+      ]
+    },
+    "partner": {
+      "en": [
+        "partner"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "partener"
+      ]
+    },
+    "patriť": {
+      "reviewed_ro": false,
+      "ro": [
+        "a aparține"
+      ]
+    },
+    "paul": {
+      "reviewed_ro": false,
+      "ro": [
+        "Paul"
+      ]
+    },
+    "peklo": {
+      "reviewed_ro": false,
+      "ro": [
+        "iad"
+      ]
+    },
+    "pekne": {
+      "reviewed_ro": false,
+      "ro": [
+        "frumos",
+        "drăguț"
+      ]
+    },
     "pekný": {
       "reviewed_ro": false,
       "ro": [
@@ -923,6 +3527,90 @@
         "bani"
       ]
     },
+    "perfektný": {
+      "en": [
+        "perfect"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "perfect"
+      ]
+    },
+    "pes": {
+      "reviewed_ro": false,
+      "ro": [
+        "câine"
+      ]
+    },
+    "peter": {
+      "reviewed_ro": false,
+      "ro": [
+        "Peter"
+      ]
+    },
+    "pieseň": {
+      "reviewed_ro": false,
+      "ro": [
+        "cântec"
+      ]
+    },
+    "pivo": {
+      "reviewed_ro": false,
+      "ro": [
+        "bere"
+      ]
+    },
+    "piť": {
+      "reviewed_ro": false,
+      "ro": [
+        "a bea"
+      ]
+    },
+    "plakať": {
+      "reviewed_ro": false,
+      "ro": [
+        "a plânge"
+      ]
+    },
+    "planéta": {
+      "reviewed_ro": false,
+      "ro": [
+        "planetă"
+      ]
+    },
+    "platiť": {
+      "reviewed_ro": false,
+      "ro": [
+        "a plăti"
+      ]
+    },
+    "plný": {
+      "reviewed_ro": false,
+      "ro": [
+        "plin"
+      ]
+    },
+    "plán": {
+      "en": [
+        "plan"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "plan"
+      ]
+    },
+    "plánovať": {
+      "en": [
+        "to plan"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "a planifica"
+      ]
+    },
     "po": {
       "reviewed_ro": false,
       "ro": [
@@ -931,10 +3619,96 @@
         "câte"
       ]
     },
+    "pochopiť": {
+      "en": [
+        "to understand",
+        "to grasp (pf.)"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "a înțelege",
+        "a pricepe"
+      ]
+    },
+    "pocit": {
+      "en": [
+        "feeling"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "sentiment",
+        "senzație"
+      ]
+    },
     "pod": {
       "reviewed_ro": false,
       "ro": [
         "sub"
+      ]
+    },
+    "podariť": {
+      "en": [
+        "to succeed (podarilo sa mi = I managed)"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "a reuși (podarilo sa)"
+      ]
+    },
+    "podať": {
+      "en": [
+        "to hand",
+        "to pass (pf.)",
+        "podať si ruky = shake hands"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "a da (a înmâna)",
+        "a servi"
+      ]
+    },
+    "podobný": {
+      "en": [
+        "similar"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "asemănător",
+        "similar"
+      ]
+    },
+    "podozrivý": {
+      "en": [
+        "suspicious",
+        "suspect"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "suspect",
+        "suspicios"
+      ]
+    },
+    "podpísať": {
+      "reviewed_ro": false,
+      "ro": [
+        "a semna"
+      ]
+    },
+    "podstata": {
+      "en": [
+        "essence",
+        "the point"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "esență"
       ]
     },
     "podľa": {
@@ -945,16 +3719,203 @@
         "potrivit"
       ]
     },
+    "pohniť": {
+      "en": [
+        "to move (pf., colloq. variant of pohnúť)"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "a mișca (colocv.)"
+      ]
+    },
+    "pohnúť": {
+      "en": [
+        "to move (sth) (pf.)",
+        "pohni! = hurry up!"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "a mișca",
+        "pohni! = grăbește-te!"
+      ]
+    },
+    "pohoda": {
+      "en": [
+        "ease, calm",
+        "v pohode = fine, no problem"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "liniște",
+        "v pohode = e ok"
+      ]
+    },
+    "pohyb": {
+      "en": [
+        "movement",
+        "exercise"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "mișcare"
+      ]
+    },
+    "pohľad": {
+      "reviewed_ro": false,
+      "ro": [
+        "privire",
+        "vedere"
+      ]
+    },
+    "pokiaľ": {
+      "en": [
+        "as long as",
+        "if",
+        "as far as"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "dacă",
+        "cât timp",
+        "în măsura în care"
+      ]
+    },
+    "pokoj": {
+      "reviewed_ro": false,
+      "ro": [
+        "liniște",
+        "pace"
+      ]
+    },
+    "pokračovať": {
+      "reviewed_ro": false,
+      "ro": [
+        "a continua"
+      ]
+    },
+    "pokúsiť": {
+      "en": [
+        "to try (pokúsiť sa, pf.)"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "a încerca (pokúsiť sa)"
+      ]
+    },
+    "pokúšať": {
+      "en": [
+        "to try (pokúšať sa, impf.)",
+        "to tempt"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "a încerca (pokúšať sa)",
+        "a ispiti"
+      ]
+    },
+    "pol": {
+      "en": [
+        "half"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "jumătate"
+      ]
+    },
+    "policajný": {
+      "reviewed_ro": false,
+      "ro": [
+        "polițienesc",
+        "de poliție"
+      ]
+    },
+    "policajt": {
+      "reviewed_ro": false,
+      "ro": [
+        "polițist"
+      ]
+    },
+    "polovica": {
+      "reviewed_ro": false,
+      "ro": [
+        "jumătate"
+      ]
+    },
+    "položiť": {
+      "en": [
+        "to put down",
+        "to lay (pf.)"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "a pune (jos)",
+        "a așeza"
+      ]
+    },
+    "polícia": {
+      "reviewed_ro": false,
+      "ro": [
+        "poliție"
+      ]
+    },
+    "pomaly": {
+      "reviewed_ro": false,
+      "ro": [
+        "încet"
+      ]
+    },
     "pomoc": {
       "reviewed_ro": false,
       "ro": [
         "ajutor"
       ]
     },
+    "pomáhať": {
+      "en": [
+        "to help (impf.)"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "a ajuta (impf.)"
+      ]
+    },
     "pomôcť": {
       "reviewed_ro": false,
       "ro": [
         "a ajuta"
+      ]
+    },
+    "ponúknuť": {
+      "en": [
+        "to offer (pf.)"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "a oferi"
+      ]
+    },
+    "poriadne": {
+      "en": [
+        "properly",
+        "thoroughly"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "ca lumea",
+        "serios",
+        "temeinic"
       ]
     },
     "poriadok": {
@@ -964,7 +3925,28 @@
         "regulă"
       ]
     },
+    "porozprávať": {
+      "reviewed_ro": false,
+      "ro": [
+        "a povesti",
+        "a sta de vorbă (porozprávať sa)"
+      ]
+    },
+    "poručík": {
+      "en": [
+        "lieutenant"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "locotenent"
+      ]
+    },
     "poslať": {
+      "en": [
+        "to send (pf.)"
+      ],
+      "reviewed_en": false,
       "reviewed_ro": false,
       "ro": [
         "a trimite"
@@ -976,7 +3958,35 @@
         "ultimul"
       ]
     },
+    "postarať": {
+      "en": [
+        "to take care of (postarať sa o)"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "a avea grijă (postarať sa o)"
+      ]
+    },
+    "postaviť": {
+      "reviewed_ro": false,
+      "ro": [
+        "a pune (în picioare)",
+        "a construi"
+      ]
+    },
+    "posteľ": {
+      "reviewed_ro": false,
+      "ro": [
+        "pat"
+      ]
+    },
     "potom": {
+      "en": [
+        "then",
+        "afterwards"
+      ],
+      "reviewed_en": false,
       "reviewed_ro": false,
       "ro": [
         "apoi",
@@ -987,6 +3997,26 @@
       "reviewed_ro": false,
       "ro": [
         "a avea nevoie (de)"
+      ]
+    },
+    "použiť": {
+      "en": [
+        "to use (pf.)"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "a folosi"
+      ]
+    },
+    "používať": {
+      "en": [
+        "to use (impf.)"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "a folosi (impf.)"
       ]
     },
     "povedať": {
@@ -1009,14 +4039,46 @@
         "a cunoaște"
       ]
     },
+    "pozor": {
+      "reviewed_ro": false,
+      "ro": [
+        "atenție"
+      ]
+    },
     "pozrieť": {
+      "en": [
+        "to look (pf.)",
+        "to take a look"
+      ],
+      "reviewed_en": false,
       "reviewed_ro": false,
       "ro": [
         "a se uita",
         "a privi (perfectiv)"
       ]
     },
+    "pozvať": {
+      "en": [
+        "to invite (pf.)"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "a invita"
+      ]
+    },
+    "počas": {
+      "reviewed_ro": false,
+      "ro": [
+        "în timpul"
+      ]
+    },
     "počkať": {
+      "en": [
+        "to wait (pf.)",
+        "počkaj! = hold on!"
+      ],
+      "reviewed_en": false,
       "reviewed_ro": false,
       "ro": [
         "a aștepta"
@@ -1028,10 +4090,40 @@
         "a auzi"
       ]
     },
+    "počítač": {
+      "reviewed_ro": false,
+      "ro": [
+        "calculator",
+        "computer"
+      ]
+    },
     "počúvať": {
       "reviewed_ro": false,
       "ro": [
         "a asculta"
+      ]
+    },
+    "požiadať": {
+      "en": [
+        "to ask for",
+        "to request (pf.)"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "a cere",
+        "a solicita"
+      ]
+    },
+    "prach": {
+      "en": [
+        "dust",
+        "powder"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "praf"
       ]
     },
     "pracovať": {
@@ -1047,24 +4139,175 @@
         "adevăr"
       ]
     },
+    "pravdepodobne": {
+      "en": [
+        "probably"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "probabil"
+      ]
+    },
+    "pravidlo": {
+      "en": [
+        "rule"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "regulă"
+      ]
+    },
+    "pravý": {
+      "reviewed_ro": false,
+      "ro": [
+        "drept (partea dreaptă)",
+        "adevărat"
+      ]
+    },
     "pre": {
       "reviewed_ro": false,
       "ro": [
         "pentru"
       ]
     },
+    "preboha": {
+      "en": [
+        "for God's sake"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "pentru Dumnezeu"
+      ]
+    },
+    "prechádzať": {
+      "en": [
+        "to pass through",
+        "to go over (impf.)"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "a trece prin",
+        "a parcurge"
+      ]
+    },
     "pred": {
+      "en": [
+        "in front of",
+        "before",
+        "ago (pred rokom)"
+      ],
+      "reviewed_en": false,
       "reviewed_ro": false,
       "ro": [
         "înainte de",
         "în fața"
       ]
     },
+    "predať": {
+      "reviewed_ro": false,
+      "ro": [
+        "a vinde"
+      ]
+    },
+    "predpokladať": {
+      "en": [
+        "to assume",
+        "to suppose"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "a presupune"
+      ]
+    },
+    "predsa": {
+      "reviewed_ro": false,
+      "ro": [
+        "totuși",
+        "doar (că)"
+      ]
+    },
+    "predstaviť": {
+      "reviewed_ro": false,
+      "ro": [
+        "a prezenta",
+        "predstaviť si = a-și imagina"
+      ]
+    },
     "predtým": {
+      "en": [
+        "before",
+        "previously"
+      ],
+      "reviewed_en": false,
       "reviewed_ro": false,
       "ro": [
         "înainte",
         "mai devreme"
+      ]
+    },
+    "prejsť": {
+      "reviewed_ro": false,
+      "ro": [
+        "a trece",
+        "a traversa"
+      ]
+    },
+    "preklad": {
+      "en": [
+        "translation"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "traducere"
+      ]
+    },
+    "prekliaty": {
+      "en": [
+        "damned",
+        "cursed"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "blestemat"
+      ]
+    },
+    "prekvapenie": {
+      "en": [
+        "surprise"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "surpriză"
+      ]
+    },
+    "preložiť": {
+      "en": [
+        "to translate (pf.)"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "a traduce"
+      ]
+    },
+    "premýšľať": {
+      "en": [
+        "to think (over)",
+        "to ponder"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "a se gândi",
+        "a reflecta"
       ]
     },
     "prepáčiť": {
@@ -1075,6 +4318,11 @@
       ]
     },
     "presne": {
+      "en": [
+        "exactly",
+        "precisely"
+      ],
+      "reviewed_en": false,
       "reviewed_ro": false,
       "ro": [
         "exact"
@@ -1085,6 +4333,16 @@
       "ro": [
         "a înceta",
         "a se opri"
+      ]
+    },
+    "presvedčiť": {
+      "en": [
+        "to convince (pf.)"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "a convinge"
       ]
     },
     "preto": {
@@ -1100,6 +4358,12 @@
         "fiindcă"
       ]
     },
+    "prezident": {
+      "reviewed_ro": false,
+      "ro": [
+        "președinte"
+      ]
+    },
     "preč": {
       "reviewed_ro": false,
       "ro": [
@@ -1113,11 +4377,47 @@
         "de ce"
       ]
     },
+    "prečítať": {
+      "reviewed_ro": false,
+      "ro": [
+        "a citi (până la capăt)"
+      ]
+    },
+    "prežiť": {
+      "en": [
+        "to survive",
+        "to experience (pf.)"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "a supraviețui",
+        "a trăi (o experiență)"
+      ]
+    },
     "pri": {
+      "en": [
+        "by",
+        "near",
+        "at"
+      ],
+      "reviewed_en": false,
       "reviewed_ro": false,
       "ro": [
         "lângă",
         "la"
+      ]
+    },
+    "priamo": {
+      "en": [
+        "directly",
+        "straight"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "direct",
+        "drept"
       ]
     },
     "priateľ": {
@@ -1127,11 +4427,110 @@
         "iubit"
       ]
     },
+    "priateľka": {
+      "reviewed_ro": false,
+      "ro": [
+        "prietenă",
+        "iubită"
+      ]
+    },
+    "priať": {
+      "reviewed_ro": false,
+      "ro": [
+        "a dori",
+        "a ura"
+      ]
+    },
+    "prichádzať": {
+      "en": [
+        "to come",
+        "to arrive (impf.)"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "a veni (impf.)"
+      ]
+    },
+    "pridať": {
+      "en": [
+        "to add (pf.)"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "a adăuga"
+      ]
+    },
+    "prijať": {
+      "en": [
+        "to accept",
+        "to receive (pf.)"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "a accepta",
+        "a primi"
+      ]
+    },
+    "priniesť": {
+      "reviewed_ro": false,
+      "ro": [
+        "a aduce"
+      ]
+    },
     "pripravený": {
+      "en": [
+        "ready",
+        "prepared"
+      ],
+      "reviewed_en": false,
       "reviewed_ro": false,
       "ro": [
         "pregătit",
         "gata"
+      ]
+    },
+    "pripraviť": {
+      "en": [
+        "to prepare (pf.)"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "a pregăti"
+      ]
+    },
+    "prisahať": {
+      "en": [
+        "to swear (an oath)"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "a jura"
+      ]
+    },
+    "priviesť": {
+      "en": [
+        "to bring (a person)"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "a aduce (pe cineva)"
+      ]
+    },
+    "priznať": {
+      "en": [
+        "to admit (pf.)"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "a recunoaște",
+        "a mărturisi"
       ]
     },
     "problém": {
@@ -1140,11 +4539,47 @@
         "problemă"
       ]
     },
+    "program": {
+      "reviewed_ro": false,
+      "ro": [
+        "program"
+      ]
+    },
     "prosiť": {
+      "en": [
+        "to ask (for)",
+        "prosím = please / you're welcome"
+      ],
+      "reviewed_en": false,
       "reviewed_ro": false,
       "ro": [
         "a ruga",
         "a cere"
+      ]
+    },
+    "proste": {
+      "en": [
+        "simply",
+        "just (colloq.)"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "simplu",
+        "pur și simplu (colocv.)"
+      ]
+    },
+    "proti": {
+      "reviewed_ro": false,
+      "ro": [
+        "împotriva",
+        "contra"
+      ]
+    },
+    "prst": {
+      "reviewed_ro": false,
+      "ro": [
+        "deget"
       ]
     },
     "prvý": {
@@ -1167,7 +4602,58 @@
         "chiar acum"
       ]
     },
+    "právnik": {
+      "en": [
+        "lawyer"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "avocat",
+        "jurist"
+      ]
+    },
+    "právo": {
+      "en": [
+        "law",
+        "right (entitlement)"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "drept (juridic)",
+        "lege"
+      ]
+    },
+    "príbeh": {
+      "reviewed_ro": false,
+      "ro": [
+        "poveste",
+        "întâmplare"
+      ]
+    },
+    "príjemný": {
+      "en": [
+        "pleasant"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "plăcut"
+      ]
+    },
+    "príležitosť": {
+      "reviewed_ro": false,
+      "ro": [
+        "ocazie",
+        "oportunitate"
+      ]
+    },
     "príliš": {
+      "en": [
+        "too (much)"
+      ],
+      "reviewed_en": false,
       "reviewed_ro": false,
       "ro": [
         "prea"
@@ -1186,6 +4672,14 @@
         "a sosi"
       ]
     },
+    "pustiť": {
+      "reviewed_ro": false,
+      "ro": [
+        "a lăsa (să plece)",
+        "a da drumul",
+        "a porni (muzica)"
+      ]
+    },
     "pán": {
       "reviewed_ro": false,
       "ro": [
@@ -1194,17 +4688,49 @@
       ]
     },
     "pár": {
+      "en": [
+        "a couple (of)",
+        "a few",
+        "a pair"
+      ],
+      "reviewed_en": false,
       "reviewed_ro": false,
       "ro": [
         "câțiva",
         "o pereche"
       ]
     },
+    "párty": {
+      "en": [
+        "party"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "petrecere"
+      ]
+    },
     "páčiť": {
+      "en": [
+        "to please (páči sa mi = I like it)"
+      ],
       "notes": "`páči sa mi` = 'îmi place' — dative experiencer in BOTH languages (§11.9). Worth a grammar note.",
+      "reviewed_en": false,
       "reviewed_ro": false,
       "ro": [
         "a plăcea (mi se pare frumos)"
+      ]
+    },
+    "päť": {
+      "reviewed_ro": false,
+      "ro": [
+        "cinci"
+      ]
+    },
+    "písať": {
+      "reviewed_ro": false,
+      "ro": [
+        "a scrie"
       ]
     },
     "pôjsť": {
@@ -1214,11 +4740,52 @@
         "a izvorî"
       ]
     },
+    "pýtať": {
+      "reviewed_ro": false,
+      "ro": [
+        "a cere",
+        "a întreba (pýtať sa)"
+      ]
+    },
+    "rad": {
+      "reviewed_ro": false,
+      "ro": [
+        "rând",
+        "șir"
+      ]
+    },
     "rada": {
+      "en": [
+        "glad (fem. of rád)",
+        "advice (noun)"
+      ],
+      "reviewed_en": false,
       "reviewed_ro": false,
       "ro": [
         "cu plăcere (fem.)",
         "sfat"
+      ]
+    },
+    "rana": {
+      "en": [
+        "wound",
+        "blow"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "rană",
+        "lovitură"
+      ]
+    },
+    "rande": {
+      "en": [
+        "date (romantic)"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "întâlnire (romantică)"
       ]
     },
     "raz": {
@@ -1226,6 +4793,20 @@
       "ro": [
         "o dată",
         "cândva"
+      ]
+    },
+    "reč": {
+      "reviewed_ro": false,
+      "ro": [
+        "vorbire",
+        "limbă",
+        "discurs"
+      ]
+    },
+    "riť": {
+      "reviewed_ro": false,
+      "ro": [
+        "cur (vulgar)"
       ]
     },
     "robiť": {
@@ -1241,13 +4822,123 @@
         "familie"
       ]
     },
+    "rodič": {
+      "en": [
+        "parent"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "părinte"
+      ]
+    },
     "rok": {
       "reviewed_ro": false,
       "ro": [
         "an"
       ]
     },
+    "rovnako": {
+      "en": [
+        "equally",
+        "likewise"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "la fel",
+        "în egală măsură"
+      ]
+    },
+    "rovnaký": {
+      "reviewed_ro": false,
+      "ro": [
+        "același",
+        "la fel"
+      ]
+    },
+    "rovno": {
+      "en": [
+        "straight",
+        "straight ahead"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "drept",
+        "direct"
+      ]
+    },
+    "rozdiel": {
+      "reviewed_ro": false,
+      "ro": [
+        "diferență"
+      ]
+    },
+    "rozhodne": {
+      "en": [
+        "definitely"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "hotărât",
+        "categoric"
+      ]
+    },
+    "rozhodnutie": {
+      "reviewed_ro": false,
+      "ro": [
+        "decizie"
+      ]
+    },
+    "rozhodnúť": {
+      "reviewed_ro": false,
+      "ro": [
+        "a hotărî",
+        "a decide"
+      ]
+    },
+    "rozhovor": {
+      "en": [
+        "conversation",
+        "interview"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "conversație",
+        "interviu"
+      ]
+    },
+    "rozkaz": {
+      "en": [
+        "order (command)"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "ordin"
+      ]
+    },
+    "rozmýšľať": {
+      "en": [
+        "to think (about)",
+        "to consider"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "a se gândi",
+        "a chibzui"
+      ]
+    },
     "rozprávať": {
+      "en": [
+        "to talk",
+        "to tell (a story)"
+      ],
+      "reviewed_en": false,
       "reviewed_ro": false,
       "ro": [
         "a povesti",
@@ -1276,10 +4967,21 @@
       ]
     },
     "ráno": {
+      "en": [
+        "morning",
+        "in the morning"
+      ],
+      "reviewed_en": false,
       "reviewed_ro": false,
       "ro": [
         "dimineață",
         "dimineața"
+      ]
+    },
+    "rýchle": {
+      "reviewed_ro": false,
+      "ro": [
+        "repede (formă)"
       ]
     },
     "rýchlo": {
@@ -1301,11 +5003,64 @@
         "pe sine"
       ]
     },
+    "sadnúť": {
+      "reviewed_ro": false,
+      "ro": [
+        "a se așeza (sadnúť si)"
+      ]
+    },
+    "sakra": {
+      "reviewed_ro": false,
+      "ro": [
+        "la naiba"
+      ]
+    },
+    "sam": {
+      "reviewed_ro": false,
+      "ro": [
+        "singur (greșit; corect: sám)"
+      ]
+    },
     "samozrejme": {
+      "en": [
+        "of course"
+      ],
+      "reviewed_en": false,
       "reviewed_ro": false,
       "ro": [
         "desigur",
         "bineînțeles"
+      ]
+    },
+    "samý": {
+      "en": [
+        "nothing but",
+        "the very (samý koniec)"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "numai",
+        "tot (samý koniec = chiar sfârșitul)"
+      ]
+    },
+    "sarah": {
+      "reviewed_ro": false,
+      "ro": [
+        "Sarah"
+      ]
+    },
+    "schopnosť": {
+      "reviewed_ro": false,
+      "ro": [
+        "abilitate",
+        "capacitate"
+      ]
+    },
+    "schopný": {
+      "reviewed_ro": false,
+      "ro": [
+        "capabil"
       ]
     },
     "seba": {
@@ -1314,14 +5069,105 @@
         "pe sine"
       ]
     },
+    "sedieť": {
+      "reviewed_ro": false,
+      "ro": [
+        "a sta (jos)",
+        "a ședea"
+      ]
+    },
+    "sekunda": {
+      "reviewed_ro": false,
+      "ro": [
+        "secundă"
+      ]
+    },
     "sem": {
+      "en": [
+        "(to) here",
+        "over here"
+      ],
+      "reviewed_en": false,
       "reviewed_ro": false,
       "ro": [
         "încoace",
         "aici"
       ]
     },
+    "sen": {
+      "reviewed_ro": false,
+      "ro": [
+        "vis"
+      ]
+    },
+    "sestra": {
+      "reviewed_ro": false,
+      "ro": [
+        "soră",
+        "asistentă medicală"
+      ]
+    },
+    "sex": {
+      "reviewed_ro": false,
+      "ro": [
+        "sex"
+      ]
+    },
+    "signál": {
+      "en": [
+        "signal",
+        "(phone) reception"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "semnal"
+      ]
+    },
+    "sila": {
+      "en": [
+        "strength",
+        "force"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "forță",
+        "putere"
+      ]
+    },
+    "silný": {
+      "en": [
+        "strong"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "puternic"
+      ]
+    },
+    "situácia": {
+      "reviewed_ro": false,
+      "ro": [
+        "situație"
+      ]
+    },
+    "skontrolovať": {
+      "en": [
+        "to check (pf.)"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "a verifica"
+      ]
+    },
     "skončiť": {
+      "en": [
+        "to finish",
+        "to end (pf.)"
+      ],
+      "reviewed_en": false,
       "reviewed_ro": false,
       "ro": [
         "a termina",
@@ -1335,11 +5181,125 @@
         "aproape"
       ]
     },
+    "skočiť": {
+      "reviewed_ro": false,
+      "ro": [
+        "a sări"
+      ]
+    },
+    "skupina": {
+      "en": [
+        "group"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "grup"
+      ]
+    },
+    "skurvený": {
+      "en": [
+        "fucking (vulgar adj.)"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "nenorocit (vulgar)"
+      ]
+    },
+    "skutočne": {
+      "en": [
+        "really",
+        "truly"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "într-adevăr",
+        "cu adevărat"
+      ]
+    },
+    "skutočnosť": {
+      "reviewed_ro": false,
+      "ro": [
+        "realitate",
+        "fapt"
+      ]
+    },
+    "skutočný": {
+      "en": [
+        "real",
+        "actual"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "real",
+        "adevărat"
+      ]
+    },
     "skvelý": {
+      "en": [
+        "great",
+        "excellent"
+      ],
+      "reviewed_en": false,
       "reviewed_ro": false,
       "ro": [
         "grozav",
         "excelent"
+      ]
+    },
+    "skôr": {
+      "reviewed_ro": false,
+      "ro": [
+        "mai devreme",
+        "mai degrabă"
+      ]
+    },
+    "skúsiť": {
+      "en": [
+        "to try (pf.)"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "a încerca"
+      ]
+    },
+    "skúšať": {
+      "en": [
+        "to try",
+        "to test (impf.)"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "a încerca",
+        "a proba"
+      ]
+    },
+    "sledovať": {
+      "reviewed_ro": false,
+      "ro": [
+        "a urmări"
+      ]
+    },
+    "slečna": {
+      "en": [
+        "Miss",
+        "young lady"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "domnișoară"
+      ]
+    },
+    "slnko": {
+      "reviewed_ro": false,
+      "ro": [
+        "soare"
       ]
     },
     "slovo": {
@@ -1348,23 +5308,159 @@
         "cuvânt"
       ]
     },
+    "služba": {
+      "reviewed_ro": false,
+      "ro": [
+        "serviciu",
+        "slujbă"
+      ]
+    },
+    "smer": {
+      "reviewed_ro": false,
+      "ro": [
+        "direcție"
+      ]
+    },
+    "smiať": {
+      "reviewed_ro": false,
+      "ro": [
+        "a râde (smiať sa)"
+      ]
+    },
+    "smiešne": {
+      "en": [
+        "funny (adv.)",
+        "ridiculously"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "amuzant",
+        "ridicol"
+      ]
+    },
+    "smieť": {
+      "reviewed_ro": false,
+      "ro": [
+        "a avea voie"
+      ]
+    },
     "smrť": {
       "reviewed_ro": false,
       "ro": [
         "moarte"
       ]
     },
+    "smutný": {
+      "reviewed_ro": false,
+      "ro": [
+        "trist"
+      ]
+    },
     "snažiť": {
+      "en": [
+        "to try (snažiť sa)",
+        "to make an effort"
+      ],
+      "reviewed_en": false,
       "reviewed_ro": false,
       "ro": [
         "a se strădui",
         "a încerca"
       ]
     },
+    "snáď": {
+      "reviewed_ro": false,
+      "ro": [
+        "poate",
+        "sperăm"
+      ]
+    },
+    "spadnúť": {
+      "en": [
+        "to fall (down) (pf.)"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "a cădea"
+      ]
+    },
+    "spať": {
+      "reviewed_ro": false,
+      "ro": [
+        "a dormi"
+      ]
+    },
+    "spievať": {
+      "reviewed_ro": false,
+      "ro": [
+        "a cânta"
+      ]
+    },
+    "spoločnosť": {
+      "reviewed_ro": false,
+      "ro": [
+        "societate",
+        "companie"
+      ]
+    },
+    "spoločný": {
+      "en": [
+        "common",
+        "shared"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "comun"
+      ]
+    },
     "spolu": {
+      "en": [
+        "together",
+        "in total"
+      ],
+      "reviewed_en": false,
       "reviewed_ro": false,
       "ro": [
         "împreună"
+      ]
+    },
+    "spomenúť": {
+      "en": [
+        "to mention",
+        "to remember (spomenúť si, pf.)"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "a menționa",
+        "a-și aminti (spomenúť si)"
+      ]
+    },
+    "spomínať": {
+      "en": [
+        "to remember",
+        "to mention (spomínať si)"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "a-și aminti",
+        "a menționa"
+      ]
+    },
+    "spoznať": {
+      "en": [
+        "to recognise",
+        "to get to know (pf.)"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "a recunoaște",
+        "a cunoaște (pe cineva)"
       ]
     },
     "spraviť": {
@@ -1381,11 +5477,34 @@
         "administrare"
       ]
     },
+    "správať": {
+      "reviewed_ro": false,
+      "ro": [
+        "a se comporta (správať sa)"
+      ]
+    },
     "správne": {
+      "en": [
+        "correctly",
+        "right"
+      ],
+      "reviewed_en": false,
       "reviewed_ro": false,
       "ro": [
         "corect",
         "bine"
+      ]
+    },
+    "správny": {
+      "en": [
+        "right",
+        "correct"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "corect",
+        "potrivit"
       ]
     },
     "späť": {
@@ -1394,11 +5513,112 @@
         "înapoi"
       ]
     },
+    "spôsob": {
+      "reviewed_ro": false,
+      "ro": [
+        "mod",
+        "fel"
+      ]
+    },
+    "spýtať": {
+      "en": [
+        "to ask (spýtať sa, pf.)"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "a întreba (spýtať sa)"
+      ]
+    },
+    "sranda": {
+      "en": [
+        "fun",
+        "a laugh (colloq.)"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "distracție",
+        "haz (colocv.)"
+      ]
+    },
+    "sračka": {
+      "reviewed_ro": false,
+      "ro": [
+        "rahat (vulgar)"
+      ]
+    },
+    "srdce": {
+      "reviewed_ro": false,
+      "ro": [
+        "inimă"
+      ]
+    },
+    "stan": {
+      "reviewed_ro": false,
+      "ro": [
+        "cort"
+      ]
+    },
+    "stanica": {
+      "en": [
+        "station"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "stație",
+        "gară"
+      ]
+    },
+    "starať": {
+      "en": [
+        "to take care (starať sa o)"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "a avea grijă (starať sa o)"
+      ]
+    },
+    "starostiť": {
+      "en": [
+        "to worry (starostiť sa)"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "a-și face griji (starostiť sa)"
+      ]
+    },
     "starý": {
       "reviewed_ro": false,
       "ro": [
         "bătrân",
         "vechi"
+      ]
+    },
+    "stav": {
+      "reviewed_ro": false,
+      "ro": [
+        "stare",
+        "situație"
+      ]
+    },
+    "staviť": {
+      "reviewed_ro": false,
+      "ro": [
+        "a paria (staviť sa)"
+      ]
+    },
+    "stačiť": {
+      "en": [
+        "to be enough (stačí = that's enough)"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "a fi destul (stačí = ajunge)"
       ]
     },
     "stať": {
@@ -1409,10 +5629,123 @@
         "a se întâmpla"
       ]
     },
+    "stena": {
+      "reviewed_ro": false,
+      "ro": [
+        "perete"
+      ]
+    },
+    "stoj": {
+      "reviewed_ro": false,
+      "ro": [
+        "poziție în picioare"
+      ]
+    },
+    "stop": {
+      "reviewed_ro": false,
+      "ro": [
+        "stop"
+      ]
+    },
+    "strach": {
+      "reviewed_ro": false,
+      "ro": [
+        "frică",
+        "teamă"
+      ]
+    },
+    "strana": {
+      "reviewed_ro": false,
+      "ro": [
+        "parte",
+        "pagină",
+        "partid"
+      ]
+    },
+    "stratiť": {
+      "en": [
+        "to lose (pf.)"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "a pierde"
+      ]
+    },
+    "strašne": {
+      "en": [
+        "terribly",
+        "awfully (also = very)"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "îngrozitor",
+        "(colocv.) foarte"
+      ]
+    },
+    "strašný": {
+      "en": [
+        "terrible",
+        "awful"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "groaznic",
+        "teribil"
+      ]
+    },
+    "stredný": {
+      "reviewed_ro": false,
+      "ro": [
+        "mijlociu",
+        "mediu",
+        "central"
+      ]
+    },
+    "stretnutie": {
+      "reviewed_ro": false,
+      "ro": [
+        "întâlnire",
+        "ședință"
+      ]
+    },
     "stretnúť": {
       "reviewed_ro": false,
       "ro": [
         "a întâlni"
+      ]
+    },
+    "strieľať": {
+      "reviewed_ro": false,
+      "ro": [
+        "a trage (cu arma)"
+      ]
+    },
+    "strom": {
+      "reviewed_ro": false,
+      "ro": [
+        "copac",
+        "pom"
+      ]
+    },
+    "stráviť": {
+      "en": [
+        "to spend (time)",
+        "to digest"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "a petrece (timp)",
+        "a digera"
+      ]
+    },
+    "strýko": {
+      "reviewed_ro": false,
+      "ro": [
+        "unchi"
       ]
     },
     "stále": {
@@ -1429,10 +5762,50 @@
         "a costa"
       ]
     },
+    "stôl": {
+      "reviewed_ro": false,
+      "ro": [
+        "masă"
+      ]
+    },
+    "super": {
+      "en": [
+        "great",
+        "super"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "super",
+        "grozav"
+      ]
+    },
+    "svadba": {
+      "reviewed_ro": false,
+      "ro": [
+        "nuntă"
+      ]
+    },
+    "svedok": {
+      "en": [
+        "witness"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "martor"
+      ]
+    },
     "svet": {
       "reviewed_ro": false,
       "ro": [
         "lume"
+      ]
+    },
+    "svetlo": {
+      "reviewed_ro": false,
+      "ro": [
+        "lumină"
       ]
     },
     "svoj": {
@@ -1447,21 +5820,115 @@
         "fiu"
       ]
     },
+    "systém": {
+      "en": [
+        "system"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "sistem"
+      ]
+    },
     "sám": {
+      "en": [
+        "alone",
+        "by oneself",
+        "-self"
+      ],
+      "reviewed_en": false,
       "reviewed_ro": false,
       "ro": [
         "singur",
         "însuși"
       ]
     },
+    "súd": {
+      "reviewed_ro": false,
+      "ro": [
+        "tribunal",
+        "judecată"
+      ]
+    },
+    "súhlasiť": {
+      "en": [
+        "to agree"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "a fi de acord"
+      ]
+    },
+    "súčasť": {
+      "reviewed_ro": false,
+      "ro": [
+        "parte componentă"
+      ]
+    },
+    "sľubovať": {
+      "en": [
+        "to promise (impf.)"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "a promite (impf.)"
+      ]
+    },
+    "sľúbiť": {
+      "reviewed_ro": false,
+      "ro": [
+        "a promite"
+      ]
+    },
+    "ta": {
+      "reviewed_ro": false,
+      "ro": [
+        "aceea (greșit; corect: tá)"
+      ]
+    },
+    "tajný": {
+      "en": [
+        "secret (adj.)"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "secret (adj.)"
+      ]
+    },
+    "tajomstvo": {
+      "reviewed_ro": false,
+      "ro": [
+        "secret"
+      ]
+    },
     "tak": {
+      "en": [
+        "so",
+        "like this",
+        "then"
+      ],
+      "reviewed_en": false,
       "reviewed_ro": false,
       "ro": [
         "așa",
         "deci"
       ]
     },
+    "takmer": {
+      "reviewed_ro": false,
+      "ro": [
+        "aproape"
+      ]
+    },
     "takto": {
+      "en": [
+        "like this",
+        "this way"
+      ],
+      "reviewed_en": false,
       "reviewed_ro": false,
       "ro": [
         "așa",
@@ -1473,6 +5940,13 @@
       "ro": [
         "astfel de",
         "așa"
+      ]
+    },
+    "takýto": {
+      "reviewed_ro": false,
+      "ro": [
+        "așa (de fel)",
+        "un astfel de"
       ]
     },
     "takže": {
@@ -1488,11 +5962,33 @@
         "acolo"
       ]
     },
+    "tancovať": {
+      "en": [
+        "to dance"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "a dansa"
+      ]
+    },
     "teda": {
       "reviewed_ro": false,
       "ro": [
         "deci",
         "adică"
+      ]
+    },
+    "telefón": {
+      "reviewed_ro": false,
+      "ro": [
+        "telefon"
+      ]
+    },
+    "telo": {
+      "reviewed_ro": false,
+      "ro": [
+        "corp"
       ]
     },
     "ten": {
@@ -1514,11 +6010,46 @@
         "acum"
       ]
     },
+    "test": {
+      "en": [
+        "test"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "test"
+      ]
+    },
+    "tešiť": {
+      "reviewed_ro": false,
+      "ro": [
+        "a bucura (teší ma = mă bucur)",
+        "tešiť sa na = a aștepta cu nerăbdare"
+      ]
+    },
+    "ticho": {
+      "en": [
+        "silence",
+        "quiet (adv.)"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "liniște",
+        "încet (adv.)"
+      ]
+    },
     "tiež": {
       "reviewed_ro": false,
       "ro": [
         "de asemenea",
         "și"
+      ]
+    },
+    "tisíc": {
+      "reviewed_ro": false,
+      "ro": [
+        "mie"
       ]
     },
     "to": {
@@ -1529,11 +6060,51 @@
         "o"
       ]
     },
+    "tona": {
+      "reviewed_ro": false,
+      "ro": [
+        "tonă"
+      ]
+    },
+    "topánka": {
+      "reviewed_ro": false,
+      "ro": [
+        "pantof"
+      ]
+    },
     "toto": {
+      "en": [
+        "this (one)"
+      ],
+      "reviewed_en": false,
       "reviewed_ro": false,
       "ro": [
         "acesta",
         "asta"
+      ]
+    },
+    "toľko": {
+      "en": [
+        "so much",
+        "so many"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "atât (de mult)"
+      ]
+    },
+    "treba": {
+      "reviewed_ro": false,
+      "ro": [
+        "trebuie",
+        "e nevoie"
+      ]
+    },
+    "tretí": {
+      "reviewed_ro": false,
+      "ro": [
+        "al treilea"
       ]
     },
     "tri": {
@@ -1542,16 +6113,88 @@
         "trei"
       ]
     },
+    "trieda": {
+      "en": [
+        "class",
+        "classroom"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "clasă"
+      ]
+    },
+    "trocha": {
+      "en": [
+        "a little"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "un pic"
+      ]
+    },
     "trochu": {
+      "en": [
+        "a little",
+        "a bit"
+      ],
+      "reviewed_en": false,
       "reviewed_ro": false,
       "ro": [
         "puțin"
       ]
     },
+    "troška": {
+      "en": [
+        "a little bit"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "un pic",
+        "puțintel"
+      ]
+    },
+    "trvať": {
+      "reviewed_ro": false,
+      "ro": [
+        "a dura",
+        "a insista (trvať na)"
+      ]
+    },
+    "trápiť": {
+      "en": [
+        "to torment",
+        "to worry (trápiť sa)"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "a chinui",
+        "a se frământa (trápiť sa)"
+      ]
+    },
     "tu": {
+      "en": [
+        "here"
+      ],
+      "reviewed_en": false,
       "reviewed_ro": false,
       "ro": [
         "aici"
+      ]
+    },
+    "tušiť": {
+      "en": [
+        "to suspect",
+        "to have a feeling"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "a bănui",
+        "a presimți"
       ]
     },
     "tvoj": {
@@ -1561,10 +6204,52 @@
         "ta"
       ]
     },
+    "tvrdiť": {
+      "en": [
+        "to claim",
+        "to assert"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "a susține",
+        "a afirma"
+      ]
+    },
+    "tvrdý": {
+      "en": [
+        "hard (not soft)",
+        "tough"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "tare",
+        "dur"
+      ]
+    },
+    "tvár": {
+      "reviewed_ro": false,
+      "ro": [
+        "față (chip)"
+      ]
+    },
     "ty": {
       "reviewed_ro": false,
       "ro": [
         "tu"
+      ]
+    },
+    "typ": {
+      "en": [
+        "type",
+        "guy (colloq.)"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "tip",
+        "gen"
       ]
     },
     "tá": {
@@ -1575,10 +6260,20 @@
       ]
     },
     "táto": {
+      "en": [
+        "this (fem.)"
+      ],
+      "reviewed_en": false,
       "reviewed_ro": false,
       "ro": [
         "aceasta",
         "asta"
+      ]
+    },
+    "tím": {
+      "reviewed_ro": false,
+      "ro": [
+        "echipă"
       ]
     },
     "týždeň": {
@@ -1588,15 +6283,119 @@
       ]
     },
     "u": {
+      "en": [
+        "at (someone's place)",
+        "with"
+      ],
+      "reviewed_en": false,
       "reviewed_ro": false,
       "ro": [
         "la (cineva)"
+      ]
+    },
+    "ublížiť": {
+      "en": [
+        "to hurt (someone) (pf.)"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "a răni (pe cineva)"
+      ]
+    },
+    "udrieť": {
+      "reviewed_ro": false,
+      "ro": [
+        "a lovi"
+      ]
+    },
+    "udržať": {
+      "en": [
+        "to keep",
+        "to hold (pf.)"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "a menține",
+        "a ține"
+      ]
+    },
+    "uh": {
+      "reviewed_ro": false,
+      "ro": [
+        "uh"
+      ]
+    },
+    "uistiť": {
+      "en": [
+        "to make sure (uistiť sa)",
+        "to assure"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "a se asigura (uistiť sa)",
+        "a asigura"
+      ]
+    },
+    "ujsť": {
+      "reviewed_ro": false,
+      "ro": [
+        "a fugi",
+        "a scăpa"
+      ]
+    },
+    "ukradnúť": {
+      "reviewed_ro": false,
+      "ro": [
+        "a fura"
       ]
     },
     "ukázať": {
       "reviewed_ro": false,
       "ro": [
         "a arăta"
+      ]
+    },
+    "ulica": {
+      "reviewed_ro": false,
+      "ro": [
+        "stradă"
+      ]
+    },
+    "um": {
+      "reviewed_ro": false,
+      "ro": [
+        "minte",
+        "intelect"
+      ]
+    },
+    "umrieť": {
+      "reviewed_ro": false,
+      "ro": [
+        "a muri"
+      ]
+    },
+    "unavený": {
+      "en": [
+        "tired"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "obosit"
+      ]
+    },
+    "upokojiť": {
+      "en": [
+        "to calm (down) (pf.)"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "a calma",
+        "a liniști"
       ]
     },
     "urobiť": {
@@ -1612,23 +6411,95 @@
         "sigur"
       ]
     },
+    "utekať": {
+      "en": [
+        "to run (away) (impf.)"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "a fugi"
+      ]
+    },
+    "utiecť": {
+      "reviewed_ro": false,
+      "ro": [
+        "a fugi",
+        "a scăpa"
+      ]
+    },
+    "uvedomiť": {
+      "en": [
+        "to realise (uvedomiť si, pf.)"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "a-și da seama (uvedomiť si)"
+      ]
+    },
+    "uveriť": {
+      "reviewed_ro": false,
+      "ro": [
+        "a crede (pf.)",
+        "a da crezare"
+      ]
+    },
     "uvidieť": {
+      "en": [
+        "to see (pf.)",
+        "uvidíme = we'll see"
+      ],
+      "reviewed_en": false,
       "reviewed_ro": false,
       "ro": [
         "a vedea (perfectiv)",
         "om vedea"
       ]
     },
+    "učiť": {
+      "reviewed_ro": false,
+      "ro": [
+        "a preda",
+        "učiť sa = a învăța"
+      ]
+    },
     "už": {
+      "en": [
+        "already",
+        "now (finally)"
+      ],
+      "reviewed_en": false,
       "reviewed_ro": false,
       "ro": [
         "deja"
       ]
     },
+    "užiť": {
+      "en": [
+        "to enjoy (užiť si)"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "a se bucura de (užiť si)"
+      ]
+    },
     "v": {
+      "en": [
+        "in",
+        "at"
+      ],
+      "reviewed_en": false,
       "reviewed_ro": false,
       "ro": [
         "în"
+      ]
+    },
+    "vadiť": {
+      "reviewed_ro": false,
+      "ro": [
+        "a deranja (vadí mi = mă deranjează)"
       ]
     },
     "vec": {
@@ -1645,16 +6516,69 @@
         "a putea (a fi în stare)"
       ]
     },
+    "vedľa": {
+      "reviewed_ro": false,
+      "ro": [
+        "lângă",
+        "alături de"
+      ]
+    },
+    "vek": {
+      "en": [
+        "age"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "vârstă",
+        "secol"
+      ]
+    },
+    "veliteľ": {
+      "reviewed_ro": false,
+      "ro": [
+        "comandant"
+      ]
+    },
     "veriť": {
+      "en": [
+        "to believe",
+        "to trust"
+      ],
+      "reviewed_en": false,
       "reviewed_ro": false,
       "ro": [
         "a crede"
+      ]
+    },
+    "vesmír": {
+      "en": [
+        "universe",
+        "space"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "univers",
+        "cosmos"
       ]
     },
     "večer": {
       "reviewed_ro": false,
       "ro": [
         "seară"
+      ]
+    },
+    "veď": {
+      "en": [
+        "after all",
+        "but… (you know)"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "doar",
+        "păi (că)"
       ]
     },
     "veľa": {
@@ -1676,13 +6600,69 @@
         "foarte"
       ]
     },
+    "vianoce": {
+      "reviewed_ro": false,
+      "ro": [
+        "Crăciun"
+      ]
+    },
     "vidieť": {
       "reviewed_ro": false,
       "ro": [
         "a vedea"
       ]
     },
+    "viesť": {
+      "reviewed_ro": false,
+      "ro": [
+        "a conduce",
+        "a duce"
+      ]
+    },
+    "vina": {
+      "en": [
+        "guilt",
+        "fault"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "vină"
+      ]
+    },
+    "vinný": {
+      "en": [
+        "guilty"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "vinovat"
+      ]
+    },
+    "vitaj": {
+      "en": [
+        "welcome! (sg.)"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "bine ai venit"
+      ]
+    },
+    "vlas": {
+      "reviewed_ro": false,
+      "ro": [
+        "fir de păr",
+        "vlasy = păr"
+      ]
+    },
     "vlastne": {
+      "en": [
+        "actually",
+        "in fact"
+      ],
+      "reviewed_en": false,
       "reviewed_ro": false,
       "ro": [
         "de fapt"
@@ -1692,6 +6672,47 @@
       "reviewed_ro": false,
       "ro": [
         "propriu"
+      ]
+    },
+    "vláda": {
+      "reviewed_ro": false,
+      "ro": [
+        "guvern"
+      ]
+    },
+    "vnútro": {
+      "en": [
+        "inside",
+        "interior"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "interior"
+      ]
+    },
+    "voda": {
+      "reviewed_ro": false,
+      "ro": [
+        "apă"
+      ]
+    },
+    "vojak": {
+      "reviewed_ro": false,
+      "ro": [
+        "soldat"
+      ]
+    },
+    "vojna": {
+      "reviewed_ro": false,
+      "ro": [
+        "război"
+      ]
+    },
+    "vojsť": {
+      "reviewed_ro": false,
+      "ro": [
+        "a intra"
       ]
     },
     "volať": {
@@ -1707,11 +6728,36 @@
         "afară"
       ]
     },
+    "vonku": {
+      "reviewed_ro": false,
+      "ro": [
+        "afară"
+      ]
+    },
+    "vracať": {
+      "reviewed_ro": false,
+      "ro": [
+        "a înapoia",
+        "a se întoarce (vracať sa)"
+      ]
+    },
+    "vrah": {
+      "reviewed_ro": false,
+      "ro": [
+        "ucigaș"
+      ]
+    },
     "vravieť": {
       "reviewed_ro": false,
       "ro": [
         "a zice",
         "a spune"
+      ]
+    },
+    "vražda": {
+      "reviewed_ro": false,
+      "ro": [
+        "crimă (omor)"
       ]
     },
     "vrátiť": {
@@ -1721,11 +6767,162 @@
         "a se întoarce"
       ]
     },
+    "vtedy": {
+      "reviewed_ro": false,
+      "ro": [
+        "atunci"
+      ]
+    },
+    "vtipný": {
+      "en": [
+        "funny",
+        "witty"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "amuzant",
+        "hazliu"
+      ]
+    },
+    "vták": {
+      "reviewed_ro": false,
+      "ro": [
+        "pasăre"
+      ]
+    },
     "vy": {
       "reviewed_ro": false,
       "ro": [
         "voi",
         "dumneavoastră"
+      ]
+    },
+    "vybrať": {
+      "en": [
+        "to choose",
+        "to take out",
+        "to withdraw (money)"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "a alege",
+        "a scoate (bani)"
+      ]
+    },
+    "vydať": {
+      "en": [
+        "to publish",
+        "to issue",
+        "vydať sa = to get married (of a woman)"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "a publica",
+        "a emite",
+        "vydať sa = a se mărita"
+      ]
+    },
+    "vydržať": {
+      "en": [
+        "to endure",
+        "to hold on (pf.)"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "a rezista",
+        "a suporta"
+      ]
+    },
+    "vyhodiť": {
+      "en": [
+        "to throw out",
+        "to fire (from a job)"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "a arunca",
+        "a da afară"
+      ]
+    },
+    "vyhrať": {
+      "reviewed_ro": false,
+      "ro": [
+        "a câștiga"
+      ]
+    },
+    "vyjsť": {
+      "reviewed_ro": false,
+      "ro": [
+        "a ieși"
+      ]
+    },
+    "vymyslieť": {
+      "en": [
+        "to think up",
+        "to invent (pf.)"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "a inventa",
+        "a născoci"
+      ]
+    },
+    "vypadnúť": {
+      "en": [
+        "to fall out",
+        "get out! (vypadni!)"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "a cădea (din)",
+        "a o șterge (vypadni! = ieși!)"
+      ]
+    },
+    "vyriešiť": {
+      "en": [
+        "to solve (pf.)"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "a rezolva"
+      ]
+    },
+    "vysoký": {
+      "reviewed_ro": false,
+      "ro": [
+        "înalt",
+        "mare (nivel)"
+      ]
+    },
+    "vysvetliť": {
+      "en": [
+        "to explain (pf.)"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "a explica"
+      ]
+    },
+    "vytiahnuť": {
+      "reviewed_ro": false,
+      "ro": [
+        "a scoate",
+        "a trage afară"
+      ]
+    },
+    "vytvoriť": {
+      "reviewed_ro": false,
+      "ro": [
+        "a crea"
       ]
     },
     "vyzerať": {
@@ -1735,10 +6932,32 @@
         "a părea"
       ]
     },
+    "vzdať": {
+      "en": [
+        "to give up (vzdať sa)"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "a renunța (vzdať sa)"
+      ]
+    },
+    "vzduch": {
+      "reviewed_ro": false,
+      "ro": [
+        "aer"
+      ]
+    },
     "vziať": {
       "reviewed_ro": false,
       "ro": [
         "a lua"
+      ]
+    },
+    "vzťah": {
+      "reviewed_ro": false,
+      "ro": [
+        "relație"
       ]
     },
     "váš": {
@@ -1749,16 +6968,74 @@
       ]
     },
     "vážne": {
+      "en": [
+        "seriously",
+        "really?"
+      ],
+      "reviewed_en": false,
       "reviewed_ro": false,
       "ro": [
         "serios"
       ]
     },
+    "väzenie": {
+      "en": [
+        "prison"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "închisoare"
+      ]
+    },
+    "väčšina": {
+      "reviewed_ro": false,
+      "ro": [
+        "majoritate"
+      ]
+    },
     "vôbec": {
+      "en": [
+        "at all",
+        "in general"
+      ],
+      "reviewed_en": false,
       "reviewed_ro": false,
       "ro": [
         "deloc",
         "în general"
+      ]
+    },
+    "výber": {
+      "reviewed_ro": false,
+      "ro": [
+        "alegere",
+        "selecție",
+        "retragere (bani)"
+      ]
+    },
+    "výborne": {
+      "en": [
+        "excellent!",
+        "very well"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "excelent",
+        "foarte bine"
+      ]
+    },
+    "výsledok": {
+      "reviewed_ro": false,
+      "ro": [
+        "rezultat"
+      ]
+    },
+    "včera": {
+      "reviewed_ro": false,
+      "ro": [
+        "ieri"
       ]
     },
     "vďaka": {
@@ -1768,8 +7045,20 @@
         "datorită"
       ]
     },
+    "všade": {
+      "reviewed_ro": false,
+      "ro": [
+        "peste tot"
+      ]
+    },
     "však": {
+      "en": [
+        "though",
+        "after all",
+        "…however? / …right?"
+      ],
       "notes": "tag question / 'totuși'. Two quite different uses; a native should split them.",
+      "reviewed_en": false,
       "reviewed_ro": false,
       "ro": [
         "totuși",
@@ -1783,10 +7072,36 @@
         "toată"
       ]
     },
+    "všimnúť": {
+      "en": [
+        "to notice (všimnúť si, pf.)"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "a observa (všimnúť si)"
+      ]
+    },
     "vždy": {
+      "en": [
+        "always"
+      ],
+      "reviewed_en": false,
       "reviewed_ro": false,
       "ro": [
         "întotdeauna"
+      ]
+    },
+    "wow": {
+      "reviewed_ro": false,
+      "ro": [
+        "wow"
+      ]
+    },
+    "york": {
+      "reviewed_ro": false,
+      "ro": [
+        "York"
       ]
     },
     "z": {
@@ -1797,6 +7112,12 @@
       ]
     },
     "za": {
+      "en": [
+        "for (price/exchange)",
+        "behind",
+        "in (time: za hodinu)"
+      ],
+      "reviewed_en": false,
       "reviewed_ro": false,
       "ro": [
         "după",
@@ -1817,17 +7138,126 @@
         "a uita"
       ]
     },
+    "zabíjať": {
+      "reviewed_ro": false,
+      "ro": [
+        "a ucide (impf.)"
+      ]
+    },
+    "zachrániť": {
+      "en": [
+        "to save",
+        "to rescue (pf.)"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "a salva"
+      ]
+    },
+    "zadok": {
+      "en": [
+        "bottom",
+        "butt (colloq.)"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "fund (colocv.)"
+      ]
+    },
+    "zajtra": {
+      "reviewed_ro": false,
+      "ro": [
+        "mâine"
+      ]
+    },
+    "zaplatiť": {
+      "en": [
+        "to pay (pf.)"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "a plăti (pf.)"
+      ]
+    },
+    "zas": {
+      "reviewed_ro": false,
+      "ro": [
+        "iar",
+        "din nou"
+      ]
+    },
+    "zaslúžiť": {
+      "en": [
+        "to deserve (zaslúžiť si)"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "a merita (zaslúžiť si)"
+      ]
+    },
     "zastaviť": {
       "reviewed_ro": false,
       "ro": [
         "a opri"
       ]
     },
+    "zastreliť": {
+      "en": [
+        "to shoot dead (pf.)"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "a împușca (mortal)"
+      ]
+    },
+    "zatiaľ": {
+      "reviewed_ro": false,
+      "ro": [
+        "deocamdată",
+        "până acum"
+      ]
+    },
+    "zaujímavý": {
+      "en": [
+        "interesting"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "interesant"
+      ]
+    },
+    "zaujímať": {
+      "en": [
+        "to interest (zaujíma ma = I'm interested)"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "a interesa"
+      ]
+    },
     "zavolať": {
+      "en": [
+        "to call (pf.)",
+        "to phone"
+      ],
+      "reviewed_en": false,
       "reviewed_ro": false,
       "ro": [
         "a chema",
         "a suna (perfectiv)"
+      ]
+    },
+    "zavrieť": {
+      "reviewed_ro": false,
+      "ro": [
+        "a închide"
       ]
     },
     "začať": {
@@ -1836,24 +7266,186 @@
         "a începe"
       ]
     },
+    "začiatok": {
+      "reviewed_ro": false,
+      "ro": [
+        "început"
+      ]
+    },
+    "začínať": {
+      "en": [
+        "to begin (impf.)"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "a începe (impf.)"
+      ]
+    },
+    "zbaviť": {
+      "en": [
+        "to get rid of (zbaviť sa)"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "a scăpa de (zbaviť sa)"
+      ]
+    },
+    "zblázniť": {
+      "en": [
+        "to go crazy (zblázniť sa)"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "a înnebuni (zblázniť sa)"
+      ]
+    },
+    "zbohom": {
+      "reviewed_ro": false,
+      "ro": [
+        "adio"
+      ]
+    },
     "zbraň": {
+      "en": [
+        "weapon"
+      ],
+      "reviewed_en": false,
       "reviewed_ro": false,
       "ro": [
         "armă"
       ]
     },
     "zdať": {
+      "en": [
+        "to seem (zdá sa mi = it seems to me)"
+      ],
+      "reviewed_en": false,
       "reviewed_ro": false,
       "ro": [
         "a părea",
         "a se părea"
       ]
     },
+    "zdravie": {
+      "reviewed_ro": false,
+      "ro": [
+        "sănătate"
+      ]
+    },
+    "zdroj": {
+      "en": [
+        "source"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "sursă"
+      ]
+    },
+    "zdvihnúť": {
+      "en": [
+        "to lift",
+        "to pick up (the phone)"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "a ridica",
+        "a răspunde la telefon"
+      ]
+    },
+    "ze": {
+      "reviewed_ro": false,
+      "ro": [
+        "că (greșit; corect: že)"
+      ]
+    },
+    "zem": {
+      "reviewed_ro": false,
+      "ro": [
+        "pământ",
+        "țară"
+      ]
+    },
     "zistiť": {
+      "en": [
+        "to find out",
+        "to discover (pf.)"
+      ],
+      "reviewed_en": false,
       "reviewed_ro": false,
       "ro": [
         "a afla",
         "a constata"
+      ]
+    },
+    "zjesť": {
+      "en": [
+        "to eat up (pf.)"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "a mânca (tot)"
+      ]
+    },
+    "zlatko": {
+      "reviewed_ro": false,
+      "ro": [
+        "scumpo / scumpule",
+        "dragă"
+      ]
+    },
+    "zlato": {
+      "reviewed_ro": false,
+      "ro": [
+        "aur",
+        "dragă (alintare)"
+      ]
+    },
+    "zle": {
+      "reviewed_ro": false,
+      "ro": [
+        "rău"
+      ]
+    },
+    "zlo": {
+      "reviewed_ro": false,
+      "ro": [
+        "rău (răul)"
+      ]
+    },
+    "zločin": {
+      "en": [
+        "crime"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "infracțiune",
+        "crimă"
+      ]
+    },
+    "zlé": {
+      "reviewed_ro": false,
+      "ro": [
+        "rău (neutru)"
+      ]
+    },
+    "zlý": {
+      "reviewed_ro": false,
+      "ro": [
+        "rău"
+      ]
+    },
+    "zmena": {
+      "reviewed_ro": false,
+      "ro": [
+        "schimbare",
+        "tură"
       ]
     },
     "zmeniť": {
@@ -1862,16 +7454,116 @@
         "a schimba"
       ]
     },
+    "zmiznúť": {
+      "en": [
+        "to disappear (pf.)"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "a dispărea"
+      ]
+    },
+    "zmysel": {
+      "en": [
+        "sense",
+        "meaning"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "sens",
+        "rost"
+      ]
+    },
     "znamenať": {
       "reviewed_ro": false,
       "ro": [
         "a însemna"
       ]
     },
+    "znieť": {
+      "en": [
+        "to sound"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "a suna"
+      ]
+    },
+    "zničiť": {
+      "en": [
+        "to destroy (pf.)"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "a distruge"
+      ]
+    },
+    "znova": {
+      "reviewed_ro": false,
+      "ro": [
+        "din nou",
+        "iar"
+      ]
+    },
+    "znovu": {
+      "reviewed_ro": false,
+      "ro": [
+        "din nou"
+      ]
+    },
+    "známy": {
+      "reviewed_ro": false,
+      "ro": [
+        "cunoscut",
+        "celebru"
+      ]
+    },
+    "znášať": {
+      "en": [
+        "to bear",
+        "to stand (tolerate)"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "a suporta",
+        "a tolera"
+      ]
+    },
     "zobrať": {
+      "en": [
+        "to take (pf., colloquial)"
+      ],
+      "reviewed_en": false,
       "reviewed_ro": false,
       "ro": [
         "a lua (perfectiv)"
+      ]
+    },
+    "zobudiť": {
+      "en": [
+        "to wake (someone) up (pf.)",
+        "zobudiť sa = to wake up"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "a trezi"
+      ]
+    },
+    "zohnať": {
+      "en": [
+        "to get hold of",
+        "to find (pf.)"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "a face rost de"
       ]
     },
     "zomrieť": {
@@ -1884,6 +7576,151 @@
       "reviewed_ro": false,
       "ro": [
         "a rămâne"
+      ]
+    },
+    "zoznam": {
+      "reviewed_ro": false,
+      "ro": [
+        "listă"
+      ]
+    },
+    "zrazu": {
+      "en": [
+        "suddenly"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "deodată",
+        "brusc"
+      ]
+    },
+    "zrejme": {
+      "en": [
+        "apparently",
+        "evidently"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "evident",
+        "probabil"
+      ]
+    },
+    "zub": {
+      "reviewed_ro": false,
+      "ro": [
+        "dinte"
+      ]
+    },
+    "zviera": {
+      "reviewed_ro": false,
+      "ro": [
+        "animal"
+      ]
+    },
+    "zvládnuť": {
+      "reviewed_ro": false,
+      "ro": [
+        "a se descurca",
+        "a face față"
+      ]
+    },
+    "zvláštny": {
+      "en": [
+        "strange",
+        "special"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "ciudat",
+        "special"
+      ]
+    },
+    "zvyknúť": {
+      "en": [
+        "to get used to (zvyknúť si)"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "a se obișnui (zvyknúť si)"
+      ]
+    },
+    "zvyšok": {
+      "reviewed_ro": false,
+      "ro": [
+        "rest"
+      ]
+    },
+    "zábava": {
+      "en": [
+        "fun",
+        "entertainment"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "distracție"
+      ]
+    },
+    "zákon": {
+      "en": [
+        "law"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "lege"
+      ]
+    },
+    "záležať": {
+      "en": [
+        "to depend (záleží = it depends)",
+        "to matter"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "a depinde",
+        "a conta"
+      ]
+    },
+    "zápas": {
+      "en": [
+        "match (sport)",
+        "fight"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "meci",
+        "luptă"
+      ]
+    },
+    "záujem": {
+      "reviewed_ro": false,
+      "ro": [
+        "interes"
+      ]
+    },
+    "záznam": {
+      "en": [
+        "record",
+        "recording"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "înregistrare"
+      ]
+    },
+    "získať": {
+      "reviewed_ro": false,
+      "ro": [
+        "a obține",
+        "a câștiga"
       ]
     },
     "áno": {
@@ -1899,11 +7736,74 @@
         "a se duce"
       ]
     },
+    "úloha": {
+      "reviewed_ro": false,
+      "ro": [
+        "sarcină",
+        "temă (școlară)"
+      ]
+    },
     "úplne": {
+      "en": [
+        "completely",
+        "totally"
+      ],
+      "reviewed_en": false,
       "reviewed_ro": false,
       "ro": [
         "complet",
         "în totalitate"
+      ]
+    },
+    "úprimný": {
+      "en": [
+        "sincere",
+        "honest"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "sincer"
+      ]
+    },
+    "ústa": {
+      "reviewed_ro": false,
+      "ro": [
+        "gură"
+      ]
+    },
+    "útok": {
+      "en": [
+        "attack"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "atac"
+      ]
+    },
+    "účet": {
+      "en": [
+        "bill",
+        "account"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "notă de plată",
+        "cont"
+      ]
+    },
+    "úžasný": {
+      "en": [
+        "amazing",
+        "wonderful"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "uimitor",
+        "minunat"
       ]
     },
     "čakať": {
@@ -1919,11 +7819,81 @@
         "vreme"
       ]
     },
+    "často": {
+      "en": [
+        "often"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "des",
+        "adesea"
+      ]
+    },
+    "časť": {
+      "reviewed_ro": false,
+      "ro": [
+        "parte"
+      ]
+    },
+    "čau": {
+      "reviewed_ro": false,
+      "ro": [
+        "ciao",
+        "pa",
+        "salut"
+      ]
+    },
+    "čert": {
+      "en": [
+        "devil (folklore)"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "drac (folclor)"
+      ]
+    },
+    "červený": {
+      "reviewed_ro": false,
+      "ro": [
+        "roșu"
+      ]
+    },
     "či": {
       "reviewed_ro": false,
       "ro": [
         "dacă",
         "sau"
+      ]
+    },
+    "čierny": {
+      "reviewed_ro": false,
+      "ro": [
+        "negru"
+      ]
+    },
+    "čin": {
+      "reviewed_ro": false,
+      "ro": [
+        "faptă",
+        "acțiune"
+      ]
+    },
+    "čistý": {
+      "reviewed_ro": false,
+      "ro": [
+        "curat"
+      ]
+    },
+    "člen": {
+      "en": [
+        "member"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "membru"
       ]
     },
     "človek": {
@@ -1938,10 +7908,74 @@
         "ce"
       ]
     },
+    "čokoľvek": {
+      "reviewed_ro": false,
+      "ro": [
+        "orice"
+      ]
+    },
+    "čoskoro": {
+      "reviewed_ro": false,
+      "ro": [
+        "curând"
+      ]
+    },
+    "čože": {
+      "en": [
+        "what?!"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "ce?!"
+      ]
+    },
+    "čí": {
+      "reviewed_ro": false,
+      "ro": [
+        "al cui"
+      ]
+    },
+    "číslo": {
+      "reviewed_ro": false,
+      "ro": [
+        "număr"
+      ]
+    },
+    "čítať": {
+      "reviewed_ro": false,
+      "ro": [
+        "a citi"
+      ]
+    },
     "ďakovať": {
       "reviewed_ro": false,
       "ro": [
         "a mulțumi"
+      ]
+    },
+    "ďalej": {
+      "en": [
+        "further",
+        "next",
+        "go on / come in (ďalej!)"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "mai departe",
+        "în continuare",
+        "intră! (ďalej!)"
+      ]
+    },
+    "ďaleko": {
+      "en": [
+        "far"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "departe"
       ]
     },
     "ďalší": {
@@ -1951,10 +7985,156 @@
         "alt"
       ]
     },
+    "ľahko": {
+      "en": [
+        "easily",
+        "lightly"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "ușor (adv.)"
+      ]
+    },
+    "ľahký": {
+      "reviewed_ro": false,
+      "ro": [
+        "ușor"
+      ]
+    },
+    "ľudia": {
+      "reviewed_ro": false,
+      "ro": [
+        "oameni"
+      ]
+    },
+    "ľudský": {
+      "en": [
+        "human"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "uman",
+        "omenesc"
+      ]
+    },
+    "ľúbiť": {
+      "reviewed_ro": false,
+      "ro": [
+        "a iubi"
+      ]
+    },
+    "ľúto": {
+      "en": [
+        "sorry (je mi ľúto = I'm sorry)"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "îmi pare rău (je mi ľúto)"
+      ]
+    },
+    "šanca": {
+      "en": [
+        "chance"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "șansă"
+      ]
+    },
+    "šaty": {
+      "reviewed_ro": false,
+      "ro": [
+        "rochie",
+        "haine"
+      ]
+    },
+    "šesť": {
+      "reviewed_ro": false,
+      "ro": [
+        "șase"
+      ]
+    },
+    "šialený": {
+      "en": [
+        "crazy",
+        "mad"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "nebun"
+      ]
+    },
+    "škoda": {
+      "reviewed_ro": false,
+      "ro": [
+        "păcat",
+        "pagubă"
+      ]
+    },
     "škola": {
       "reviewed_ro": false,
       "ro": [
         "școală"
+      ]
+    },
+    "štyri": {
+      "reviewed_ro": false,
+      "ro": [
+        "patru"
+      ]
+    },
+    "štát": {
+      "reviewed_ro": false,
+      "ro": [
+        "stat"
+      ]
+    },
+    "šéf": {
+      "en": [
+        "boss"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "șef"
+      ]
+    },
+    "šťastie": {
+      "reviewed_ro": false,
+      "ro": [
+        "fericire",
+        "noroc"
+      ]
+    },
+    "šťastný": {
+      "reviewed_ro": false,
+      "ro": [
+        "fericit",
+        "norocos"
+      ]
+    },
+    "ťažko": {
+      "en": [
+        "hard",
+        "with difficulty"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "greu",
+        "cu greu"
+      ]
+    },
+    "ťažký": {
+      "reviewed_ro": false,
+      "ro": [
+        "greu",
+        "dificil"
       ]
     },
     "že": {
@@ -1970,6 +8150,18 @@
         "soție"
       ]
     },
+    "žiadať": {
+      "en": [
+        "to ask for",
+        "to demand (impf.)"
+      ],
+      "reviewed_en": false,
+      "reviewed_ro": false,
+      "ro": [
+        "a cere",
+        "a solicita"
+      ]
+    },
     "žiaden": {
       "reviewed_ro": false,
       "ro": [
@@ -1981,6 +8173,13 @@
       "reviewed_ro": false,
       "ro": [
         "viață"
+      ]
+    },
+    "živý": {
+      "reviewed_ro": false,
+      "ro": [
+        "viu",
+        "vioi"
       ]
     },
     "žiť": {
