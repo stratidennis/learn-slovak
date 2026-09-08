@@ -1,7 +1,10 @@
 import { useEffect, useState } from 'react'
 import { db, exportAll, getSetting, importAll, setSetting } from '../../db/db'
+import { fmt, useT } from '../../i18n'
+import { LanguageToggle } from '../../components/LanguageToggle'
 
 export function Settings() {
+  const t = useT()
   const [theme, setTheme] = useState<'auto' | 'light' | 'dark'>('auto')
   const [perSession, setPerSession] = useState(8)
   const [guide, setGuide] = useState<'off' | 'ro' | 'ipa' | 'both'>('ro')
@@ -13,39 +16,41 @@ export function Settings() {
     getSetting<'off' | 'ro' | 'ipa' | 'both'>('pronunciation', 'ro').then(setGuide)
     ;(async () => setCounts({ cards: await db.cards.count(), reviews: await db.reviews.count(), lemmas: await db.lemmas.count() }))()
   }, [])
-  const applyTheme = (t: typeof theme) => { setTheme(t); void setSetting('theme', t); document.documentElement.dataset.theme = t === 'auto' ? '' : t }
-  // theme buttons: auto = follows the phone (light in the day, dark at night when the OS schedules it)
+  const applyTheme = (th: typeof theme) => { setTheme(th); void setSetting('theme', th); document.documentElement.dataset.theme = th === 'auto' ? '' : th }
   const doExport = async () => {
     const blob = new Blob([JSON.stringify(await exportAll())], { type: 'application/json' })
     const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `learn-slovak-${new Date().toISOString().slice(0, 10)}.json`; a.click()
-    setMsg('Exported. Keep the file somewhere safe — it is the only copy of your progress.')
+    setMsg(t.exported)
   }
   const doImport = async (f: File | undefined) => {
     if (!f) return
-    try { await importAll(JSON.parse(await f.text())); setMsg('Imported. Reloading…'); setTimeout(() => location.reload(), 600) }
-    catch (e) { setMsg('Import failed: ' + (e as Error).message) }
+    try { await importAll(JSON.parse(await f.text())); setMsg(t.imported); setTimeout(() => location.reload(), 600) }
+    catch (e) { setMsg(t.import_failed + (e as Error).message) }
   }
+  const themeLabel = { auto: t.theme_auto, light: t.theme_light, dark: t.theme_dark }
+  const guideLabel = { ro: t.pron_ro, ipa: t.pron_ipa, both: t.pron_both, off: t.pron_off }
   return (
     <div className="page fade">
-      <div className="topbar"><h1>Settings</h1></div>
+      <div className="topbar"><h1>{t.settings}</h1></div>
       <div className="stack">
-        <div className="card"><h3>Theme</h3><p className="small muted" style={{ margin: '4px 0 0' }}>auto follows your phone — light by day, dark at night if the phone is scheduled that way.</p><div className="row" style={{ marginTop: 10 }}>
-          {(['auto', 'light', 'dark'] as const).map(t => <button key={t} className={`btn ${theme === t ? 'primary' : 'ghost'}`} style={{ minHeight: 40 }} onClick={() => applyTheme(t)}>{t}</button>)}</div></div>
-        <div className="card"><h3>Pronunciation guide</h3>
-          <div className="row" style={{ marginTop: 10 }}>{([['ro', 'Romanian respelling'], ['ipa', 'IPA'], ['both', 'Both'], ['off', 'Off']] as const).map(([k, l]) =>
-            <button key={k} className={`btn ${guide === k ? 'primary' : 'ghost'}`} style={{ minHeight: 40 }} onClick={() => { setGuide(k); void setSetting('pronunciation', k) }}>{l}</button>)}</div>
-          <p className="small muted" style={{ marginBottom: 0 }}>Respelling: <span className="guide-ro">PROsiim si CAAvu</span> — CAPS = stressed syllable (always the first), doubled vowel = long, ɦ = voiced h, y = the i-glide. Turn it off once your ear no longer needs it.</p></div>
-        <div className="card"><h3>New sentences per lesson</h3>
+        <div className="card"><div className="row between"><h3>{t.language}</h3><LanguageToggle /></div><p className="small muted" style={{ margin: '8px 0 0' }}>{t.language_hint}</p></div>
+        <div className="card"><h3>{t.theme}</h3><p className="small muted" style={{ margin: '4px 0 0' }}>{t.theme_hint}</p><div className="row" style={{ marginTop: 10 }}>
+          {(['auto', 'light', 'dark'] as const).map(th => <button key={th} className={`btn ${theme === th ? 'primary' : 'ghost'}`} style={{ minHeight: 40 }} onClick={() => applyTheme(th)}>{themeLabel[th]}</button>)}</div></div>
+        <div className="card"><h3>{t.pron_title}</h3>
+          <div className="row" style={{ marginTop: 10 }}>{(['ro', 'ipa', 'both', 'off'] as const).map(k =>
+            <button key={k} className={`btn ${guide === k ? 'primary' : 'ghost'}`} style={{ minHeight: 40 }} onClick={() => { setGuide(k); void setSetting('pronunciation', k) }}>{guideLabel[k]}</button>)}</div>
+          <p className="small muted" style={{ marginBottom: 0 }}>{fmt(t.pron_hint, { ex: 'PROsiim si CAAvu' })}</p></div>
+        <div className="card"><h3>{t.new_per_lesson}</h3>
           <div className="row" style={{ marginTop: 10 }}>{[4, 8, 12, 16].map(n => <button key={n} className={`btn ${perSession === n ? 'primary' : 'ghost'}`} style={{ minHeight: 40 }} onClick={() => { setPerSession(n); void setSetting('newPerSession', n) }}>{n}</button>)}</div>
-          <p className="small muted" style={{ marginBottom: 0 }}>Reviews always come first. Lower this if reviews take more than 15 minutes.</p></div>
-        <div className="card"><h3>Your data</h3>
-          <p className="small muted">{counts.cards} cards · {counts.reviews} reviews · {counts.lemmas} lemmas. Everything lives in this browser — no account, no cloud. Export regularly.</p>
-          <div className="row"><button className="btn primary" onClick={doExport}>Export JSON</button>
-            <label className="btn ghost">Import JSON<input type="file" accept="application/json" hidden onChange={e => doImport(e.target.files?.[0])} /></label></div>
+          <p className="small muted" style={{ marginBottom: 0 }}>{t.new_per_hint}</p></div>
+        <div className="card"><h3>{t.your_data}</h3>
+          <p className="small muted">{fmt(t.data_hint, counts)}</p>
+          <div className="row"><button className="btn primary" onClick={doExport}>{t.export}</button>
+            <label className="btn ghost">{t.import}<input type="file" accept="application/json" hidden onChange={e => doImport(e.target.files?.[0])} /></label></div>
           {msg && <p className="small" style={{ marginBottom: 0 }}>{msg}</p>}</div>
-        <div className="card small muted"><h3 style={{ color: 'var(--ink)' }}>Sources & licences</h3>
-          <p>Sentences: <b>Tatoeba</b> contributors, CC BY 2.0 FR · Dictionary: English Wiktionary via <b>kaikki.org</b>, CC BY-SA 3.0 · Paradigms & spell-check: <b>hunspell-sk</b> (sk-spell), MPL-2.0 · Audio: <b>Piper</b> voice sk_SK-lili-medium · Syllabus: <b>Studia Academica Slovaca</b>, Univerzita Komenského, <i>Témy a ciele A1/A2</i>, CC BY-NC-SA 4.0 · Illustrations: <b>unDraw</b> · Chunks, glosses and notes are drafts by this project and are marked <span className="chip" style={{ ['--c' as string]: 'var(--warning-deep)' }}>draft</span> until a native speaker reviews them.</p>
-          <p style={{ marginBottom: 0 }}>Personal, non-commercial use.</p></div>
+        <div className="card small muted"><h3 style={{ color: 'var(--ink)' }}>{t.sources}</h3>
+          <p>{t.sources_text}</p>
+          <p style={{ marginBottom: 0 }}>{t.personal_use}</p></div>
       </div>
     </div>
   )

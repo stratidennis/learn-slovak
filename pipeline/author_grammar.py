@@ -8,6 +8,7 @@ Sequenced by the SAS A1/A2 grammatical minimum (CC BY-NC-SA) and research App. A
 from __future__ import annotations
 import os
 from .common import CONTENT, LICENCES, REVIEW_NEEDS, write_jsonl
+from .grammar_ro import G as G_RO, TABLE_CELL_RO
 
 N = []
 def note(id, title, unit, tags, body, ro=None, table=None, examples=(), related=()):
@@ -467,6 +468,9 @@ forms are marked for recognition only.
 def main():
     recs = []
     for n in N:
+        t_ro, b_ro = G_RO.get(n["id"], (None, None))
+        n["title_ro"] = t_ro; n["body_ro"] = b_ro.strip() if b_ro else None
+        n["table_ro"] = [[TABLE_CELL_RO.get(c, c) for c in row] for row in n["table"]] if n.get("table") else None
         recs.append({**n, "level": "A1" if n["unit"].startswith(("0", "1")) else "A2",
                      "source": "authored (research App. A; SAS A1/A2 grammatical minimum, CC BY-NC-SA)",
                      "licence": LICENCES["authored"]["licence"], "attribution": LICENCES["authored"]["attribution"],

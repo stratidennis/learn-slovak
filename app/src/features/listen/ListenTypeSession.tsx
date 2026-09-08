@@ -10,18 +10,20 @@ import { SlovakKeyboard } from '../../components/SlovakKeyboard'
 import { Diff } from '../../components/Diff'
 import { TappableSentence } from '../gloss/TappableSentence'
 import { Pronunciation } from '../../components/Pronunciation'
+import { fmt, useLang, useT } from '../../i18n'
 
 type Item = { card: CardRow; sentence: Sentence; isNew: boolean }
 
 /** A1 listen → type. The core loop (research §10.1, EXERCISE-TYPES A1/E1). */
 export function ListenTypeSession() {
   const { id } = useParams()                       // undefined => review everything due
+  const t = useT(); const lang = useLang()
   const [queue, setQueue] = useState<Item[] | null>(null)
   const [i, setI] = useState(0)
   const [typed, setTyped] = useState('')
   const [result, setResult] = useState<Grade | null>(null)
+  const [gaveUp, setGaveUp] = useState(false)
   const [replays, setReplays] = useState(0)
-  const [showRo, setShowRo] = useState(false)
   const [done, setDone] = useState({ ok: 0, warn: 0, bad: 0 })
   const startedAt = useRef(Date.now())
   const inputRef = useRef<HTMLTextAreaElement>(null)
@@ -33,28 +35,23 @@ export function ListenTypeSession() {
       const sentenceSets = await Promise.all(units.map(u => loadSentences(u).then(s => [u, s] as const)))
       const byId = new Map<string, [string, Sentence]>()
       for (const [u, ss] of sentenceSets) for (const s of ss) byId.set(s.id, [u, s])
-      const due = (await dueCards(id)).map(c => byId.get(c.id)).filter(Boolean) as [string, Sentence][]
       const items: Item[] = []
       for (const c of await dueCards(id)) { const hit = byId.get(c.id); if (hit) items.push({ card: c, sentence: hit[1], isNew: false }) }
       if (id) {
         const have = new Set((await db.cards.where('unitId').equals(id).toArray()).map(c => c.id))
-        const fresh = (byId.size ? [...byId.values()] : []).filter(([u, s]) => u === id && !have.has(s.id)).slice(0, newPerSession)
+        const fresh = [...byId.values()].filter(([u, s]) => u === id && !have.has(s.id)).slice(0, newPerSession)
         for (const [u, s] of fresh) items.push({ card: newCard(s, u), sentence: s, isNew: true })
       }
-      void due
       setQueue(items)
     })()
   }, [id])
 
   const item = queue?.[i]
   const strict = useMemo(() => !!item && item.card.fsrs.stability > 14, [item])
-  useEffect(() => { setTyped(''); setResult(null); setGaveUp(false); setReplays(0); setShowRo(false); startedAt.current = Date.now(); setTimeout(() => inputRef.current?.focus(), 50) }, [i])
+  useEffect(() => { setTyped(''); setResult(null); setGaveUp(false); setReplays(0); startedAt.current = Date.now(); setTimeout(() => inputRef.current?.focus(), 50) }, [i])
 
-  const [gaveUp, setGaveUp] = useState(false)
   const submit = async (text = typed, reveal = false) => {
     if (!item || result) return
-    // "I don't know" reveals the answer and counts as Again; grading the reference against
-    // itself would show a perfect diff, grading the stale empty state showed everything missing.
     const g = grade(item.sentence.sk, reveal ? '' : text, strict)
     setGaveUp(reveal); setResult(g)
     const tier = reveal || g.nBad > 0 ? 'wrong' : g.nWarn > 0 ? 'diacritics' : 'exact'
@@ -63,26 +60,29 @@ export function ListenTypeSession() {
     const updated = await review(item.card, rating)
     await db.reviews.add({ cardId: item.card.id, at: Date.now(), rating, tier, typed, ms: Date.now() - startedAt.current })
     await updateLemmas(updated, tier !== 'wrong')
-    setDone(d => ({ ...d, [tier === 'exact' ? 'ok' : tier === 'diacritics' ? 'warn' : 'bad']: d[tier === 'exact' ? 'ok' : tier === 'diacritics' ? 'warn' : 'bad'] + 1 }))
-    if (tier === 'wrong') {
-      // wrong → show it again at the end of this session (FSRS also schedules it for today)
-      setQueue(q => q ? [...q, { ...item, card: updated, isNew: false }] : q)
-    }
+    const k = tier === 'exact' ? 'ok' : tier === 'diacritics' ? 'warn' : 'bad'
+    setDone(d => ({ ...d, [k]: d[k] + 1 }))
+    if (tier === 'wrong') setQueue(q => q ? [...q, { ...item, card: updated, isNew: false }] : q)
   }
 
-  if (!queue) return <div className="page">…</div>
+  if (!queue) return <div className="page">{t.loading}</div>
   if (!item) return (
     <div className="page fade"><div className="card center">
-      <h2>{queue.length ? 'Session done' : 'Nothing to do here yet'}</h2>
-      {queue.length > 0 && <p className="muted">{done.ok} right · {done.warn} diacritics only · {done.bad} to redo</p>}
-      <Link to={id ? `/unit/${id}` : '/'} className="btn primary">Back</Link>
+      <h2>{queue.length ? t.session_done : t.nothing_here}</h2>
+      {queue.length > 0 && <p className="muted">{fmt(t.session_stats, done)}</p>}
+      <Link to={id ? `/unit/${id}` : '/'} className="btn primary">{t.back}</Link>
     </div></div>
   )
   const back = id ? `/unit/${id}` : '/'
+  // ONE language: Romanian when we have it; otherwise the English translation, explicitly marked
+  const ro = item.sentence.ro[0], en = item.sentence.en[0]
+  const translation = lang === 'ro' ? (ro ?? en) : (en ?? ro)
+  const fallback = lang === 'ro' && !ro && !!en
+  const message = gaveUp ? t.msg_gave_up : result?.nBad ? t.msg_wrong : result?.nWarn ? t.msg_diacritics + (strict ? t.msg_diacritics_strict : '.') : replays <= 1 ? t.msg_first_time : t.msg_good
   return (
     <div className="page fade" key={item.card.id + i}>
-      <div className="topbar"><Link to={back} className="back">←</Link>
-        <div className="muted small">{i + 1} / {queue.length}{item.isNew && <span className="chip" style={{ marginLeft: 8, ['--c' as string]: 'var(--accent)' }}>new</span>}{strict && <span className="chip" style={{ marginLeft: 8 }}>strict</span>}</div>
+      <div className="topbar"><Link to={back} className="back" aria-label={t.back}>←</Link>
+        <div className="muted small">{i + 1} / {queue.length}{item.isNew && <span className="chip" style={{ marginLeft: 8, ['--c' as string]: 'var(--accent)' }}>{t.new_badge}</span>}{strict && <span className="chip" style={{ marginLeft: 8 }}>{t.strict_badge}</span>}</div>
       </div>
       <div className="card">
         <div className="row between">
@@ -91,31 +91,28 @@ export function ListenTypeSession() {
         </div>
         {!result ? (
           <>
-            <p className="muted small" style={{ marginTop: 16 }}>Type what you heard.</p>
+            <p className="muted small" style={{ marginTop: 16 }}>{t.type_heard}</p>
             <textarea ref={inputRef} className="input" rows={2} value={typed} onChange={e => setTyped(e.target.value)} autoCapitalize="off" autoCorrect="off" spellCheck={false}
               onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); void submit() } }} placeholder="…" />
             <SlovakKeyboard inputRef={inputRef} onChange={setTyped} />
             <div className="row" style={{ marginTop: 8 }}>
-              <button className="btn primary" onClick={() => submit()} disabled={!typed.trim()}>Check</button>
-              <button className="btn ghost" onClick={() => submit('', true)}>I don't know</button>
+              <button className="btn primary" onClick={() => submit()} disabled={!typed.trim()}>{t.check}</button>
+              <button className="btn ghost" onClick={() => submit('', true)}>{t.dont_know}</button>
             </div>
           </>
         ) : (
           <div className="stack fade" style={{ marginTop: 16 }}>
-            {gaveUp ? <p className="muted" style={{ margin: 0 }}>Revealed — listen once more, then say it.</p> : <Diff grade={result} />}
+            {gaveUp ? <p className="muted" style={{ margin: 0 }}>{t.revealed}</p> : <Diff grade={result} />}
             <div style={{ padding: '12px 0', borderTop: '1px solid var(--line)' }}>
               <TappableSentence text={item.sentence.sk} />
               <Pronunciation ro={item.sentence.guide?.ro} ipa={item.sentence.guide?.ipa} />
-              <p className="small muted" style={{ margin: '6px 0 0' }}>tap a word for its meaning</p>
+              <p className="small muted" style={{ margin: '6px 0 0' }}>{t.tap_word}</p>
             </div>
-            {item.sentence.en[0] && <p style={{ margin: 0 }}>{item.sentence.en[0]}</p>}
-            {item.sentence.ro[0] ? <p className="muted" style={{ margin: 0 }}>{item.sentence.ro[0]}</p>
-              : <button className="small muted" onClick={() => setShowRo(true)}>{showRo ? 'no Romanian for this sentence yet' : 'RO ▾'}</button>}
-            <p className={`small ${result.nBad ? '' : 'muted'}`} style={{ margin: 0, color: result.nBad ? 'var(--error)' : result.nWarn ? 'var(--warning-deep)' : 'var(--success-deep)' }}>
-              {gaveUp ? 'You\'ll see this one again today.' : result.nBad ? 'Not yet — you\'ll see this one again.' : result.nWarn ? `Right, but mind the diacritics${strict ? ' (strict now)' : ''}.` : replays <= 1 ? 'First time. Easy.' : 'Good.'}
-            </p>
+            {translation ? <p style={{ margin: 0 }}>{translation}{fallback && <span className="small muted"> {t.translation_fallback}</span>}</p>
+              : <p className="small muted" style={{ margin: 0 }}>{t.no_translation}</p>}
+            <p className="small" style={{ margin: 0, color: result.nBad || gaveUp ? 'var(--error)' : result.nWarn ? 'var(--warning-deep)' : 'var(--success-deep)' }}>{message}</p>
             <p className="small muted" style={{ margin: 0 }}>{item.sentence.attr} · {item.sentence.lic}</p>
-            <button className="btn primary block" onClick={() => setI(i + 1)} autoFocus>Next →</button>
+            <button className="btn primary block" onClick={() => setI(i + 1)} autoFocus>{t.next}</button>
           </div>
         )}
       </div>

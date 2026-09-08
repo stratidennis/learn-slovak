@@ -1,10 +1,12 @@
-const LABEL: Record<string, string> = { standard: 'štandard', neutral: '', colloquial: 'hovorovo', formal: 'formálne', regional: 'regionálne', archaic: 'archaické', vulgar: 'vulgárne', insult: 'urážka', mild_expletive: 'hovorovo' }
+import { useT } from '../i18n'
 export function RegisterChip({ register }: { register: string | null | undefined }) {
-  if (!register || !LABEL[register]) return null
-  const c = `var(--reg-${register === 'mild_expletive' || register === 'insult' ? 'colloquial' : register}, var(--ink-muted))`
-  return <span className="chip" style={{ ['--c' as string]: c }}>{LABEL[register]}</span>
+  const t = useT()
+  if (!register || register === 'neutral' || !t.reg[register]) return null
+  const key = register === 'mild_expletive' || register === 'insult' ? 'colloquial' : register
+  return <span className="chip" style={{ ['--c' as string]: `var(--reg-${key}, var(--ink-muted))` }}>{t.reg[register]}</span>
 }
 export function ReviewChip({ status }: { status: string }) {
+  const t = useT()
   if (status === 'reviewed_ok') return null
-  return <span className="chip" style={{ ['--c' as string]: 'var(--warning-deep)' }} title="Not yet checked by a native speaker">draft</span>
+  return <span className="chip" style={{ ['--c' as string]: 'var(--warning-deep)' }} title={t.draft_title}>{t.draft}</span>
 }

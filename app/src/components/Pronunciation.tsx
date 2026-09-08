@@ -13,7 +13,7 @@ export function Pronunciation({ ro, ipa }: { ro?: string | null; ipa?: string | 
   if (mode === 'off' || (!ro && !ipa)) return null
   return (
     <div className="guide">
-      {(mode === 'ro' || mode === 'both') && ro && <div className="guide-ro" title="Romanian-style respelling. CAPS = stressed syllable, doubled vowel = long, ɦ = voiced h">{ro}</div>}
+      {(mode === 'ro' || mode === 'both') && ro && <div className="guide-ro">{ro}</div>}
       {(mode === 'ipa' || mode === 'both') && ipa && <div className="guide-ipa mono">{ipa}</div>}
     </div>
   )

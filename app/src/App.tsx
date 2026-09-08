@@ -5,8 +5,10 @@ import { ChunkShadow } from './features/chunks/ChunkShadow'
 import { ListenTypeSession } from './features/listen/ListenTypeSession'
 import { Settings } from './features/settings/Settings'
 import { Alphabet } from './features/alphabet/Alphabet'
+import { useT } from './i18n'
 
 export default function App() {
+  const t = useT()
   return (
     <BrowserRouter>
       <Routes>
@@ -19,9 +21,9 @@ export default function App() {
         <Route path="/alphabet" element={<Alphabet />} />
       </Routes>
       <nav className="nav">
-        <NavLink to="/" end><span>🏠</span>Home</NavLink>
-        <NavLink to="/review"><span>🔁</span>Review</NavLink>
-        <NavLink to="/settings"><span>⚙️</span>Settings</NavLink>
+        <NavLink to="/" end><span>🏠</span>{t.nav_home}</NavLink>
+        <NavLink to="/review"><span>🔁</span>{t.nav_review}</NavLink>
+        <NavLink to="/settings"><span>⚙️</span>{t.nav_settings}</NavLink>
       </nav>
     </BrowserRouter>
   )

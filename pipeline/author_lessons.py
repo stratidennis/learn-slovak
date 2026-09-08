@@ -9,6 +9,7 @@ slices a unit into daily lessons at runtime from the learner's state.
 from __future__ import annotations
 import os
 from .common import CONTENT, LICENCES, REVIEW_NEEDS, read_jsonl, write_jsonl
+from .translations_ro import CAN_DO_RO
 
 def unit(id, title, ro, sas, cando, notes, seq, select, roleplay=None, creative=None, domain=None, milestone=None):
     return dict(id=id, title=title, title_ro=ro, sas_area=sas, can_do=cando, grammar_notes=notes,
@@ -139,6 +140,7 @@ def main():
         for g in u["grammar_notes"]:
             if g not in notes: missing.add(g)
         u["phase"] = int(u["id"].split(".")[0])
+        u["can_do_ro"] = CAN_DO_RO.get(u["id"], [])
         u.update(source="authored (SAS A1/A2 CC BY-NC-SA; research §9)", licence=LICENCES["authored"]["licence"],
                  attribution=LICENCES["authored"]["attribution"], review_status=REVIEW_NEEDS)
         recs.append(u)

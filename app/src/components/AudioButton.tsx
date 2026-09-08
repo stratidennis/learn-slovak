@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import { useT } from '../i18n'
 
 // One shared element: iOS unlocks audio per element on the first user gesture, and a single
 // element means every later programmatic play() inherits that permission.
@@ -21,6 +22,7 @@ type Props = {
 }
 /** Replay as often as you like; "Slow" uses the natural slow render when there is one, else 0.7×; "Slower" is 0.5×. */
 export function AudioButton({ src, slowSrc, autoPlay, onPlayed, compact }: Props) {
+  const t = useT()
   const [blocked, setBlocked] = useState(false)
   const [last, setLast] = useState<'normal' | 'slow' | 'slower'>('normal')
   const count = useRef(0)
@@ -36,10 +38,10 @@ export function AudioButton({ src, slowSrc, autoPlay, onPlayed, compact }: Props
   if (compact) return <button className="audiobtn small" onClick={() => play('normal')} aria-label="Prehrať">▶</button>
   return (
     <div className="row" style={{ gap: 8 }}>
-      <button className="btn primary" style={{ minHeight: 44 }} onClick={() => play('normal')} aria-label="Replay">▶ Replay</button>
-      <button className={`btn ghost ${last === 'slow' ? 'on' : ''}`} style={{ minHeight: 44 }} onClick={() => play('slow')}>🐢 Slow</button>
-      <button className={`btn ghost ${last === 'slower' ? 'on' : ''}`} style={{ minHeight: 44 }} onClick={() => play('slower')}>🐌 Slower</button>
-      {blocked && <span className="small muted">tap to play</span>}
+      <button className="btn primary" style={{ minHeight: 44 }} onClick={() => play('normal')} aria-label={t.replay}>▶ {t.replay}</button>
+      <button className={`btn ghost ${last === 'slow' ? 'on' : ''}`} style={{ minHeight: 44 }} onClick={() => play('slow')}>🐢 {t.slow}</button>
+      <button className={`btn ghost ${last === 'slower' ? 'on' : ''}`} style={{ minHeight: 44 }} onClick={() => play('slower')}>🐌 {t.slower}</button>
+      {blocked && <span className="small muted">{t.tap_to_play}</span>}
     </div>
   )
 }

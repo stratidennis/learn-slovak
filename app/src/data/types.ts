@@ -9,25 +9,26 @@ export type Lexeme = {
 }
 export type Unit = {
   id: string; title: string; title_ro: string; sas_area: string | null; can_do: string[]
-  grammar_notes: string[]; exercise_sequence: string[]; roleplay: string | null; creative: string | null
+  can_do_ro?: string[]; grammar_notes: string[]; exercise_sequence: string[]; roleplay: string | null; creative: string | null
   domain_pack: string | null; milestone: string | null; phase: number; chunks: string[]
 }
-export type ChunkVariant = { sk: string; note: string; register: string; audio?: AudioRef | null; audio_slow?: string; guide?: Guide }
+export type ChunkVariant = { sk: string; note: string; note_ro?: string; register: string; audio?: AudioRef | null; audio_slow?: string; guide?: Guide }
 export type AudioRef = { file: string; spoken_text?: string | null; tts_voice?: string }
 export type Chunk = {
   id: string; unit: string; sk: string; ro: string; en: string; register: string
-  variants: ChunkVariant[]; notes: string | null; examples: string[]; function: string | null
+  variants: ChunkVariant[]; notes: string | null; notes_ro?: string | null; examples: string[]; function: string | null
   audio: AudioRef | null; audio_slow?: string; guide?: Guide; review_status: string
 }
 export type Sentence = {
   id: string; sk: string; en: string[]; ro: string[]; lemmas: string[]
   audio: string; audio_slow?: string; guide?: Guide; native: boolean; band: number; attr: string; lic: string
 }
-export type AlphabetLetter = { letter: string; name: string; ipa: string; ro: string; example: string; example_spell: string | null; note: string | null; audio_name: string; audio_example: string | null }
-export type Alphabet = { letters: AlphabetLetter[]; diphthongs: { d: string; ipa: string; ro: string; example: string }[] }
+export type L2 = { en: string | null; ro: string | null }
+export type AlphabetLetter = { letter: string; name: string; ipa: string; anchor: L2; example: string; example_spell: string | null; note: L2; audio_name: string; audio_example: string | null }
+export type Alphabet = { letters: AlphabetLetter[]; diphthongs: { d: string; ipa: string; anchor: L2; example: string }[] }
 export type GrammarNote = {
-  id: string; title: string; unit: string; tags: string[]; body: string; ro_analogy: string | null
-  table: string[][] | null; examples: string[]; related: string[]; level: string
+  id: string; title: string; title_ro?: string | null; unit: string; tags: string[]; body: string; body_ro?: string | null; ro_analogy: string | null
+  table: string[][] | null; table_ro?: string[][] | null; examples: string[]; related: string[]; level: string
 }
 export type MinimalPair = {
   id: string; contrast: string; a: string; b: string | null; ipa_a: string; ipa_b: string | null

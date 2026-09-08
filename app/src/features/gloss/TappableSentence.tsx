@@ -2,11 +2,13 @@ import { useEffect, useState } from 'react'
 import { loadFormsIndex, loadLexemes } from '../../data/loader'
 import type { Lexeme } from '../../data/types'
 import { RegisterChip, ReviewChip } from '../../components/RegisterChip'
+import { useLang, useT } from '../../i18n'
 
 type Hit = { surface: string; lexeme: Lexeme | null; tags: string[] }
 
-/** Every word is tappable → gloss popover (research §10.1 Reading: tap-to-gloss). */
+/** Every word is tappable → gloss popover in the UI language (research §10.1 Reading: tap-to-gloss). */
 export function TappableSentence({ text, className = 'sk big' }: { text: string; className?: string }) {
+  const t = useT(); const lang = useLang()
   const [hit, setHit] = useState<Hit | null>(null)
   const [forms, setForms] = useState<Record<string, string> | null>(null)
   const [lex, setLex] = useState<Map<string, Lexeme> | null>(null)
@@ -20,6 +22,8 @@ export function TappableSentence({ text, className = 'sk big' }: { text: string;
     setHit({ surface: raw, lexeme, tags })
   }
   const parts = text.split(/(\s+)/)
+  const L = hit?.lexeme
+  const gloss = L ? (lang === 'ro' ? (L.ro.length ? L.ro : L.en) : (L.en.length ? L.en : L.ro)) : []
   return (
     <>
       <p className={className} style={{ margin: 0 }}>
@@ -31,32 +35,31 @@ export function TappableSentence({ text, className = 'sk big' }: { text: string;
           <div className="popover fade" role="dialog">
             <div className="row between">
               <div>
-                <div className="sk big">{hit.lexeme?.l ?? hit.surface}</div>
-                {hit.lexeme?.spell && <div className="guide-ro">{hit.lexeme.spell}</div>}
-                {hit.lexeme?.ipa && <div className="mono muted">{hit.lexeme.ipa}{hit.lexeme.ipa_src === 'generated' && <span className="small"> · generated</span>}</div>}
+                <div className="sk big">{L?.l ?? hit.surface}</div>
+                {L?.spell && <div className="guide-ro">{L.spell}</div>}
+                {L?.ipa && <div className="mono muted">{L.ipa}{L.ipa_src === 'generated' && <span className="small"> · {t.generated}</span>}</div>}
               </div>
-              <button className="btn ghost" onClick={() => setHit(null)}>✕</button>
+              <button className="btn ghost" onClick={() => setHit(null)} aria-label={t.close}>✕</button>
             </div>
-            {hit.lexeme ? (
+            {L ? (
               <div className="stack" style={{ marginTop: 12 }}>
-                <div style={{ fontSize: '1.25rem' }}>{hit.lexeme.ro.join('; ') || <span className="muted">—</span>}</div>
-                <div className="muted">{hit.lexeme.en.join('; ')}</div>
+                <div style={{ fontSize: '1.25rem' }}>{gloss.join('; ') || <span className="muted">—</span>}</div>
                 <div className="row">
-                  {hit.lexeme.pos && <span className="chip">{hit.lexeme.pos}</span>}
-                  {hit.lexeme.g && <span className="chip">{hit.lexeme.g}</span>}
-                  {hit.lexeme.asp && <span className="chip">{hit.lexeme.asp}</span>}
+                  {L.pos && <span className="chip">{L.pos}</span>}
+                  {L.g && <span className="chip">{L.g}</span>}
+                  {L.asp && <span className="chip">{L.asp}</span>}
                   {hit.tags.length > 0 && <span className="chip" style={{ ['--c' as string]: 'var(--primary)' }}>{hit.surface.toLowerCase()} · {hit.tags.join(' ')}</span>}
-                  <span className="chip">band {hit.lexeme.b} · #{hit.lexeme.rk}</span>
-                  <RegisterChip register={hit.lexeme.flag} />
-                  <ReviewChip status={hit.lexeme.rs} />
+                  <span className="chip">{t.band} {L.b} · #{L.rk}</span>
+                  <RegisterChip register={L.flag} />
+                  <ReviewChip status={L.rs} />
                 </div>
-                {hit.lexeme.cog && <div className="small" style={{ background: 'var(--secondary-soft)', padding: '8px 12px', borderRadius: 10 }}>
-                  ★ Cognate: <b>{hit.lexeme.cog.map(c => c.ro).join(', ')}</b>{hit.lexeme.cog[0].semantic_shift && ' (meaning shifted)'}</div>}
-                {hit.lexeme.ff && <div className="small" style={{ background: 'var(--error-soft)', padding: '8px 12px', borderRadius: 10 }}>
-                  ⚠ False friend: RO <b>{hit.lexeme.ff[0].ro}</b> = {hit.lexeme.ff[0].ro_means}; SK means {hit.lexeme.ff[0].sk_means}</div>}
-                <a className="small" href={`https://slovnik.juls.savba.sk/?w=${encodeURIComponent(hit.lexeme.l)}`} target="_blank" rel="noreferrer">JÚĽŠ dictionary ↗</a>
+                {L.cog && <div className="small" style={{ background: 'var(--secondary-soft)', padding: '8px 12px', borderRadius: 10 }}>
+                  ★ {t.cognate}: <b>{L.cog.map(c => c.ro).join(', ')}</b>{L.cog[0].semantic_shift && ' ' + t.meaning_shifted}</div>}
+                {L.ff && <div className="small" style={{ background: 'var(--error-soft)', padding: '8px 12px', borderRadius: 10 }}>
+                  ⚠ {t.false_friend}: RO <b>{L.ff[0].ro}</b> {t.ff_ro_means} {L.ff[0].ro_means}; {t.ff_sk_means} {L.ff[0].sk_means}</div>}
+                <a className="small" href={`https://slovnik.juls.savba.sk/?w=${encodeURIComponent(L.l)}`} target="_blank" rel="noreferrer">{t.dictionary}</a>
               </div>
-            ) : <p className="muted" style={{ marginTop: 12 }}>Not in the band 1–2 lexicon yet (a name, or a band-3+ word).</p>}
+            ) : <p className="muted" style={{ marginTop: 12 }}>{t.not_in_lexicon}</p>}
           </div>
         </>
       )}

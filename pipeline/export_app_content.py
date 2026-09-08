@@ -16,6 +16,7 @@ from __future__ import annotations
 import json, os, re, shutil, collections, random
 from .common import CONTENT, ROOT, read_jsonl, write_jsonl
 from .pronounce import respell_ro, ipa as ipa_of, ALPHABET, DIPHTHONGS
+from .translations_ro import PAIR_GLOSS_RO, ALPHABET_I18N, DIPHTHONGS_I18N
 
 APP_PUBLIC = os.path.join(ROOT, "app", "public")
 OUT = os.path.join(APP_PUBLIC, "content")
@@ -79,10 +80,11 @@ def alphabet_json(audio_refs: set) -> list:
             ex_rel = _existing(stem + "-ex") or tts_render(example, os.path.join(CONTENT, "audio", stem + "-ex"), voice=VOICES["f"])["file"]
             audio_refs.add(ex_rel)
         audio_refs.add(name_rel)
-        out.append({"letter": letter, "name": name, "ipa": ipa_, "ro": ro_anchor, "example": example,
+        a_en, a_ro, n_en, n_ro = ALPHABET_I18N.get(letter, (ro_anchor, ro_anchor, note, note))
+        out.append({"letter": letter, "name": name, "ipa": ipa_, "anchor": {"en": a_en, "ro": a_ro}, "example": example,
                     "example_spell": respell_ro(example) if example and example != "—" else None,
-                    "note": note, "audio_name": name_rel, "audio_example": ex_rel})
-    return [{"letters": out, "diphthongs": [{"d": d, "ipa": i, "ro": r, "example": e} for d, i, r, e in DIPHTHONGS]}]
+                    "note": {"en": n_en, "ro": n_ro}, "audio_name": name_rel, "audio_example": ex_rel})
+    return [{"letters": out, "diphthongs": [{"d": d, "ipa": i, "anchor": {"en": DIPHTHONGS_I18N.get(d, (r, r))[0], "ro": DIPHTHONGS_I18N.get(d, (r, r))[1]}, "example": e} for d, i, r, e in DIPHTHONGS]}]
 
 _voice = None
 def ensure_audio(picked, voice=TTS_VOICE):
@@ -131,7 +133,7 @@ def main():
     sizes["coverage.json"] = dump("coverage.json", {r["lemma"]: round(r["subtitle_count"] / total, 7) for r in lex})
 
     # ---- units, chunks, notes, pairs -------------------------------------------
-    sizes["units.json"] = dump("units.json", [{k: u.get(k) for k in ("id","title","title_ro","sas_area","can_do","grammar_notes",
+    sizes["units.json"] = dump("units.json", [{k: u.get(k) for k in ("id","title","title_ro","sas_area","can_do","can_do_ro","grammar_notes",
         "exercise_sequence","roleplay","creative","domain_pack","milestone","phase","chunks")} for u in units])
     by_unit = collections.defaultdict(list)
     chunks_changed = False
@@ -167,6 +169,7 @@ def main():
         write_jsonl(f"{CONTENT}/minimal_pairs.jsonl", pairs)
     for p in pairs:
         p["guide"] = {"a": respell_ro(p["a"], mark_stress=False), "b": respell_ro(p["b"], mark_stress=False) if p.get("b") else None}
+        p["gloss_ro"] = PAIR_GLOSS_RO.get(p["gloss"], p["gloss"])
     sizes["minimal_pairs.json"] = dump("minimal_pairs.json", pairs)
     sizes["alphabet.json"] = dump("alphabet.json", alphabet_json(audio_refs))
 

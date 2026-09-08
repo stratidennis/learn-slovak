@@ -5,11 +5,13 @@ import type { Unit } from '../../data/types'
 import { db } from '../../db/db'
 import { CoverageMeter } from '../../components/CoverageMeter'
 import { ThemeToggle } from '../../components/ThemeToggle'
+import { LanguageToggle } from '../../components/LanguageToggle'
+import { fmt, useLang, useT } from '../../i18n'
 
 type Stats = { due: Record<string, number>; dueAll: number; known: number; learning: number; coverage: number; chunksSeen: Record<string, number> }
-const PHASE = ['Sounds & script', 'Survival', 'The sentence engine', 'Domain tracks', 'Native input']
 
 export function Home() {
+  const t = useT()
   const [units, setUnits] = useState<Unit[]>([])
   const [st, setSt] = useState<Stats | null>(null)
   useEffect(() => {
@@ -27,26 +29,28 @@ export function Home() {
     })()
   }, [])
   const phases = [...new Set(units.map(u => u.phase))]
+  const lang = useLang()
   return (
     <div className="page fade">
-      <div className="topbar between" style={{ justifyContent: 'space-between' }}><h1>Slovenčina</h1><div className="row"><Link to="/alphabet" className="btn ghost" style={{ minHeight: 40, padding: '6px 14px' }}>Aa 🔊 Alphabet</Link><ThemeToggle /></div></div>
+      <div className="topbar between" style={{ justifyContent: 'space-between' }}><h1>{t.app}</h1><div className="row"><LanguageToggle /><ThemeToggle /></div></div>
+      <div className="row" style={{ marginBottom: 12 }}><Link to="/alphabet" className="btn ghost" style={{ minHeight: 40, padding: '6px 14px' }}>Aa 🔊 {t.alphabet_btn}</Link></div>
       <div className="card">
-        <CoverageMeter pct={st?.coverage ?? 0} />
+        <CoverageMeter pct={st?.coverage ?? 0} label={t.coverage_label} />
         <div className="row between small muted" style={{ marginTop: 10 }}>
-          <span>{st?.known ?? 0} known · {st?.learning ?? 0} learning</span>
-          {st && st.dueAll > 0 ? <Link to="/review" className="btn primary" style={{ minHeight: 40, padding: '8px 16px' }}>Review {st.dueAll} due</Link> : <span>nothing due 🎉</span>}
+          <span>{st?.known ?? 0} {t.known} · {st?.learning ?? 0} {t.learning}</span>
+          {st && st.dueAll > 0 ? <Link to="/review" className="btn primary" style={{ minHeight: 40, padding: '8px 16px' }}>{fmt(t.review_due, { n: st.dueAll })}</Link> : <span>{t.nothing_due}</span>}
         </div>
       </div>
       {phases.map(p => (
         <section key={p} style={{ marginTop: 24 }}>
-          <h2 style={{ marginBottom: 8 }}>Phase {p} <span className="muted" style={{ fontWeight: 400, fontSize: '1rem' }}>— {PHASE[p]}</span></h2>
+          <h2 style={{ marginBottom: 8 }}>{t.phase} {p} <span className="muted" style={{ fontWeight: 400, fontSize: '1rem' }}>— {t.phase_names[p]}</span></h2>
           <div className="card" style={{ padding: 0, overflow: 'hidden' }}>
             {units.filter(u => u.phase === p).map(u => {
               const seen = st?.chunksSeen[u.id] ?? 0, total = u.chunks.length
               return (
                 <Link key={u.id} to={`/unit/${u.id}`} className={`unit ${total && seen >= total ? 'done' : ''}`} style={{ color: 'inherit', borderTop: '1px solid var(--line)' }}>
                   <div className="num">{u.id}</div>
-                  <div className="t"><b>{u.title}</b><small>{u.title_ro}{total ? ` · ${seen}/${total} chunks` : ''}</small></div>
+                  <div className="t"><b>{lang === 'ro' ? u.title_ro : u.title}</b>{total > 0 && <small>{seen}/{total} {t.chunks_word}</small>}</div>
                   {st?.due[u.id] ? <span className="badge">{st.due[u.id]}</span> : <span className="muted">›</span>}
                 </Link>
               )

@@ -10,7 +10,8 @@ sentence bank. Every record is a draft until a native signs it off.
 """
 from __future__ import annotations
 import os
-from .common import CONTENT, LICENCES, REVIEW_NEEDS, write_jsonl
+from .common import CONTENT, LICENCES, REVIEW_NEEDS, write_jsonl, read_jsonl
+from .translations_ro import CHUNK_NOTES_RO, VARIANT_NOTES_RO
 
 # (unit, id, sk, ro, en, register, variants[(sk, note)], notes, examples[sk])
 C = []
@@ -230,21 +231,37 @@ ch(U,"Požehnanú nedeľu.","Duminică binecuvântată.","Blessed Sunday.",reg="
 
 
 def main():
+    old = {}
+    try:
+        old = {r["id"]: r for r in read_jsonl(os.path.join(CONTENT, "chunks.jsonl"))}
+    except FileNotFoundError:
+        pass
     recs = []
     for i, c in enumerate(C, 1):
         slug = (c["sk"].lower().replace("…", "").strip(" .!?")
                 .translate(str.maketrans("áäčďéíĺľňóôŕšťúýž", "aacdeillnoorstuyz"))
                 .replace(" ", "-").replace("/", "").replace(",", "").replace("?", "").replace("--", "-")[:40])
+        cid = f"chunk:{c['unit']}:{slug}"
+        for v in c["variants"]:
+            v["note_ro"] = VARIANT_NOTES_RO.get(v["note"], v["note"])
         recs.append({
-            "id": f"chunk:{c['unit']}:{slug}",
+            "id": cid,
             "unit": c["unit"], "sk": c["sk"], "ro": c["ro"], "en": c["en"],
             "register": c["register"], "variants": c["variants"],
-            "function": c["function"], "notes": c["notes"], "examples": c["examples"],
+            "function": c["function"], "notes": c["notes"], "notes_ro": CHUNK_NOTES_RO.get(cid), "examples": c["examples"],
             "audio": None,
             "source": "authored (research App. C, §5.2; SAS A1 lexical minimum CC BY-NC-SA)",
             "licence": LICENCES["authored"]["licence"], "attribution": LICENCES["authored"]["attribution"],
             "review_status": REVIEW_NEEDS,
         })
+    for r in recs:                      # re-authoring must not throw away rendered audio / guides
+        o = old.get(r["id"])
+        if o:
+            for k in ("audio", "audio_slow", "guide"):
+                if o.get(k) is not None: r[k] = o[k]
+            for v, ov in zip(r["variants"], o.get("variants", [])):
+                for k in ("audio", "audio_slow", "guide"):
+                    if ov.get(k) is not None: v[k] = ov[k]
     out = os.path.join(CONTENT, "chunks.jsonl")
     n = write_jsonl(out, recs)
     from collections import Counter
