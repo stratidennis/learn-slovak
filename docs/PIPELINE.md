@@ -89,3 +89,19 @@ film subtitles and are **not** a teaching order (research §15.3).
 | `subtitles:trusted` | Closed-class words — pronouns, prepositions, conjunctions, particles, numerals, adverbs. Subtitle frequency is genuinely reliable here. |
 | `subtitles:review` | Band-1 content words (verbs, nouns, adjectives). Mostly the real core — *byť, mať, vedieť, chcieť* — but the crime cluster lives here too: *zabiť* 117, *mŕtvy* 233, *zbraň* 250, *smrť* 291. Skim before teaching. |
 | `subtitles:domain-skewed` | Band 2+ content words. OpenSubtitles is dubbed Hollywood drama: *chlieb* is rank 2,142 and *zastávka*, *lekáreň*, *kaviareň*, *zľava*, *pokladňa* fall outside the top 3,000 entirely. **Never order domain vocabulary by rank** — hand-curate against the SAS A1/A2 topics. |
+
+## Authoring scripts (added 2026-09-08)
+
+Hand-authored content lives *in* these scripts so it is diffable and rebuilt like everything else:
+
+| Script | Output | Content |
+|---|---|---|
+| `author_chunks.py` | `content/chunks.jsonl` | 144 Phase-1 chunks + 146 colloquial/formal variants, per unit |
+| `author_grammar.py` | `content/grammar_notes.jsonl` | 61 micro-notes with RO analogies, tables, tags |
+| `author_lessons.py` | `content/lessons.jsonl` | 30 units: can-do, chunks, notes, exercise sequence, sentence selection, roleplay |
+| `author_minimal_pairs.py` | `content/minimal_pairs.jsonl` | 64 items, hunspell-verified, phonemically distinct through Piper |
+| `author_domain_packs.py` | `content/domain_packs.jsonl` | food/market · work/tech · church, hand-ordered |
+| `render_prompt.py` | stdout / file | fills `{{KNOWN_WORDS}}` etc. in a roleplay prompt |
+| `build_audio.py --chunks` | `content/audio/chunk-*.ogg` | chunk + variant clips |
+
+`content/texts/otcenas.json` is hand-written JSON (Roháček text is public domain).
