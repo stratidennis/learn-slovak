@@ -22,6 +22,7 @@ import os
 
 from .common import (CONTENT, DATA, LICENCES, REVIEW_NEEDS, REVIEW_OK,
                      REVIEW_UNREVIEWED, load_bands, read_jsonl, write_jsonl)
+from .hunspell_sk import load as load_hunspell
 
 # kaikki POS -> UD-style tag used in the app
 POS_MAP = {
@@ -65,6 +66,13 @@ def main() -> None:
     friends = load_json("false_friends_ro.json").get("entries", [])
     reg = load_json("register_flags.json")
     manual = load_json("glosses_manual.json").get("glosses", {})
+    # kaikki's Slovak noun tables are untagged and lossy (D107); hunspell-sk's
+    # affix rules carry the cases, so nouns get their paradigm from there.
+    try:
+        hs = load_hunspell()
+    except FileNotFoundError:
+        hs = None
+        print("  note: hunspell-sk not unpacked — noun paradigms will be missing")
 
     # index the Romanian tables by Slovak lemma
     cog_by_sk: dict[str, list[dict]] = collections.defaultdict(list)
@@ -117,6 +125,15 @@ def main() -> None:
         if main_e and main_e.get("gender"):
             gender, animacy = GENDER_MAP.get(main_e["gender"], (None, None))
 
+        forms = main_e.get("forms") if main_e else []
+        forms_source = "kaikki" if forms else None
+        if not forms and hs is not None:
+            hf = [{"form": f["form"], "tags": f["tags"]}
+                  for f in hs.expand(lemma) if f["tags"]]
+            if hf:
+                forms, forms_source = hf, "hunspell-sk"
+                stats["forms_from_hunspell"] += 1
+
         flag = reg.get("flags", {}).get(lemma)
         cog = cog_by_sk.get(lemma)
         ff = ff_by_sk.get(lemma)
@@ -136,7 +153,8 @@ def main() -> None:
             "ipa_phonetic": main_e.get("ipa_phonetic") if main_e else None,
             "gloss_en": gloss_en,
             "gloss_ro": gloss_ro,
-            "forms": main_e.get("forms") if main_e else [],
+            "forms": forms,
+            "forms_source": forms_source,
             "forms_untagged": main_e.get("paradigm_cells_untagged") if main_e else None,
             "paradigm_args": main_e.get("paradigm_args") if main_e else None,
             "derived": main_e.get("derived") if main_e else [],
@@ -153,7 +171,8 @@ def main() -> None:
                             "it over-weights crime/drama vocabulary and under-weights everyday "
                             "transactional words — see research §15.3"),
             "domains": ["core"] if meta["band"] == 1 else [],
-            "source": sorted(set(sources + (["kaikki"] if kk else []))),
+            "source": sorted(set(sources + (["kaikki"] if kk else [])
+                                 + ([forms_source] if forms_source else []))),
             "licence": LICENCES["kaikki"]["licence"] if kk else LICENCES["authored"]["licence"],
             "attribution": LICENCES["kaikki"]["attribution"] if kk else LICENCES["authored"]["attribution"],
             "review_status": {
