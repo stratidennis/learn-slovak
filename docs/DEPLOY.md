@@ -8,13 +8,44 @@ build is ~1,300 files / ~20 MB.
 The build cannot run on Vercel's CI (it needs Python + Piper for audio), so we **build on the
 laptop and upload the finished folder**. Once uploaded, the site stays up with the laptop off.
 
+## Keep it personal — not the synaicore account
+
+This laptop's Vercel CLI is signed in to a work account. This project must never deploy there.
+Vercel's CLI keeps **one** global login per machine, so we do not switch it — we pass a **personal
+token** on every command instead. Nothing about the work login changes.
+
+### What you set up (once, ~10 minutes)
+
+1. **A personal Vercel account.** vercel.com → Sign Up with a *personal* e-mail (not the GitHub
+   account if that one is tied to work). Hobby plan, free, non-commercial. Note your account
+   slug — it is the URL path at `vercel.com/<slug>`.
+2. **A token.** vercel.com → Account Settings → **Tokens** → Create. Scope: your personal
+   account. Expiry: whatever you like. Copy it once.
+3. **Put it where only the deploy script reads it.** Create `app/.env.deploy` (gitignored) with:
+   ```
+   VERCEL_TOKEN=paste-the-token-here
+   VERCEL_SCOPE=your-personal-slug
+   ```
+   Do this yourself; I should not see or handle the token.
+4. *(Optional but recommended)* **A personal GitHub account + a private repo** for backup of the
+   source. Create the repo empty, then:
+   ```bash
+   git remote add origin git@github.com:<you>/learn-slovak.git
+   git push -u origin main
+   ```
+   The current `gh` login on this machine is `dennis-stratinski` — if that is a work identity,
+   use `gh auth login` with the personal one first, or push over HTTPS with a personal PAT.
+
+That is everything. From then on `npm run deploy` uses the token and scope from `.env.deploy`
+and touches no other account.
+
 ## One-time setup (you, ~3 minutes)
 
 ```bash
 cd app
-npx vercel login          # opens the browser; use your Vercel account (GitHub sign-in is fine)
-npx vercel link --yes     # creates the project "learn-slovak-app" in your account
+npm run deploy            # first run creates the project "learn-slovak" in YOUR account
 ```
+(no `vercel login` — the token in `.env.deploy` is the only credential used)
 
 ## Every release
 
@@ -34,7 +65,8 @@ offline for every unit you have opened once, and updates itself on the next laun
 2. `tsc -b && vite build` — type-checks and bundles; the PWA plugin writes `sw.js` with:
    precached shell; `/audio/*` cache-first for a year; `/content/*` stale-while-revalidate.
 3. copies `vercel.json` into `dist/` (SPA rewrites, immutable cache headers on audio, `noindex`).
-4. `vercel deploy dist --prod --yes`.
+4. `vercel deploy dist --prod --yes --token $VERCEL_TOKEN --scope $VERCEL_SCOPE --name learn-slovak`
+   with both variables read from `app/.env.deploy`.
 
 ## Keeping it private-ish
 

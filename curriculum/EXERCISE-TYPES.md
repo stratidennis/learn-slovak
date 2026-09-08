@@ -6,8 +6,12 @@ what they do, how it is graded, what data it needs, and which skill/principle it
 
 Design rules that apply to all of them:
 
-- **Slovak is always audible.** Every Slovak string has a play button; the target sentence
+- **Slovak is always audible, and replayable.** Every Slovak string has ▶ Replay, 🐢 Slow (a clip the
+  TTS itself rendered slowly — not a pitch-smeared playbackRate) and 🐌 Slower; the target sentence
   auto-plays once. Listening-first is the point (§10.1).
+- **Pronunciation is never a guess.** Under every Slovak string: a Romanian-orthography respelling
+  (CAPS = stressed first syllable, doubled vowel = long, ɦ = voiced h, y = i-glide) and/or IPA,
+  per the learner's setting (D121). The Alphabet screen gives each letter's name, sound and anchor.
 - **Sentences, not words.** Even a "vocabulary" exercise shows the word inside a sentence
   (P3). The word is highlighted; the sentence is the card.
 - **Retrieval beats recognition** (P5). The default answer mode is *type* or *say*; multiple

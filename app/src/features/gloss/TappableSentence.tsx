@@ -32,7 +32,8 @@ export function TappableSentence({ text, className = 'sk big' }: { text: string;
             <div className="row between">
               <div>
                 <div className="sk big">{hit.lexeme?.l ?? hit.surface}</div>
-                {hit.lexeme?.ipa && <div className="mono muted">{hit.lexeme.ipa}</div>}
+                {hit.lexeme?.spell && <div className="guide-ro">{hit.lexeme.spell}</div>}
+                {hit.lexeme?.ipa && <div className="mono muted">{hit.lexeme.ipa}{hit.lexeme.ipa_src === 'generated' && <span className="small"> · generated</span>}</div>}
               </div>
               <button className="btn ghost" onClick={() => setHit(null)}>✕</button>
             </div>

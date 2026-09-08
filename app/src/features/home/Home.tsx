@@ -4,6 +4,7 @@ import { loadCoverage, loadUnits } from '../../data/loader'
 import type { Unit } from '../../data/types'
 import { db } from '../../db/db'
 import { CoverageMeter } from '../../components/CoverageMeter'
+import { ThemeToggle } from '../../components/ThemeToggle'
 
 type Stats = { due: Record<string, number>; dueAll: number; known: number; learning: number; coverage: number; chunksSeen: Record<string, number> }
 const PHASE = ['Sounds & script', 'Survival', 'The sentence engine', 'Domain tracks', 'Native input']
@@ -28,7 +29,7 @@ export function Home() {
   const phases = [...new Set(units.map(u => u.phase))]
   return (
     <div className="page fade">
-      <div className="topbar"><h1>Slovenčina</h1></div>
+      <div className="topbar between" style={{ justifyContent: 'space-between' }}><h1>Slovenčina</h1><div className="row"><Link to="/alphabet" className="btn ghost" style={{ minHeight: 40, padding: '6px 14px' }}>Aa 🔊 Alphabet</Link><ThemeToggle /></div></div>
       <div className="card">
         <CoverageMeter pct={st?.coverage ?? 0} />
         <div className="row between small muted" style={{ marginTop: 10 }}>

@@ -13,8 +13,9 @@ pool band, contains one of the unit's target lemmas, prefers native-authored + E
 translation + audio, no register flags, spread across target lemmas.
 """
 from __future__ import annotations
-import json, os, shutil, collections, random
+import json, os, re, shutil, collections, random
 from .common import CONTENT, ROOT, read_jsonl
+from .pronounce import respell_ro, ipa as ipa_of, ALPHABET, DIPHTHONGS
 
 APP_PUBLIC = os.path.join(ROOT, "app", "public")
 OUT = os.path.join(APP_PUBLIC, "content")
@@ -26,6 +27,49 @@ def dump(name, obj):
     with open(path, "w", encoding="utf-8") as fh:
         json.dump(obj, fh, ensure_ascii=False, separators=(",", ":"))
     return os.path.getsize(path)
+
+def _get_voice():
+    global _voice
+    if _voice is None:
+        from .build_audio import VOICE_DIR, VOICE
+        from piper import PiperVoice
+        _voice = PiperVoice.load(os.path.join(VOICE_DIR, f"{VOICE}.onnx"))
+    return _voice
+
+def slow_clip(file: str, text: str) -> str:
+    """content/audio/<stem>-slow.ogg rendered by Piper at length_scale 1.4 — natural slow speech,
+    unlike playbackRate. Idempotent."""
+    stem = os.path.splitext(os.path.basename(file))[0]
+    rel = f"audio/{stem}-slow.ogg"
+    if not os.path.exists(os.path.join(CONTENT, rel)):
+        from .build_audio import _render_one
+        from piper import SynthesisConfig
+        _render_one(_get_voice(), SynthesisConfig(length_scale=1.4), True, text, stem + "-slow")
+        slow_clip.rendered = getattr(slow_clip, "rendered", 0) + 1
+    return rel
+
+def alphabet_json(audio_refs: set) -> list:
+    """Letters with name + example audio (Piper). Letter names are spoken via their Slovak name text."""
+    from .build_audio import _render_one
+    from piper import SynthesisConfig
+    v = _get_voice(); cfg = SynthesisConfig(length_scale=1.2)
+    out = []
+    for letter, name, ipa_, ro_anchor, example, note in ALPHABET:
+        stem = "alpha-" + re.sub(r"[^a-z]", lambda m: f"u{ord(m.group(0)):04x}", letter)
+        name_rel = f"audio/{stem}-name.ogg"
+        if not os.path.exists(os.path.join(CONTENT, name_rel)):
+            _render_one(v, cfg, True, name, stem + "-name")
+        ex_rel = None
+        if example and example != "—":
+            ex_rel = f"audio/{stem}-ex.ogg"
+            if not os.path.exists(os.path.join(CONTENT, ex_rel)):
+                _render_one(v, cfg, True, example, stem + "-ex")
+            audio_refs.add(ex_rel)
+        audio_refs.add(name_rel)
+        out.append({"letter": letter, "name": name, "ipa": ipa_, "ro": ro_anchor, "example": example,
+                    "example_spell": respell_ro(example) if example and example != "—" else None,
+                    "note": note, "audio_name": name_rel, "audio_example": ex_rel})
+    return [{"letters": out, "diphthongs": [{"d": d, "ipa": i, "ro": r, "example": e} for d, i, r, e in DIPHTHONGS]}]
 
 _voice = None
 def ensure_audio(picked):
@@ -60,7 +104,10 @@ def main():
     lite, forms_index = [], {}
     for r in lex:
         if r["band"] <= 2 and not r.get("exclude_from_teaching"):
-            lite.append({"l": r["lemma"], "pos": r["pos"], "ro": r["gloss_ro"], "en": r["gloss_en"], "ipa": r["ipa"],
+            gen = None if r["ipa"] else ipa_of(r["lemma"])
+            lite.append({"l": r["lemma"], "pos": r["pos"], "ro": r["gloss_ro"], "en": r["gloss_en"],
+                         "ipa": r["ipa"] or gen, "ipa_src": "kaikki" if r["ipa"] else ("generated" if gen else None),
+                         "spell": respell_ro(r["lemma"]),
                          "b": r["band"], "rk": r["spoken_rank"], "g": r["gender"], "asp": r["aspect"],
                          "flag": r["register_flag"], "cog": r["cognate_ro"], "ff": r["false_friend_ro"],
                          "forms": [[f["form"], f["tags"]] for f in (r["forms"] or [])][:60],
@@ -79,16 +126,23 @@ def main():
     by_unit = collections.defaultdict(list)
     for c in chunks:
         by_unit[c["unit"]].append(c)
-        if c.get("audio"): audio_refs.add(c["audio"]["file"])
+        c["guide"] = {"ro": respell_ro(c["sk"]), "ipa": ipa_of(c["sk"])}
+        if c.get("audio"):
+            audio_refs.add(c["audio"]["file"]); c["audio_slow"] = slow_clip(c["audio"]["file"], c["sk"]); audio_refs.add(c["audio_slow"])
         for v in c.get("variants", []):
-            if v.get("audio"): audio_refs.add(v["audio"]["file"])
+            v["guide"] = {"ro": respell_ro(v["sk"]), "ipa": ipa_of(v["sk"])}
+            if v.get("audio"):
+                audio_refs.add(v["audio"]["file"]); v["audio_slow"] = slow_clip(v["audio"]["file"], v["sk"]); audio_refs.add(v["audio_slow"])
     for uid, cs in by_unit.items():
         sizes[f"chunks/{uid}.json"] = dump(f"chunks/{uid}.json", cs)
     sizes["grammar_notes.json"] = dump("grammar_notes.json", notes)
     for p in pairs:
         for k in ("a", "b"):
             if p.get("audio") and p["audio"].get(k): audio_refs.add(p["audio"][k]["file"])
+    for p in pairs:
+        p["guide"] = {"a": respell_ro(p["a"], mark_stress=False), "b": respell_ro(p["b"], mark_stress=False) if p.get("b") else None}
     sizes["minimal_pairs.json"] = dump("minimal_pairs.json", pairs)
+    sizes["alphabet.json"] = dump("alphabet.json", alphabet_json(audio_refs))
 
     # ---- lesson sentences per unit ---------------------------------------------
     # NOT filtered on audio: only band-1 sentences were pre-rendered, which silently excluded every
@@ -142,9 +196,14 @@ def main():
         n_sent += len(picked)
         sizes[f"sentences/{u['id']}.json"] = dump(f"sentences/{u['id']}.json",
             [{"id": s["id"], "sk": s["sk"], "en": s["en"][:1], "ro": s["ro"][:1], "lemmas": s["content_lemmas"],
-              "audio": s["audio"]["file"], "native": s["native_author"], "band": s["band"],
+              "audio": s["audio"]["file"], "audio_slow": slow_clip(s["audio"]["file"], s["sk"]),
+              "guide": {"ro": respell_ro(s["sk"]), "ipa": ipa_of(s["sk"])},
+              "native": s["native_author"], "band": s["band"],
               "attr": s["attribution"], "lic": s["licence"]} for s in picked])
+        for s in picked: audio_refs.add(slow_clip(s["audio"]["file"], s["sk"]))
 
+    if getattr(slow_clip, "rendered", 0):
+        print(f"  rendered {slow_clip.rendered} slow clips (length_scale 1.4)")
     if getattr(ensure_audio, "rendered", 0):
         from .common import write_jsonl as _w
         _w(f"{CONTENT}/sentences.jsonl", sents)

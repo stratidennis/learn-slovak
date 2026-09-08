@@ -20,7 +20,7 @@ unit ends when its can-do statements are ticked, not after N lessons.
 
 | Unit | You will be able to… | Content | Exercises |
 |---|---|---|---|
-| **0.1 The alphabet Romanians already know** | read any Slovak word aloud | §4.1 sound map with RO anchors; the 46 letters; `ch dz dž` as single letters; the *de te ne le* softening rule | E4 internationalisms on sight; D1 chunk shadow |
+| **0.1 The alphabet Romanians already know** | read any Slovak word aloud; spell your own name | **Alphabet screen**: 46 letters, each with its Slovak *name* (á, bé, cé… for spelling), IPA, Romanian anchor, example word, audio for both; §4.1 sound map; `ch dz dž` as single letters; the *de te ne le* softening rule. Every Slovak string in the app carries a **Romanian respelling** (PROsiim si CAAvu — CAPS = stress, doubled vowel = long, ɦ = voiced h) and IPA, toggled in Settings (D121) | E4 internationalisms on sight; D1 chunk shadow |
 | **0.2 The four things Romanian ears miss** | hear length, ť/ď/ň/ľ, h vs ch, first-syllable stress | Appendix B minimal pairs, hunspell-verified; Piper + Commons human audio | A3 minimal pairs (the daily micro-drill is born here) |
 | **0.3 Words you already own** | recognise 84 cognates and 16 false friends | §4.3, §4.4 as cards | E2 cognate deck, E3 false friends |
 | **0.4 Type it** | type every diacritic without looking | keyboard helper; dead-key hints (macOS/Windows/phone) | dictation of single words |

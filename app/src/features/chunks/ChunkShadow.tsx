@@ -4,6 +4,7 @@ import { loadChunks } from '../../data/loader'
 import type { Chunk } from '../../data/types'
 import { AudioButton, playAudio } from '../../components/AudioButton'
 import { RegisterChip, ReviewChip } from '../../components/RegisterChip'
+import { Pronunciation } from '../../components/Pronunciation'
 import { db } from '../../db/db'
 
 /** D1 chunk shadow: listen, repeat aloud, next. Variants show what natives say. */
@@ -28,9 +29,10 @@ export function ChunkShadow() {
       <div className="card" style={{ minHeight: 320 }}>
         <div className="row between"><RegisterChip register={c.register} /><ReviewChip status={c.review_status} /></div>
         <p className="sk big" style={{ marginTop: 16, fontSize: '2.5rem' }}>{c.sk}</p>
+        <Pronunciation ro={c.guide?.ro} ipa={c.guide?.ipa} />
         <p style={{ fontSize: '1.25rem', margin: '8px 0' }}>{c.ro}</p>
         <button className="muted small" onClick={() => setShowEn(!showEn)}>{showEn ? c.en : 'English ▾'}</button>
-        <div style={{ marginTop: 16 }}>{c.audio && <AudioButton src={`/${c.audio.file}`} autoPlay />}</div>
+        <div style={{ marginTop: 16 }}>{c.audio && <AudioButton src={`/${c.audio.file}`} slowSrc={c.audio_slow ? `/${c.audio_slow}` : null} autoPlay />}</div>
         {c.notes && <p className="small" style={{ background: 'var(--primary-soft)', padding: '10px 12px', borderRadius: 12, marginTop: 16 }}>{c.notes}</p>}
         {c.variants.length > 0 && (
           <div style={{ marginTop: 12 }}>
@@ -38,8 +40,10 @@ export function ChunkShadow() {
             {showVar && <div className="stack" style={{ marginTop: 10 }}>
               {c.variants.map((v, k) => (
                 <div key={k} className="row between" style={{ background: 'var(--surface-sunk)', borderRadius: 12, padding: '10px 12px' }}>
-                  <div><div className="sk">{v.sk}</div><div className="small muted">{v.note}</div></div>
-                  <div className="row"><RegisterChip register={v.register} />{v.audio && <button className="audiobtn small" onClick={() => playAudio(`/${v.audio!.file}`)}>▶</button>}</div>
+                  <div><div className="sk">{v.sk}</div><Pronunciation ro={v.guide?.ro} ipa={v.guide?.ipa} /><div className="small muted">{v.note}</div></div>
+                  <div className="row" style={{ flexWrap: 'nowrap' }}><RegisterChip register={v.register} />
+                    {v.audio && <button className="audiobtn small" onClick={() => playAudio(`/${v.audio!.file}`)} aria-label="Replay">▶</button>}
+                    {v.audio_slow && <button className="audiobtn small" style={{ background: 'var(--secondary)', color: '#1B2430' }} onClick={() => playAudio(`/${v.audio_slow}`)} aria-label="Slow">🐢</button>}</div>
                 </div>
               ))}
             </div>}

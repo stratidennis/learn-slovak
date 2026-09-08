@@ -26,3 +26,5 @@ app/dist/
 app/public/content/
 app/public/audio
 app/.vercel/
+app/.env.deploy
+app/.env*.local

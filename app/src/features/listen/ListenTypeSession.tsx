@@ -9,6 +9,7 @@ import { AudioButton } from '../../components/AudioButton'
 import { SlovakKeyboard } from '../../components/SlovakKeyboard'
 import { Diff } from '../../components/Diff'
 import { TappableSentence } from '../gloss/TappableSentence'
+import { Pronunciation } from '../../components/Pronunciation'
 
 type Item = { card: CardRow; sentence: Sentence; isNew: boolean }
 
@@ -85,7 +86,7 @@ export function ListenTypeSession() {
       </div>
       <div className="card">
         <div className="row between">
-          <AudioButton src={`/${item.sentence.audio}`} autoPlay onPlayed={setReplays} />
+          <AudioButton src={`/${item.sentence.audio}`} slowSrc={item.sentence.audio_slow ? `/${item.sentence.audio_slow}` : null} autoPlay onPlayed={setReplays} />
           <span className="muted small">{replays > 1 ? `${replays}×` : ''}</span>
         </div>
         {!result ? (
@@ -104,6 +105,7 @@ export function ListenTypeSession() {
             {gaveUp ? <p className="muted" style={{ margin: 0 }}>Revealed — listen once more, then say it.</p> : <Diff grade={result} />}
             <div style={{ padding: '12px 0', borderTop: '1px solid var(--line)' }}>
               <TappableSentence text={item.sentence.sk} />
+              <Pronunciation ro={item.sentence.guide?.ro} ipa={item.sentence.guide?.ipa} />
               <p className="small muted" style={{ margin: '6px 0 0' }}>tap a word for its meaning</p>
             </div>
             {item.sentence.en[0] && <p style={{ margin: 0 }}>{item.sentence.en[0]}</p>}

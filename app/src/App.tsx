@@ -4,6 +4,7 @@ import { UnitPage } from './features/unit/UnitPage'
 import { ChunkShadow } from './features/chunks/ChunkShadow'
 import { ListenTypeSession } from './features/listen/ListenTypeSession'
 import { Settings } from './features/settings/Settings'
+import { Alphabet } from './features/alphabet/Alphabet'
 
 export default function App() {
   return (
@@ -15,6 +16,7 @@ export default function App() {
         <Route path="/unit/:id/lesson" element={<ListenTypeSession />} />
         <Route path="/review" element={<ListenTypeSession />} />
         <Route path="/settings" element={<Settings />} />
+        <Route path="/alphabet" element={<Alphabet />} />
       </Routes>
       <nav className="nav">
         <NavLink to="/" end><span>🏠</span>Home</NavLink>

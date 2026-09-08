@@ -9,7 +9,7 @@
     "build": "tsc -b && vite build && cp vercel.json dist/vercel.json",
     "preview": "vite preview --host",
     "lint": "oxlint",
-    "deploy": "npm run export && npm run build && npx vercel deploy dist --prod --yes",
+    "deploy": "npm run export && npm run build && node scripts/deploy.mjs",
     "test": "vitest run"
   },
   "dependencies": {

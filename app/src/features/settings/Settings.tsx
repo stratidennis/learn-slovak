@@ -4,14 +4,17 @@ import { db, exportAll, getSetting, importAll, setSetting } from '../../db/db'
 export function Settings() {
   const [theme, setTheme] = useState<'auto' | 'light' | 'dark'>('auto')
   const [perSession, setPerSession] = useState(8)
+  const [guide, setGuide] = useState<'off' | 'ro' | 'ipa' | 'both'>('ro')
   const [counts, setCounts] = useState({ cards: 0, reviews: 0, lemmas: 0 })
   const [msg, setMsg] = useState('')
   useEffect(() => {
     getSetting<'auto' | 'light' | 'dark'>('theme', 'auto').then(setTheme)
     getSetting('newPerSession', 8).then(setPerSession)
+    getSetting<'off' | 'ro' | 'ipa' | 'both'>('pronunciation', 'ro').then(setGuide)
     ;(async () => setCounts({ cards: await db.cards.count(), reviews: await db.reviews.count(), lemmas: await db.lemmas.count() }))()
   }, [])
   const applyTheme = (t: typeof theme) => { setTheme(t); void setSetting('theme', t); document.documentElement.dataset.theme = t === 'auto' ? '' : t }
+  // theme buttons: auto = follows the phone (light in the day, dark at night when the OS schedules it)
   const doExport = async () => {
     const blob = new Blob([JSON.stringify(await exportAll())], { type: 'application/json' })
     const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `learn-slovak-${new Date().toISOString().slice(0, 10)}.json`; a.click()
@@ -26,8 +29,12 @@ export function Settings() {
     <div className="page fade">
       <div className="topbar"><h1>Settings</h1></div>
       <div className="stack">
-        <div className="card"><h3>Theme</h3><div className="row" style={{ marginTop: 10 }}>
+        <div className="card"><h3>Theme</h3><p className="small muted" style={{ margin: '4px 0 0' }}>auto follows your phone — light by day, dark at night if the phone is scheduled that way.</p><div className="row" style={{ marginTop: 10 }}>
           {(['auto', 'light', 'dark'] as const).map(t => <button key={t} className={`btn ${theme === t ? 'primary' : 'ghost'}`} style={{ minHeight: 40 }} onClick={() => applyTheme(t)}>{t}</button>)}</div></div>
+        <div className="card"><h3>Pronunciation guide</h3>
+          <div className="row" style={{ marginTop: 10 }}>{([['ro', 'Romanian respelling'], ['ipa', 'IPA'], ['both', 'Both'], ['off', 'Off']] as const).map(([k, l]) =>
+            <button key={k} className={`btn ${guide === k ? 'primary' : 'ghost'}`} style={{ minHeight: 40 }} onClick={() => { setGuide(k); void setSetting('pronunciation', k) }}>{l}</button>)}</div>
+          <p className="small muted" style={{ marginBottom: 0 }}>Respelling: <span className="guide-ro">PROsiim si CAAvu</span> — CAPS = stressed syllable (always the first), doubled vowel = long, ɦ = voiced h, y = the i-glide. Turn it off once your ear no longer needs it.</p></div>
         <div className="card"><h3>New sentences per lesson</h3>
           <div className="row" style={{ marginTop: 10 }}>{[4, 8, 12, 16].map(n => <button key={n} className={`btn ${perSession === n ? 'primary' : 'ghost'}`} style={{ minHeight: 40 }} onClick={() => { setPerSession(n); void setSetting('newPerSession', n) }}>{n}</button>)}</div>
           <p className="small muted" style={{ marginBottom: 0 }}>Reviews always come first. Lower this if reviews take more than 15 minutes.</p></div>
