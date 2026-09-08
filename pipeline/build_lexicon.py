@@ -31,6 +31,17 @@ POS_MAP = {
     "particle": "PART", "det": "DET", "name": "PROPN", "character": "X",
     "suffix": "X", "prefix": "X", "phrase": "X", "proverb": "X",
 }
+# hunspell-sk `po:` tags, used when kaikki has no entry at all — which is the
+# case for 71 band-1 lemmas including `ale`, `pred`, `však`.
+# Treat as a hint, not gospel: hunspell is a spell-checker first, and it tags
+# `hneď` (an adverb, "immediately") as `po:noun is:feminine`. `pos_source`
+# records where each tag came from so these can be audited later.
+HUNSPELL_POS_MAP = {
+    "noun": "NOUN", "verb": "VERB", "adjective": "ADJ", "adverb": "ADV",
+    "pronoun": "PRON", "preposition": "ADP", "conjunction": "CCONJ",
+    "number": "NUM", "interjection": "INTJ", "particle": "PART",
+    "participle": "VERB", "acronym": "X",
+}
 # Entries whose POS is a lexical word beat entries that merely describe a
 # glyph or a name; see rank_entry().
 POS_PRIORITY = {"character": 0, "name": 0, "suffix": 0, "prefix": 0, "phrase": 0}
@@ -49,6 +60,25 @@ def worst_status(en_status, ro_status, gloss_en, gloss_ro):
     if not gloss_en or not gloss_ro:
         return REVIEW_NEEDS
     return min((en_status, ro_status), key=lambda s: STATUS_RANK.get(s, 0))
+
+
+# Closed-class words: subtitle frequency really is reliable for these.
+CLOSED_CLASS = {"PRON", "ADP", "CCONJ", "SCONJ", "PART", "DET", "NUM", "INTJ", "ADV"}
+
+
+def corpus_bias(pos: str | None, band: int) -> str:
+    """§15.3 marker, so nobody mistakes these ranks for a teaching order.
+
+    Three values rather than two, because "band 1 is trustworthy" is too coarse:
+    `zbraň` (weapon) sits at rank 250 and `zabiť` at 117 — inside band 1 and
+    exactly the crime-drama skew §15.3 is warning about. Only the closed-class
+    words are unreservedly safe to order by frequency.
+    """
+    if pos in CLOSED_CLASS:
+        return "subtitles:trusted"
+    if band == 1:
+        return "subtitles:review"      # core content words, but the crime cluster lives here
+    return "subtitles:domain-skewed"
 
 
 def load_json(name: str) -> dict:
@@ -121,6 +151,14 @@ def main() -> None:
         else:
             stats["gloss_ro_MISSING"] += 1
 
+        rec_pos = POS_MAP.get(main_e["pos"], "X") if main_e else None
+        pos_source = "kaikki" if rec_pos else None
+        if rec_pos is None and hs is not None:
+            hp = hs.pos_of(lemma)
+            if hp:
+                rec_pos = HUNSPELL_POS_MAP.get(hp, "X")
+                pos_source = "hunspell-sk"
+                stats["pos_from_hunspell"] += 1
         gender = animacy = None
         if main_e and main_e.get("gender"):
             gender, animacy = GENDER_MAP.get(main_e["gender"], (None, None))
@@ -141,8 +179,9 @@ def main() -> None:
         rec = {
             "id": f"sk:{lemma}",
             "lemma": lemma,
-            "pos": POS_MAP.get(main_e["pos"], "X") if main_e else None,
+            "pos": rec_pos,
             "pos_all": sorted({POS_MAP.get(e["pos"], "X") for e in entries}) or None,
+            "pos_source": pos_source,
             "gender": gender,
             "animacy": animacy,
             "aspect": main_e.get("aspect") if main_e else None,
@@ -164,12 +203,7 @@ def main() -> None:
             "false_friend_ro": [{"ro": f["ro"], "ro_means": f["ro_means"],
                                  "sk_means": f["sk_means"]} for f in ff] if ff else None,
             "register_flag": flag,
-            # §15.3: band 1 is trustworthy frequency data; domain vocabulary is NOT
-            # frequency-ordered and must be hand-curated. Recorded per-record so
-            # future-me does not re-derive the wrong conclusion from the ranks.
-            "corpus_bias": ("subtitle frequency is reliable for function words and core verbs; "
-                            "it over-weights crime/drama vocabulary and under-weights everyday "
-                            "transactional words — see research §15.3"),
+            "corpus_bias": corpus_bias(rec_pos, meta["band"]),
             "domains": ["core"] if meta["band"] == 1 else [],
             "source": sorted(set(sources + (["kaikki"] if kk else [])
                                  + ([forms_source] if forms_source else []))),

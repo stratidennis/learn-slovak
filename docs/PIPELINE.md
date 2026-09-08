@@ -73,3 +73,19 @@ python -m pipeline.build_lexicon
 - **17 sentences** contain ordinals the number expander refuses to guess at (D111).
 - Noun paradigms come from hunspell affix expansion, which under-generates where a rule
   carries a continuation class (`naj/s`). Never over-generates.
+- **hunspell POS tags are a hint, not gospel** — it is a spell-checker first, and tags `hneď`
+  (adverb) as `po:noun is:feminine`. `pos_source` on each lexeme records the provenance.
+- ~100 lemmas in bands 1–2 still have no POS: words like `už`, `však`, `no`, `nikdy`, `kam`, `až`
+  exist in hunspell only as derived forms, not as headwords, and kaikki has no entry. They are the
+  same function words already queued for hand-written glosses.
+
+## `corpus_bias`
+
+Every lexeme carries a `corpus_bias` code, because the ranks in `lexicon_bands.csv` come from
+film subtitles and are **not** a teaching order (research §15.3).
+
+| Value | Means |
+|---|---|
+| `subtitles:trusted` | Closed-class words — pronouns, prepositions, conjunctions, particles, numerals, adverbs. Subtitle frequency is genuinely reliable here. |
+| `subtitles:review` | Band-1 content words (verbs, nouns, adjectives). Mostly the real core — *byť, mať, vedieť, chcieť* — but the crime cluster lives here too: *zabiť* 117, *mŕtvy* 233, *zbraň* 250, *smrť* 291. Skim before teaching. |
+| `subtitles:domain-skewed` | Band 2+ content words. OpenSubtitles is dubbed Hollywood drama: *chlieb* is rank 2,142 and *zastávka*, *lekáreň*, *kaviareň*, *zľava*, *pokladňa* fall outside the top 3,000 entirely. **Never order domain vocabulary by rank** — hand-curate against the SAS A1/A2 topics. |
