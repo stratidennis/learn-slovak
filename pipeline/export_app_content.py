@@ -36,34 +36,33 @@ def _get_voice():
         _voice = PiperVoice.load(os.path.join(VOICE_DIR, f"{VOICE}.onnx"))
     return _voice
 
+from .tts import render as tts_render, DEFAULT_VOICE as TTS_VOICE
+
+def _existing(stem: str) -> str | None:
+    for ext in (".mp3", ".ogg"):
+        if os.path.exists(os.path.join(CONTENT, "audio", stem + ext)):
+            return f"audio/{stem}{ext}"
+    return None
+
 def slow_clip(file: str, text: str) -> str:
-    """content/audio/<stem>-slow.ogg rendered by Piper at length_scale 1.4 — natural slow speech,
-    unlike playbackRate. Idempotent."""
-    stem = os.path.splitext(os.path.basename(file))[0]
-    rel = f"audio/{stem}-slow.ogg"
-    if not os.path.exists(os.path.join(CONTENT, rel)):
-        from .build_audio import _render_one
-        from piper import SynthesisConfig
-        _render_one(_get_voice(), SynthesisConfig(length_scale=1.4), True, text, stem + "-slow")
-        slow_clip.rendered = getattr(slow_clip, "rendered", 0) + 1
-    return rel
+    """content/audio/<stem>-slow.<ext> — slow speech rendered by the TTS itself (Piper length_scale
+    1.4 / Edge rate -30%), never playbackRate. Idempotent; backend = SK_TTS_VOICE."""
+    stem = os.path.splitext(os.path.basename(file))[0].removesuffix("-slow")
+    have = _existing(stem + "-slow")
+    if have: return have
+    rec = tts_render(text, os.path.join(CONTENT, "audio", stem + "-slow"), voice=TTS_VOICE, slow=True)
+    slow_clip.rendered = getattr(slow_clip, "rendered", 0) + 1
+    return rec["file"]
 
 def alphabet_json(audio_refs: set) -> list:
     """Letters with name + example audio (Piper). Letter names are spoken via their Slovak name text."""
-    from .build_audio import _render_one
-    from piper import SynthesisConfig
-    v = _get_voice(); cfg = SynthesisConfig(length_scale=1.2)
     out = []
     for letter, name, ipa_, ro_anchor, example, note in ALPHABET:
         stem = "alpha-" + re.sub(r"[^a-z]", lambda m: f"u{ord(m.group(0)):04x}", letter)
-        name_rel = f"audio/{stem}-name.ogg"
-        if not os.path.exists(os.path.join(CONTENT, name_rel)):
-            _render_one(v, cfg, True, name, stem + "-name")
+        name_rel = _existing(stem + "-name") or tts_render(name, os.path.join(CONTENT, "audio", stem + "-name"), voice=TTS_VOICE, slow=True)["file"]
         ex_rel = None
         if example and example != "—":
-            ex_rel = f"audio/{stem}-ex.ogg"
-            if not os.path.exists(os.path.join(CONTENT, ex_rel)):
-                _render_one(v, cfg, True, example, stem + "-ex")
+            ex_rel = _existing(stem + "-ex") or tts_render(example, os.path.join(CONTENT, "audio", stem + "-ex"), voice=TTS_VOICE)["file"]
             audio_refs.add(ex_rel)
         audio_refs.add(name_rel)
         out.append({"letter": letter, "name": name, "ipa": ipa_, "ro": ro_anchor, "example": example,
@@ -78,13 +77,10 @@ def ensure_audio(picked):
     todo = [s for s in picked if not s.get("audio")]
     if not todo:
         return
-    from .build_audio import _render_one, VOICE_DIR, VOICE
-    from piper import PiperVoice, SynthesisConfig
-    if _voice is None:
-        _voice = PiperVoice.load(os.path.join(VOICE_DIR, f"{VOICE}.onnx"))
-    cfg = SynthesisConfig(length_scale=1.0)
     for s in todo:
-        s["audio"] = _render_one(_voice, cfg, True, s["sk"], s["id"].replace(":", ""))
+        stem = s["id"].replace(":", "")
+        have = _existing(stem)
+        s["audio"] = {"file": have, "tts_voice": "existing"} if have else tts_render(s["sk"], os.path.join(CONTENT, "audio", stem), voice=TTS_VOICE)
     ensure_audio.rendered = getattr(ensure_audio, "rendered", 0) + sum(1 for s in todo if s["audio"])
 
 
@@ -228,7 +224,7 @@ def main():
         print(f"    {k:22s} {sizes[k]/1e3:7.0f} KB")
     print(f"    sentences/*.json      {sum(v for k,v in sizes.items() if k.startswith('sentences/'))/1e3:7.0f} KB  ({n_sent} sentences over {len(units)} units)")
     print(f"    chunks/*.json         {sum(v for k,v in sizes.items() if k.startswith('chunks/'))/1e3:7.0f} KB")
-    print(f"  audio: {copied} referenced clips copied ({audio_mb:.1f} MB), {missing} missing -> {AUDIO_OUT}")
+    print(f"  audio: {copied} referenced clips copied ({audio_mb:.1f} MB), {missing} missing -> {AUDIO_OUT}   [voice: {TTS_VOICE}]")
 
 if __name__ == "__main__":
     main()

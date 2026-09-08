@@ -12,7 +12,8 @@ Licences verified where marked ✔; otherwise as stated by the source.
 | **Tatoeba** Slovak sentences + EN/RO links + user_languages | `content/sentences.jsonl` (27,608) | CC BY 2.0 FR ✔ | ✓ |
 | **kaikki.org** Slovak (English Wiktionary extract) | glosses, IPA, verb/adj/pron paradigms, Commons audio links | CC BY-SA 3.0 ✔ | ✓ subset committed (D106) — upstream deprecated |
 | **hunspell-sk** (sk-spell) | noun paradigms with cases, OOV filter, POS fallback | MPL-2.0 ✔ | ✓ (unpacked in `pipeline/work/`) |
-| **Piper** `sk_SK-lili-medium` | all audio (5,165 sentences + 290 chunks so far) | MIT / voice CC0-ish ✔ | ✓ |
+| **Piper** `sk_SK-lili-medium` | offline TTS backend; the only Slovak Piper voice (22 kHz, "medium") | MIT / voice CC0-ish ✔ | ✓ default until the A/B verdict |
+| **Microsoft Edge neural voices** `sk-SK-LukasNeural` (m), `sk-SK-ViktoriaNeural` (f) via `edge-tts` | candidate TTS backend: far more natural, 24 kHz, native slow rate, two speakers for dialogues | **unofficial** endpoint, no redistribution terms — personal use only. Terms-clean route to the same voices: Azure Speech free tier (500k chars/month, personal Azure account) | ◌ build-time only; `pipeline/tts.py` |
 | **Wikimedia Commons / Lingua Libre** recordings (via kaikki) | 176 lemmas with human audio, 42 in band 1 | CC BY-SA 4.0 per file | ↗ URLs stored; fetch at build if wanted |
 | **SAS *Témy a ciele A1 / A2*** (Comenius Univ., 2025) | unit structure, lexical & grammatical minimum, can-do statements | **CC BY-NC-SA 4.0** ✔ | ◌ `pipeline/work/reference/` |
 | **SAS *Jazykové funkcie A1–A2*** | function inventory for chunks and roleplays | CC BY-NC-SA 4.0 ✔ | ◌ |
