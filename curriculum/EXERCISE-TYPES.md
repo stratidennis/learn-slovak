@@ -1,5 +1,9 @@
 # Exercise catalogue
 
+> **How these are sequenced for a beginner is in [LEARNING-ENGINE.md](LEARNING-ENGINE.md)** — the per-item mastery ladder
+> (intro → recognise meaning → recognise form → match/tiles → cloze/one word → dictation). No type below is ever
+> served to an item before the ladder says so; the first version of the app got that wrong.
+
 Every exercise here is specified tightly enough to build from. Each has: what the learner sees,
 what they do, how it is graded, what data it needs, and which skill/principle it serves
 (research §2 P1–P12). Types marked **★** are the v1 core; the rest are v1.x.

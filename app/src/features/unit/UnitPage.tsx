@@ -54,8 +54,8 @@ export function UnitPage() {
       <div className="topbar"><Link to="/" className="back" aria-label={t.back}>←</Link><div><h1>{unit.id} {title}</h1></div></div>
       <div className="stack">
         <div className="row">
-          {unit.chunks.length > 0 && <Link to={`/unit/${unit.id}/chunks`} className="btn secondary">🗣 {t.chunks_btn} · {unit.chunks.length}</Link>}
-          <Link to={`/unit/${unit.id}/lesson`} className="btn primary">🎧 {t.listen_type_btn}</Link>
+          {unit.chunks.length > 0 && <Link to={`/unit/${unit.id}/chunks`} className="btn ghost">🗣 {t.chunks_btn} · {unit.chunks.length}</Link>}
+          <Link to={`/unit/${unit.id}/lesson`} className="btn primary">▶ {t.start_lesson}</Link>
         </div>
         <div className="card">
           <h3>{t.you_will}</h3>

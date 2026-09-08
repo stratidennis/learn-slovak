@@ -108,6 +108,16 @@ def main():
     units = list(read_jsonl(f"{CONTENT}/lessons.jsonl"))
     pairs = list(read_jsonl(f"{CONTENT}/minimal_pairs.jsonl"))
     sizes, audio_refs = {}, set()
+    emoji = json.load(open(os.path.join(ROOT, "data", "emoji.json"), encoding="utf-8"))["map"]
+    emoji = {k.strip(): v for k, v in emoji.items()}
+    pos_of = {r["lemma"]: r["pos"] for r in lex}
+    def emoji_for(lemmas):
+        ls = [l for l in lemmas if l]
+        for l in ls:                                  # a thing first: "Prosím si kávu" -> ☕, not 🙏
+            if l in emoji and pos_of.get(l) == "NOUN": return emoji[l]
+        for l in ls:
+            if l in emoji: return emoji[l]
+        return None
     if os.path.isdir(OUT): shutil.rmtree(OUT)
     os.makedirs(OUT)
 
@@ -123,7 +133,7 @@ def main():
                          "b": r["band"], "rk": r["spoken_rank"], "g": r["gender"], "asp": r["aspect"],
                          "flag": r["register_flag"], "cog": r["cognate_ro"], "ff": r["false_friend_ro"],
                          "forms": [[f["form"], f["tags"]] for f in (r["forms"] or [])][:60],
-                         "rs": r["review_status"]["overall"]})
+                         "emoji": emoji.get(r["lemma"]), "rs": r["review_status"]["overall"]})
             forms_index.setdefault(r["lemma"].lower(), r["lemma"])
             for f in r["forms"] or []:
                 forms_index.setdefault(f["form"].lower(), r["lemma"])
@@ -131,15 +141,21 @@ def main():
     sizes["forms_index.json"] = dump("forms_index.json", forms_index)
     # fractions of the 3,000-lemma total — what the coverage meter needs, not raw counts
     sizes["coverage.json"] = dump("coverage.json", {r["lemma"]: round(r["subtitle_count"] / total, 7) for r in lex})
+    cog = json.load(open(os.path.join(ROOT, "data", "cognates_ro.json"), encoding="utf-8"))["entries"]
+    sizes["cognates.json"] = dump("cognates.json", [{"id": f"cog:{c['sk_lemmas'][0]}", "sk": c["sk_lemmas"][0], "sk_all": c["sk"], "ro": c["ro"],
+        "en": c["meaning_en"], "note": c["note"], "shift": c["semantic_shift"], "spell": respell_ro(c["sk_lemmas"][0]),
+        "emoji": emoji.get(c["sk_lemmas"][0]), "audio": _existing("cog-" + re.sub(r"[^a-z]", lambda m: f"u{ord(m.group(0)):04x}", c["sk_lemmas"][0].lower()))
+            or tts_render(c["sk_lemmas"][0], os.path.join(CONTENT, "audio", "cog-" + re.sub(r"[^a-z]", lambda m: f"u{ord(m.group(0)):04x}", c["sk_lemmas"][0].lower())), voice=VOICES["f"])["file"]} for c in cog])
+    for c in json.load(open(os.path.join(OUT, "cognates.json"), encoding="utf-8")): audio_refs.add(c["audio"])
 
-    # ---- units, chunks, notes, pairs -------------------------------------------
-    sizes["units.json"] = dump("units.json", [{k: u.get(k) for k in ("id","title","title_ro","sas_area","can_do","can_do_ro","grammar_notes",
-        "exercise_sequence","roleplay","creative","domain_pack","milestone","phase","chunks")} for u in units])
+    # ---- chunks, notes, pairs (units are written last: they list the picked sentences) ----
+    unit_sentence_ids = {}
     by_unit = collections.defaultdict(list)
     chunks_changed = False
     for c in chunks:
         by_unit[c["unit"]].append(c)
         c["guide"] = {"ro": respell_ro(c["sk"]), "ipa": ipa_of(c["sk"])}
+        c["emoji"] = emoji_for([forms_index.get(w.lower().strip(".,!?…")) for w in c["sk"].split()] + [w.lower().strip(".,!?…") for w in c["sk"].split()])
         stem = c["id"].replace(":", "-").replace(".", "_")
         if not c.get("audio"):
             c["audio"] = tts_render(c["sk"], os.path.join(CONTENT, "audio", stem), voice=unit_voice(c["unit"])); chunks_changed = True
@@ -220,13 +236,14 @@ def main():
         rnd.shuffle(picked)
         ensure_audio(picked, unit_voice(u["id"]))
         picked = [s for s in picked if s.get("audio")]
+        unit_sentence_ids[u["id"]] = [s["id"] for s in picked]
         for s in picked:
             audio_refs.add(s["audio"]["file"]); used.add(s["id"])
         n_sent += len(picked)
         sizes[f"sentences/{u['id']}.json"] = dump(f"sentences/{u['id']}.json",
             [{"id": s["id"], "sk": s["sk"], "en": s["en"][:1], "ro": s["ro"][:1], "lemmas": s["content_lemmas"],
               "audio": s["audio"]["file"], "audio_slow": slow_clip(s["audio"]["file"], s["sk"], unit_voice(u["id"])),
-              "guide": {"ro": respell_ro(s["sk"]), "ipa": ipa_of(s["sk"])},
+              "guide": {"ro": respell_ro(s["sk"]), "ipa": ipa_of(s["sk"])}, "emoji": emoji_for(s["content_lemmas"]),
               "native": s["native_author"], "band": s["band"],
               "attr": s["attribution"], "lic": s["licence"]} for s in picked])
         for s in picked: audio_refs.add(slow_clip(s["audio"]["file"], s["sk"], unit_voice(u["id"])))
@@ -237,6 +254,19 @@ def main():
         from .common import write_jsonl as _w
         _w(f"{CONTENT}/sentences.jsonl", sents)
         print(f"  synthesized {ensure_audio.rendered} new clips for selected sentences (persisted to content/sentences.jsonl)")
+
+    def unit_items(u):
+        uid = u["id"]
+        if uid == "0.1": return [{"kind": "letter", "id": f"letter:{l[0]}"} for l in ALPHABET]
+        if uid == "0.2": return [{"kind": "pair", "id": p["id"]} for p in pairs if p["kind"] == "pair"]
+        if uid == "0.3": return [{"kind": "cognate", "id": f"cog:{c['sk_lemmas'][0]}"} for c in cog]
+        if uid == "0.4": return [{"kind": "word", "id": f"word:{l[4]}"} for l in ALPHABET if l[4] and l[4] != "—"]
+        if uid == "0.5": return [{"kind": "chunk", "id": c["id"]} for c in chunks if c["unit"] in ("1.1", "1.2")][:20]
+        items = [{"kind": "chunk", "id": c["id"]} for c in chunks if c["unit"] == uid]
+        items += [{"kind": "sentence", "id": sid} for sid in unit_sentence_ids.get(uid, [])]
+        return items
+    sizes["units.json"] = dump("units.json", [{**{k: u.get(k) for k in ("id","title","title_ro","sas_area","can_do","can_do_ro","grammar_notes",
+        "exercise_sequence","roleplay","creative","domain_pack","milestone","phase","chunks")}, "items": unit_items(u)} for u in units])
 
     n_flushed = tts_flush()                     # wait for queued Edge renders before copying
     if n_flushed: print(f"  rendered {n_flushed} clips with {TTS_VOICE.split(':')[0]} (concurrent)")

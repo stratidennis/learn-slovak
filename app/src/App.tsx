@@ -5,6 +5,7 @@ import { ChunkShadow } from './features/chunks/ChunkShadow'
 import { ListenTypeSession } from './features/listen/ListenTypeSession'
 import { Settings } from './features/settings/Settings'
 import { Alphabet } from './features/alphabet/Alphabet'
+import { LessonSession } from './features/lesson/LessonSession'
 import { useT } from './i18n'
 
 export default function App() {
@@ -15,7 +16,8 @@ export default function App() {
         <Route path="/" element={<Home />} />
         <Route path="/unit/:id" element={<UnitPage />} />
         <Route path="/unit/:id/chunks" element={<ChunkShadow />} />
-        <Route path="/unit/:id/lesson" element={<ListenTypeSession />} />
+        <Route path="/unit/:id/lesson" element={<LessonSession />} />
+        <Route path="/unit/:id/dictation" element={<ListenTypeSession />} />
         <Route path="/review" element={<ListenTypeSession />} />
         <Route path="/settings" element={<Settings />} />
         <Route path="/alphabet" element={<Alphabet />} />

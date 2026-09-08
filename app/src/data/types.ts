@@ -9,7 +9,7 @@ export type Lexeme = {
 }
 export type Unit = {
   id: string; title: string; title_ro: string; sas_area: string | null; can_do: string[]
-  can_do_ro?: string[]; grammar_notes: string[]; exercise_sequence: string[]; roleplay: string | null; creative: string | null
+  can_do_ro?: string[]; items?: { kind: string; id: string }[]; grammar_notes: string[]; exercise_sequence: string[]; roleplay: string | null; creative: string | null
   domain_pack: string | null; milestone: string | null; phase: number; chunks: string[]
 }
 export type ChunkVariant = { sk: string; note: string; note_ro?: string; register: string; audio?: AudioRef | null; audio_slow?: string; guide?: Guide }

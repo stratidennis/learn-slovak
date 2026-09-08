@@ -42,6 +42,14 @@ const en = {
   abeceda_sub: "46 letters · 🔊 = the letter's name (for spelling your name) · tap a word to hear it",
   guide_how: 'How to read the guide under every word:', guide_text: 'a respelling using only sounds you already have. CAPS = stressed syllable (always the first), doubled vowel = long, ɦ = the voiced h, y = the y-glide. The four things to train: length, ť/ď/ň/ľ, h vs ch, first-syllable stress.',
   letter_name: 'name', diphthongs_title: 'Diphthongs — one syllable', loading: '…',
+  // lesson engine
+  step_intro: 'New. Listen, read, say it once.', got_it: 'Got it →', step_meaning: 'What does this mean?', step_form_audio: 'What did you hear?', step_form_text: 'Which one is it in Slovak?',
+  step_letterpick: 'Which letter did you hear?', step_anchor: 'How does this letter sound?', step_match: 'Match the pairs', step_tiles: 'Build it in Slovak', tiles_hint: 'tap the words in order',
+  step_cloze: 'Fill in the missing word', step_typeword: 'Type the missing word', step_typeword_single: 'Type it in Slovak', step_pairab: 'Which one did you hear?',
+  fb_correct: 'Correct!', fb_wrong: 'Not this time', fb_diacritics: 'Right — mind the diacritics', continue: 'Continue',
+  session_summary: '{ok} correct · {bad} to revisit · {adv} steps up', unit_progress: '{done} of {total} items mastered', another_session: 'Another session',
+  start_lesson: 'Start lesson', continue_lesson: 'Continue', items_word: 'items', minutes_est: '~{n} min',
+  lessons_done: 'This unit is mastered — sessions now just keep it fresh.',
 }
 const ro: typeof en = {
   app: 'Slovenčina',
@@ -77,6 +85,13 @@ const ro: typeof en = {
   abeceda_sub: '46 de litere · 🔊 = numele literei (pentru a-ți spune numele pe litere) · atinge un cuvânt ca să-l auzi',
   guide_how: 'Cum citești ghidul de sub fiecare cuvânt:', guide_text: 'o transcriere doar cu sunete pe care le ai deja. MAJUSCULE = silaba accentuată (mereu prima), vocală dublată = lungă, ɦ = h-ul sonor, y = i-ul semivocalic din „iar”. Cele patru lucruri de antrenat: lungimea, ť/ď/ň/ľ, h vs ch, accentul pe prima silabă.',
   letter_name: 'nume', diphthongs_title: 'Diftongi — o singură silabă', loading: '…',
+  step_intro: 'Nou. Ascultă, citește, spune-l o dată.', got_it: 'Am înțeles →', step_meaning: 'Ce înseamnă?', step_form_audio: 'Ce ai auzit?', step_form_text: 'Care e în slovacă?',
+  step_letterpick: 'Ce literă ai auzit?', step_anchor: 'Cum sună litera asta?', step_match: 'Potrivește perechile', step_tiles: 'Construiește în slovacă', tiles_hint: 'atinge cuvintele în ordine',
+  step_cloze: 'Completează cuvântul lipsă', step_typeword: 'Scrie cuvântul lipsă', step_typeword_single: 'Scrie-l în slovacă', step_pairab: 'Care dintre ele ai auzit?',
+  fb_correct: 'Corect!', fb_wrong: 'Nu de data asta', fb_diacritics: 'Corect — atenție la diacritice', continue: 'Continuă',
+  session_summary: '{ok} corecte · {bad} de revăzut · {adv} trepte în plus', unit_progress: '{done} din {total} elemente stăpânite', another_session: 'Încă o sesiune',
+  start_lesson: 'Începe lecția', continue_lesson: 'Continuă', items_word: 'elemente', minutes_est: '~{n} min',
+  lessons_done: 'Unitatea e stăpânită — sesiunile doar o mai împrospătează.',
 }
 export const STRINGS = { en, ro }
 export type Strings = typeof en

@@ -1,0 +1,20 @@
+{
+  "_comment": "Concrete nouns (and a few verbs/adjectives) with an emoji cue for intro and meaning-choice steps (dual coding). Hand-picked; only where the picture is unambiguous.",
+  "map": {
+    "káva": "☕", "čaj": "🍵", "pivo": "🍺", "víno": "🍷", "voda": "💧", "mlieko": "🥛", "chlieb": "🍞", "rožok": "🥐", "syr": "🧀", "maslo": "🧈", "med": "🍯",
+    "jablko": "🍎", "hruška": "🍐", "banán": "🍌", "pomaranč": "🍊", "citrón": "🍋", "jahoda": "🍓", "hrozno": "🍇", "paradajka": "🍅", "mrkva": "🥕", "zemiak": "🥔",
+    "cibuľa": "🧅", "cesnak": "🧄", "vajce": "🥚", "mäso": "🥩", "ryba": "🐟", "kura": "🍗", "polievka": "🍲", "zmrzlina": "🍦", "torta": "🎂", "cukor": "🧂", "soľ": "🧂",
+    "jedlo": "🍽️", "obed": "🍽️", "raňajky": "🥐", "večera": "🍽️", "reštaurácia": "🍴", "kaviareň": "☕", "trh": "🧺", "obchod": "🏪", "peniaze": "💶", "euro": "💶", "karta": "💳",
+    "dom": "🏠", "byt": "🏢", "izba": "🛏️", "dvere": "🚪", "okno": "🪟", "stôl": "🪑", "posteľ": "🛏️", "kľúč": "🔑", "auto": "🚗", "autobus": "🚌", "vlak": "🚆", "električka": "🚋",
+    "lietadlo": "✈️", "bicykel": "🚲", "cesta": "🛣️", "mesto": "🏙️", "ulica": "🛣️", "stanica": "🚉", "letisko": "✈️", "hotel": "🏨", "škola": "🏫", "kostol": "⛪", "nemocnica": "🏥",
+    "lekáreň": "💊", "liek": "💊", "lekár": "🩺", "doktor": "🩺", "telefón": "📱", "mobil": "📱", "počítač": "💻", "heslo": "🔑", "kniha": "📖", "list": "✉️", "správa": "💬",
+    "pes": "🐕", "mačka": "🐈", "kôň": "🐴", "vták": "🐦", "strom": "🌳", "les": "🌲", "hora": "⛰️", "rieka": "🏞️", "more": "🌊", "slnko": "☀️", "dážď": "🌧️", "sneh": "❄️",
+    "muž": "👨", "žena": "👩", "dieťa": "🧒", "deti": "👧👦", "brat": "👦", "sestra": "👧", "otec": "👨", "matka": "👩", "mama": "👩", "rodina": "👪", "priateľ": "🧑‍🤝‍🧑", "kamarát": "🧑‍🤝‍🧑",
+    "hlava": "🗣️", "ruka": "✋", "noha": "🦵", "oko": "👁️", "srdce": "❤️", "zub": "🦷",
+    "deň": "🌤️", "noc": "🌙", "ráno": "🌅", "večer": "🌆", "čas": "⏰", "hodina": "🕐", "týždeň": "📅", "rok": "📆", "peniaze ": "💶",
+    "práca": "💼", "firma": "🏢", "stretnutie": "🤝", "problém": "⚠️", "otázka": "❓", "hudba": "🎵", "film": "🎬", "hra": "🎮", "šport": "⚽", "darček": "🎁",
+    "pravda": "✅", "láska": "❤️", "boh": "✝️", "modlitba": "🙏", "svadba": "💍", "cena": "🏷️", "zľava": "🏷️", "účet": "🧾", "pokladňa": "🧾", "vrecko": "🛍️", "taška": "👜",
+    "ahoj": "👋", "ďakovať": "🙏", "prosiť": "🙏", "spať": "😴", "jesť": "🍽️", "piť": "🥤", "platiť": "💶", "kúpiť": "🛒", "ísť": "🚶", "volať": "📞", "písať": "✍️", "čítať": "📖",
+    "dobrý": "👍", "zlý": "👎", "veľký": "🐘", "malý": "🐜", "nový": "✨", "starý": "🕰️", "teplý": "🔥", "studený": "🧊", "rýchlo": "🏃", "pomaly": "🐢"
+  }
+}
