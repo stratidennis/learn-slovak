@@ -18,11 +18,20 @@ Answers:
     Q2  What % of band-1 lemmas have a gloss + IPA + inflection table in kaikki?
     Q3  Does Piper's Slovak voice sound good enough to learn pronunciation from?
 """
-import csv, json, os, sys, urllib.request, collections, re
+import csv, json, os, sys, ssl, shutil, urllib.request, collections, re
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 WORK = os.path.join(HERE, "spike_data")
 os.makedirs(WORK, exist_ok=True)
+
+# python.org framework builds on macOS ship no CA bundle, so HTTPS to
+# downloads.tatoeba.org / kaikki.org fails with CERTIFICATE_VERIFY_FAILED.
+# certifi is already a dependency of requests, which is in the prereqs.
+try:
+    import certifi
+    SSL_CTX = ssl.create_default_context(cafile=certifi.where())
+except ImportError:
+    SSL_CTX = ssl.create_default_context()
 
 def fetch(url, dest):
     dest = os.path.join(WORK, dest)
@@ -31,8 +40,12 @@ def fetch(url, dest):
         return dest
     print(f"  downloading {url}")
     req = urllib.request.Request(url, headers={"User-Agent": "slovak-app-spike/1.0"})
-    with urllib.request.urlopen(req) as r, open(dest, "wb") as fh:
-        fh.write(r.read())
+    # stream to a .part file: kaikki is ~53 MB and r.read() into memory plus a
+    # half-written file on interrupt both cause avoidable pain.
+    tmp = dest + ".part"
+    with urllib.request.urlopen(req, context=SSL_CTX) as r, open(tmp, "wb") as fh:
+        shutil.copyfileobj(r, fh, 1 << 20)
+    os.replace(tmp, dest)
     return dest
 
 # ---------------------------------------------------------------- load bands
