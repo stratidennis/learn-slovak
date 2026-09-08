@@ -1,0 +1,119 @@
+{
+  "source": "SLOVAK-LEARNING-APP-RESEARCH.md",
+  "section": "§4.4",
+  "review_status": "needs_review",
+  "entries": [
+    {
+      "ro": "nevastă",
+      "ro_means": "wife",
+      "sk": "nevesta",
+      "sk_note": "nevesta",
+      "sk_means": "bride (wife = manželka, žena)"
+    },
+    {
+      "ro": "muncă",
+      "ro_means": "work",
+      "sk": "muka",
+      "sk_note": "muka",
+      "sk_means": "torment (work = práca)"
+    },
+    {
+      "ro": "a lovi",
+      "ro_means": "to hit",
+      "sk": "loviť",
+      "sk_note": "loviť",
+      "sk_means": "to hunt / catch (to hit = udrieť)"
+    },
+    {
+      "ro": "obraz",
+      "ro_means": "cheek",
+      "sk": "obraz",
+      "sk_note": "obraz",
+      "sk_means": "picture, painting (cheek = líce)"
+    },
+    {
+      "ro": "pod",
+      "ro_means": "bridge / attic",
+      "sk": "pod",
+      "sk_note": "pod",
+      "sk_means": "under (bridge = most)"
+    },
+    {
+      "ro": "zăpadă",
+      "ro_means": "snow",
+      "sk": "západ",
+      "sk_note": "západ",
+      "sk_means": "west; sunset (snow = sneh)"
+    },
+    {
+      "ro": "iad",
+      "ro_means": "hell",
+      "sk": "jed",
+      "sk_note": "jed",
+      "sk_means": "poison (hell = peklo)"
+    },
+    {
+      "ro": "scump",
+      "ro_means": "expensive",
+      "sk": "skúpy",
+      "sk_note": "skúpy",
+      "sk_means": "stingy (expensive = drahý)"
+    },
+    {
+      "ro": "prost",
+      "ro_means": "stupid",
+      "sk": "prostý",
+      "sk_note": "prostý",
+      "sk_means": "simple, plain (stupid = hlúpy)"
+    },
+    {
+      "ro": "a hrăni",
+      "ro_means": "to feed",
+      "sk": "chrániť",
+      "sk_note": "chrániť",
+      "sk_means": "to protect (to feed = kŕmiť)"
+    },
+    {
+      "ro": "a opri",
+      "ro_means": "to stop",
+      "sk": "oprieť",
+      "sk_note": "oprieť (sa)",
+      "sk_means": "to lean (to stop = zastaviť)"
+    },
+    {
+      "ro": "drag",
+      "ro_means": "dear",
+      "sk": "drahý",
+      "sk_note": "drahý",
+      "sk_means": "dear and expensive — context decides"
+    },
+    {
+      "ro": "gol",
+      "ro_means": "empty / naked",
+      "sk": "gól",
+      "sk_note": "gól",
+      "sk_means": "goal (sport); holý = bare"
+    },
+    {
+      "ro": "ceas",
+      "ro_means": "clock",
+      "sk": "čas",
+      "sk_note": "čas",
+      "sk_means": "time (clock = hodiny)"
+    },
+    {
+      "ro": "pită",
+      "ro_means": "bread",
+      "sk": "pita",
+      "sk_note": "pita",
+      "sk_means": "(only the Middle-Eastern bread); bread = chlieb"
+    },
+    {
+      "ro": "cocoș",
+      "ro_means": "rooster",
+      "sk": "kokoš",
+      "sk_note": "kokoš (dialect)",
+      "sk_means": "hen-ish; rooster = kohút"
+    }
+  ]
+}

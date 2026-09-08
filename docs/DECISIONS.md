@@ -93,3 +93,22 @@ self-contained; anything decided during the build starts at D100.
 **Decision** Keep D002's spell-out rule; it is load-bearing, not a precaution.
 **Why** Measured: `2,50 €` renders as *"dva čiarka päťdesiat euro"* — the comma is read aloud and the numeral takes the wrong gender. `15:30` renders as *"pätnásť tridsať"*. Bare cardinals (`25` → *dvadsaťpäť*) are fine; currency, decimals and times are not.
 **Consequence** The M2 audio stage needs a Slovak number-to-words expander covering currency, decimals and times before synthesis — not just integers.
+
+## D106 — Commit a kaikki subset, keep the raw dump as a local cache
+**Date** 2026-09-07
+**Decision** `pipeline/extract_kaikki.py` writes `data/kaikki_subset.jsonl` (1,323 lemmas, 3.3 MB) into git. The 53 MB raw dump stays in `pipeline/work/` (gitignored).
+**Why** kaikki marks its per-language dictionary files DEPRECATED and its replacement per-Wiktionary-edition extracts do not include Slovak, so the file we depend on will disappear. Committing the subset makes the data we actually consume version-controlled and diffable at 6% of the size. Re-deriving from the raw dump stays possible while it exists.
+**Consequence** If the upstream file vanishes, the subset still builds the app. Widening the extracted field set later requires the raw dump — keep a copy off-repo.
+
+## D107 — kaikki's Slovak noun tables are unusable; hunspell-sk supplies noun paradigms
+**Date** 2026-09-07
+**Decision** Take verb, adjective and pronoun paradigms from kaikki (properly tagged), and noun paradigms from hunspell-sk affix expansion (`pipeline/hunspell_sk.py`).
+**Why** Measured across bands 1–2: verbs 138/141 and adjectives 54/59 come back fully tagged, but nouns are 228/248 `no-table-tags` — cells carry `source: declension` with no morphological tags, in a flat sequence, *and* wiktextract dedupes repeated values, so `žena` loses genitive singular (identical to nominative plural `ženy`) and `stôl` loses its entire accusative row. Those tables cannot be reconstructed positionally at all.
+Then hunspell-sk turned out to be better than the §7.4 fallback assumed: its affix rules carry `is:genitive`, `is:plural`, `is:feminine` annotations, so expanding `stôl/B` yields the full declension *with cases attached* — and it covers band-2 nouns kaikki has no entry for. MPL-2.0, verified in the repo LICENSE, safe to bundle.
+**Consequence** Untagged kaikki cells are still preserved as `paradigm_cells_untagged` rather than dropped. Two bugs found while building the expander, both worth remembering: the `.dic` separates morph fields with **spaces, not tabs** (splitting on `\t` left `"B po:noun is:masculine"` as the flag string, so iterating it picked up the `n` in "noun" and invented `stôlnásobny`), and every flag is cross-product enabled — `rozumieť/XN` needs PFX `ne-` combined with SFX conjugation, so expanding them independently misses every negated finite verb, i.e. most of what a beginner says.
+
+## D108 — Register flags are graded and hand-authored, not a blocklist
+**Date** 2026-09-07
+**Decision** `data/register_flags.json` grades words `vulgar` / `insult` / `mild_expletive`, and records what was deliberately *not* flagged and why.
+**Why** §15.2 bug #3 asks for a profanity flag, but a naive list repeats bug #1 in a new place: `teplý` means **warm** (the slang sense is secondary), and `peklo`, `čert`, `diabol` are ordinary nouns that the church track (§9.1) needs. Flagging them would silently delete real vocabulary. hunspell-sk ships `_tematicke/vulgarizmy.dic`, which can cross-check the list later.
+**Consequence** `vulgar` is excluded from lessons and generated sentences; `insult` is recognition-only. The `deliberately_not_flagged` block exists so nobody "fixes" this by adding them back.

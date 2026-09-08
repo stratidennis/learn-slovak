@@ -1,0 +1,852 @@
+{
+  "source": "SLOVAK-LEARNING-APP-RESEARCH.md",
+  "section": "§4.3",
+  "review_status": "needs_review",
+  "entries": [
+    {
+      "ro": "prieten",
+      "sk": "priateľ",
+      "sk_lemmas": [
+        "priateľ"
+      ],
+      "meaning_en": "friend",
+      "note": "core",
+      "semantic_shift": false
+    },
+    {
+      "ro": "a iubi",
+      "sk": "ľúbiť",
+      "sk_lemmas": [
+        "ľúbiť"
+      ],
+      "meaning_en": "to love",
+      "note": "Ľúbim ťa",
+      "semantic_shift": false
+    },
+    {
+      "ro": "drag",
+      "sk": "drahý",
+      "sk_lemmas": [
+        "drahý"
+      ],
+      "meaning_en": "dear; expensive",
+      "note": "(shift) both meanings live in SK",
+      "semantic_shift": true
+    },
+    {
+      "ro": "bogat",
+      "sk": "bohatý",
+      "sk_lemmas": [
+        "bohatý"
+      ],
+      "meaning_en": "rich",
+      "note": "g→h regular correspondence",
+      "semantic_shift": false
+    },
+    {
+      "ro": "slab",
+      "sk": "slabý",
+      "sk_lemmas": [
+        "slabý"
+      ],
+      "meaning_en": "weak",
+      "note": "",
+      "semantic_shift": false
+    },
+    {
+      "ro": "sfânt",
+      "sk": "svätý",
+      "sk_lemmas": [
+        "svätý"
+      ],
+      "meaning_en": "holy",
+      "note": "church",
+      "semantic_shift": false
+    },
+    {
+      "ro": "a citi",
+      "sk": "čítať",
+      "sk_lemmas": [
+        "čítať"
+      ],
+      "meaning_en": "to read",
+      "note": "",
+      "semantic_shift": false
+    },
+    {
+      "ro": "a plăti",
+      "sk": "platiť",
+      "sk_lemmas": [
+        "platiť"
+      ],
+      "meaning_en": "to pay",
+      "note": "market",
+      "semantic_shift": false
+    },
+    {
+      "ro": "trebuie / treabă",
+      "sk": "treba",
+      "sk_lemmas": [
+        "treba"
+      ],
+      "meaning_en": "it is necessary",
+      "note": "grammar transfer",
+      "semantic_shift": false
+    },
+    {
+      "ro": "veac",
+      "sk": "vek",
+      "sk_lemmas": [
+        "vek"
+      ],
+      "meaning_en": "age, century",
+      "note": "",
+      "semantic_shift": false
+    },
+    {
+      "ro": "duh",
+      "sk": "duch",
+      "sk_lemmas": [
+        "duch"
+      ],
+      "meaning_en": "spirit; ghost",
+      "note": "Svätý Duch = Sfântul Duh",
+      "semantic_shift": false
+    },
+    {
+      "ro": "nădejde",
+      "sk": "nádej",
+      "sk_lemmas": [
+        "nádej"
+      ],
+      "meaning_en": "hope",
+      "note": "",
+      "semantic_shift": false
+    },
+    {
+      "ro": "pivniță",
+      "sk": "pivnica",
+      "sk_lemmas": [
+        "pivnica"
+      ],
+      "meaning_en": "cellar",
+      "note": "",
+      "semantic_shift": false
+    },
+    {
+      "ro": "lopată",
+      "sk": "lopata",
+      "sk_lemmas": [
+        "lopata"
+      ],
+      "meaning_en": "shovel",
+      "note": "",
+      "semantic_shift": false
+    },
+    {
+      "ro": "coasă",
+      "sk": "kosa",
+      "sk_lemmas": [
+        "kosa"
+      ],
+      "meaning_en": "scythe",
+      "note": "",
+      "semantic_shift": false
+    },
+    {
+      "ro": "plug",
+      "sk": "pluh",
+      "sk_lemmas": [
+        "pluh"
+      ],
+      "meaning_en": "plough",
+      "note": "",
+      "semantic_shift": false
+    },
+    {
+      "ro": "pahar",
+      "sk": "pohár",
+      "sk_lemmas": [
+        "pohár"
+      ],
+      "meaning_en": "glass, cup",
+      "note": "via Hungarian in RO",
+      "semantic_shift": false
+    },
+    {
+      "ro": "prag",
+      "sk": "prah",
+      "sk_lemmas": [
+        "prah"
+      ],
+      "meaning_en": "threshold",
+      "note": "",
+      "semantic_shift": false
+    },
+    {
+      "ro": "praf",
+      "sk": "prach",
+      "sk_lemmas": [
+        "prach"
+      ],
+      "meaning_en": "dust",
+      "note": "",
+      "semantic_shift": false
+    },
+    {
+      "ro": "pernă",
+      "sk": "perina",
+      "sk_lemmas": [
+        "perina"
+      ],
+      "meaning_en": "feather duvet",
+      "note": "(shift) SK pillow = vankúš",
+      "semantic_shift": true
+    },
+    {
+      "ro": "stâlp",
+      "sk": "stĺp",
+      "sk_lemmas": [
+        "stĺp"
+      ],
+      "meaning_en": "pillar, post",
+      "note": "syllabic ĺ",
+      "semantic_shift": false
+    },
+    {
+      "ro": "sticlă",
+      "sk": "sklo",
+      "sk_lemmas": [
+        "sklo"
+      ],
+      "meaning_en": "glass (material)",
+      "note": "RO also \"bottle\"",
+      "semantic_shift": false
+    },
+    {
+      "ro": "coș",
+      "sk": "kôš",
+      "sk_lemmas": [
+        "kôš"
+      ],
+      "meaning_en": "basket",
+      "note": "",
+      "semantic_shift": false
+    },
+    {
+      "ro": "clește",
+      "sk": "kliešte",
+      "sk_lemmas": [
+        "kliešte"
+      ],
+      "meaning_en": "pliers",
+      "note": "",
+      "semantic_shift": false
+    },
+    {
+      "ro": "zăvor",
+      "sk": "závora",
+      "sk_lemmas": [
+        "závora"
+      ],
+      "meaning_en": "bolt, barrier",
+      "note": "",
+      "semantic_shift": false
+    },
+    {
+      "ro": "târg",
+      "sk": "trh",
+      "sk_lemmas": [
+        "trh"
+      ],
+      "meaning_en": "market",
+      "note": "your \"markets\" domain! na trhu",
+      "semantic_shift": false
+    },
+    {
+      "ro": "veselie",
+      "sk": "veselý",
+      "sk_lemmas": [
+        "veselý"
+      ],
+      "meaning_en": "merry, cheerful",
+      "note": "",
+      "semantic_shift": false
+    },
+    {
+      "ro": "ogradă",
+      "sk": "ohrada",
+      "sk_lemmas": [
+        "ohrada"
+      ],
+      "meaning_en": "fence, enclosure",
+      "note": "",
+      "semantic_shift": false
+    },
+    {
+      "ro": "grădină",
+      "sk": "záhrada",
+      "sk_lemmas": [
+        "záhrada"
+      ],
+      "meaning_en": "garden",
+      "note": "shared root grad-",
+      "semantic_shift": false
+    },
+    {
+      "ro": "a sădi",
+      "sk": "sadiť",
+      "sk_lemmas": [
+        "sadiť"
+      ],
+      "meaning_en": "to plant",
+      "note": "",
+      "semantic_shift": false
+    },
+    {
+      "ro": "dar",
+      "sk": "dar",
+      "sk_lemmas": [
+        "dar"
+      ],
+      "meaning_en": "gift",
+      "note": "",
+      "semantic_shift": false
+    },
+    {
+      "ro": "a dărui",
+      "sk": "darovať",
+      "sk_lemmas": [
+        "darovať"
+      ],
+      "meaning_en": "to give as a gift",
+      "note": "",
+      "semantic_shift": false
+    },
+    {
+      "ro": "odihnă",
+      "sk": "oddych",
+      "sk_lemmas": [
+        "oddych"
+      ],
+      "meaning_en": "rest",
+      "note": "",
+      "semantic_shift": false
+    },
+    {
+      "ro": "cinste",
+      "sk": "česť",
+      "sk_lemmas": [
+        "česť"
+      ],
+      "meaning_en": "honour",
+      "note": "",
+      "semantic_shift": false
+    },
+    {
+      "ro": "a topi",
+      "sk": "topiť",
+      "sk_lemmas": [
+        "topiť"
+      ],
+      "meaning_en": "to melt",
+      "note": "",
+      "semantic_shift": false
+    },
+    {
+      "ro": "a lipi",
+      "sk": "lepiť",
+      "sk_lemmas": [
+        "lepiť"
+      ],
+      "meaning_en": "to glue, stick",
+      "note": "",
+      "semantic_shift": false
+    },
+    {
+      "ro": "coajă",
+      "sk": "koža",
+      "sk_lemmas": [
+        "koža"
+      ],
+      "meaning_en": "skin, leather",
+      "note": "(shift) RO peel/crust",
+      "semantic_shift": true
+    },
+    {
+      "ro": "iaz",
+      "sk": "jaz",
+      "sk_lemmas": [
+        "jaz"
+      ],
+      "meaning_en": "weir",
+      "note": "RO pond",
+      "semantic_shift": false
+    },
+    {
+      "ro": "sută",
+      "sk": "sto",
+      "sk_lemmas": [
+        "sto"
+      ],
+      "meaning_en": "hundred",
+      "note": "",
+      "semantic_shift": false
+    },
+    {
+      "ro": "ceas",
+      "sk": "čas",
+      "sk_lemmas": [
+        "čas"
+      ],
+      "meaning_en": "time",
+      "note": "(shift) RO clock; SK clock = hodiny",
+      "semantic_shift": true
+    },
+    {
+      "ro": "bolnav / boală",
+      "sk": "boľavý / bolesť, bolieť",
+      "sk_lemmas": [
+        "boľavý",
+        "bolesť",
+        "bolieť"
+      ],
+      "meaning_en": "sore / pain, to hurt",
+      "note": "Bolí ma hlava",
+      "semantic_shift": false
+    },
+    {
+      "ro": "a răni",
+      "sk": "raniť",
+      "sk_lemmas": [
+        "raniť"
+      ],
+      "meaning_en": "to wound",
+      "note": "",
+      "semantic_shift": false
+    },
+    {
+      "ro": "vină",
+      "sk": "vina",
+      "sk_lemmas": [
+        "vina"
+      ],
+      "meaning_en": "guilt, fault",
+      "note": "",
+      "semantic_shift": false
+    },
+    {
+      "ro": "rai",
+      "sk": "raj",
+      "sk_lemmas": [
+        "raj"
+      ],
+      "meaning_en": "heaven, paradise",
+      "note": "church",
+      "semantic_shift": false
+    },
+    {
+      "ro": "milă",
+      "sk": "milosť",
+      "sk_lemmas": [
+        "milosť"
+      ],
+      "meaning_en": "mercy, grace",
+      "note": "church; milý = nice/dear",
+      "semantic_shift": false
+    },
+    {
+      "ro": "obicei",
+      "sk": "obyčaj",
+      "sk_lemmas": [
+        "obyčaj"
+      ],
+      "meaning_en": "custom",
+      "note": "",
+      "semantic_shift": false
+    },
+    {
+      "ro": "a primi",
+      "sk": "prijať",
+      "sk_lemmas": [
+        "prijať"
+      ],
+      "meaning_en": "to accept, receive",
+      "note": "",
+      "semantic_shift": false
+    },
+    {
+      "ro": "graniță",
+      "sk": "hranica",
+      "sk_lemmas": [
+        "hranica"
+      ],
+      "meaning_en": "border",
+      "note": "",
+      "semantic_shift": false
+    },
+    {
+      "ro": "sfert",
+      "sk": "štvrť / štvrtina",
+      "sk_lemmas": [
+        "štvrť",
+        "štvrtina"
+      ],
+      "meaning_en": "quarter",
+      "note": "štvrť na tri",
+      "semantic_shift": false
+    },
+    {
+      "ro": "vârstă",
+      "sk": "vrstva",
+      "sk_lemmas": [
+        "vrstva"
+      ],
+      "meaning_en": "layer",
+      "note": "(shift) memory hook only",
+      "semantic_shift": true
+    },
+    {
+      "ro": "lebădă",
+      "sk": "labuť",
+      "sk_lemmas": [
+        "labuť"
+      ],
+      "meaning_en": "swan",
+      "note": "",
+      "semantic_shift": false
+    },
+    {
+      "ro": "gâscă",
+      "sk": "hus",
+      "sk_lemmas": [
+        "hus"
+      ],
+      "meaning_en": "goose",
+      "note": "g↔h",
+      "semantic_shift": false
+    },
+    {
+      "ro": "morcov",
+      "sk": "mrkva",
+      "sk_lemmas": [
+        "mrkva"
+      ],
+      "meaning_en": "carrot",
+      "note": "food",
+      "semantic_shift": false
+    },
+    {
+      "ro": "hrean",
+      "sk": "chren",
+      "sk_lemmas": [
+        "chren"
+      ],
+      "meaning_en": "horseradish",
+      "note": "food",
+      "semantic_shift": false
+    },
+    {
+      "ro": "smântână",
+      "sk": "smotana",
+      "sk_lemmas": [
+        "smotana"
+      ],
+      "meaning_en": "cream",
+      "note": "food",
+      "semantic_shift": false
+    },
+    {
+      "ro": "colac",
+      "sk": "koláč",
+      "sk_lemmas": [
+        "koláč"
+      ],
+      "meaning_en": "cake, pastry",
+      "note": "food",
+      "semantic_shift": false
+    },
+    {
+      "ro": "slănină",
+      "sk": "slanina",
+      "sk_lemmas": [
+        "slanina"
+      ],
+      "meaning_en": "bacon",
+      "note": "food",
+      "semantic_shift": false
+    },
+    {
+      "ro": "hrib",
+      "sk": "hríb",
+      "sk_lemmas": [
+        "hríb"
+      ],
+      "meaning_en": "mushroom",
+      "note": "food",
+      "semantic_shift": false
+    },
+    {
+      "ro": "ovăz",
+      "sk": "ovos",
+      "sk_lemmas": [
+        "ovos"
+      ],
+      "meaning_en": "oats",
+      "note": "",
+      "semantic_shift": false
+    },
+    {
+      "ro": "vișină",
+      "sk": "višňa",
+      "sk_lemmas": [
+        "višňa"
+      ],
+      "meaning_en": "sour cherry",
+      "note": "",
+      "semantic_shift": false
+    },
+    {
+      "ro": "oțet",
+      "sk": "ocot",
+      "sk_lemmas": [
+        "ocot"
+      ],
+      "meaning_en": "vinegar",
+      "note": "",
+      "semantic_shift": false
+    },
+    {
+      "ro": "veveriță",
+      "sk": "veverica",
+      "sk_lemmas": [
+        "veverica"
+      ],
+      "meaning_en": "squirrel",
+      "note": "",
+      "semantic_shift": false
+    },
+    {
+      "ro": "vrabie",
+      "sk": "vrabec",
+      "sk_lemmas": [
+        "vrabec"
+      ],
+      "meaning_en": "sparrow",
+      "note": "",
+      "semantic_shift": false
+    },
+    {
+      "ro": "rac",
+      "sk": "rak",
+      "sk_lemmas": [
+        "rak"
+      ],
+      "meaning_en": "crayfish",
+      "note": "",
+      "semantic_shift": false
+    },
+    {
+      "ro": "știucă",
+      "sk": "šťuka",
+      "sk_lemmas": [
+        "šťuka"
+      ],
+      "meaning_en": "pike",
+      "note": "",
+      "semantic_shift": false
+    },
+    {
+      "ro": "babă",
+      "sk": "baba",
+      "sk_lemmas": [
+        "baba"
+      ],
+      "meaning_en": "old woman",
+      "note": "mild",
+      "semantic_shift": false
+    },
+    {
+      "ro": "gazdă",
+      "sk": "gazda",
+      "sk_lemmas": [
+        "gazda"
+      ],
+      "meaning_en": "farmer, householder",
+      "note": "via Hungarian; RO host",
+      "semantic_shift": false
+    },
+    {
+      "ro": "cojoc",
+      "sk": "kožuch",
+      "sk_lemmas": [
+        "kožuch"
+      ],
+      "meaning_en": "fur coat",
+      "note": "",
+      "semantic_shift": false
+    },
+    {
+      "ro": "cizmă",
+      "sk": "čižma",
+      "sk_lemmas": [
+        "čižma"
+      ],
+      "meaning_en": "boot",
+      "note": "via Hungarian csizma",
+      "semantic_shift": false
+    },
+    {
+      "ro": "cârciumă",
+      "sk": "krčma",
+      "sk_lemmas": [
+        "krčma"
+      ],
+      "meaning_en": "pub, tavern",
+      "note": "",
+      "semantic_shift": false
+    },
+    {
+      "ro": "zori",
+      "sk": "zore",
+      "sk_lemmas": [
+        "zore"
+      ],
+      "meaning_en": "dawn (poetic)",
+      "note": "",
+      "semantic_shift": false
+    },
+    {
+      "ro": "slujbă",
+      "sk": "služba",
+      "sk_lemmas": [
+        "služba"
+      ],
+      "meaning_en": "service (also church service)",
+      "note": "church + work",
+      "semantic_shift": false
+    },
+    {
+      "ro": "slavă / a slăvi",
+      "sk": "sláva / sláviť",
+      "sk_lemmas": [
+        "sláva",
+        "sláviť"
+      ],
+      "meaning_en": "glory / to celebrate",
+      "note": "church",
+      "semantic_shift": false
+    },
+    {
+      "ro": "a blagoslovi",
+      "sk": "blahoslavený",
+      "sk_lemmas": [
+        "blahoslavený"
+      ],
+      "meaning_en": "blessed",
+      "note": "church",
+      "semantic_shift": false
+    },
+    {
+      "ro": "pocăință / a se pocăi",
+      "sk": "pokánie",
+      "sk_lemmas": [
+        "pokánie"
+      ],
+      "meaning_en": "repentance, penance",
+      "note": "church",
+      "semantic_shift": false
+    },
+    {
+      "ro": "mucenic",
+      "sk": "mučeník",
+      "sk_lemmas": [
+        "mučeník"
+      ],
+      "meaning_en": "martyr",
+      "note": "church",
+      "semantic_shift": false
+    },
+    {
+      "ro": "a spovedi",
+      "sk": "spoveď",
+      "sk_lemmas": [
+        "spoveď"
+      ],
+      "meaning_en": "confession",
+      "note": "church",
+      "semantic_shift": false
+    },
+    {
+      "ro": "a izbăvi",
+      "sk": "zbaviť (sa)",
+      "sk_lemmas": [
+        "zbaviť (sa)"
+      ],
+      "meaning_en": "to rid, get rid of",
+      "note": "(shift) RO deliver/save",
+      "semantic_shift": true
+    },
+    {
+      "ro": "sobor",
+      "sk": "zbor",
+      "sk_lemmas": [
+        "zbor"
+      ],
+      "meaning_en": "congregation, choir (Protestant usage); assembly",
+      "note": "church",
+      "semantic_shift": false
+    },
+    {
+      "ro": "vecernie",
+      "sk": "večer",
+      "sk_lemmas": [
+        "večer"
+      ],
+      "meaning_en": "evening (RO vespers)",
+      "note": "",
+      "semantic_shift": false
+    },
+    {
+      "ro": "praznic",
+      "sk": "prázdny / prázdniny",
+      "sk_lemmas": [
+        "prázdny",
+        "prázdniny"
+      ],
+      "meaning_en": "empty / school holidays",
+      "note": "(shift)",
+      "semantic_shift": true
+    },
+    {
+      "ro": "a se trezi",
+      "sk": "triezvy",
+      "sk_lemmas": [
+        "triezvy"
+      ],
+      "meaning_en": "sober",
+      "note": "(shift) RO wake up",
+      "semantic_shift": true
+    },
+    {
+      "ro": "bumb (Transylvanian: button)",
+      "sk": "gombík",
+      "sk_lemmas": [
+        "gombík"
+      ],
+      "meaning_en": "button",
+      "note": "via Hungarian gomb",
+      "semantic_shift": false
+    },
+    {
+      "ro": "servus",
+      "sk": "servus",
+      "sk_lemmas": [
+        "servus"
+      ],
+      "meaning_en": "hi (informal, western SK)",
+      "note": "shared greeting",
+      "semantic_shift": false
+    }
+  ]
+}
