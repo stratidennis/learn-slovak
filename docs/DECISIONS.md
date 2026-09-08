@@ -112,3 +112,33 @@ Then hunspell-sk turned out to be better than the §7.4 fallback assumed: its af
 **Decision** `data/register_flags.json` grades words `vulgar` / `insult` / `mild_expletive`, and records what was deliberately *not* flagged and why.
 **Why** §15.2 bug #3 asks for a profanity flag, but a naive list repeats bug #1 in a new place: `teplý` means **warm** (the slang sense is secondary), and `peklo`, `čert`, `diabol` are ordinary nouns that the church track (§9.1) needs. Flagging them would silently delete real vocabulary. hunspell-sk ships `_tematicke/vulgarizmy.dic`, which can cross-check the list later.
 **Consequence** `vulgar` is excluded from lessons and generated sentences; `insult` is recognition-only. The `deliberately_not_flagged` block exists so nobody "fixes" this by adding them back.
+
+## D109 — Sentence bank: proper nouns are transparent, but only when they really are names
+**Date** 2026-09-07
+**Decision** A capitalised token counts as a proper noun (and so does not count against a sentence's band) when it is **not** sentence-initial, or when it is sentence-initial and hunspell does not recognise its lowercase form.
+**Why** Tatoeba's Tom-and-Mary convention makes names the most common "unknown lemma" in the i+1 pool (`Mária` 88, `tomovi`+`toma` 119), so counting them as vocabulary wastes teaching slots. But the naive rule — "capitalised means name" — also swallows the first word of every sentence: `Mám ísť s tebou?` lost its main verb, which inflated `band1_clean` from 5,166 to 6,638. Sentence-initial ambiguity is genuinely undecidable (`Tom` vs `tom`, the locative of `ten`), so the tie-breaker errs toward *treating it as a word*, which under-counts rather than over-counts.
+**Consequence** 5,166 band-1-clean sentences, 2,999 of them native-authored.
+
+## D110 — Romanian sentence translations must be authored; Tatoeba has almost none
+**Date** 2026-09-07
+**Decision** Do not plan on sourced Romanian sentence translations. Build the review CSV loop as the way to produce them.
+**Why** Measured: of 27,608 filtered Slovak sentences, **19,440 have an English translation and 29 have a Romanian one.** §6.1 warned direct SK↔RO links were "few"; the real number is 0.1%. For a Romanian-first app (D001) this is the largest content gap found so far.
+**Consequence** English is the pivot for sentence meaning in v1. Romanian sentence glosses are authored per-sentence for the lesson set, not for all 27k. Worth re-checking whether OPUS `ro-sk` (OpenSubtitles/Europarl) can supply build-time drafts.
+
+## D111 — Numbers: expand what we can prove correct, refuse the rest
+**Date** 2026-09-07
+**Decision** `pipeline/num2words_sk.py` expands cardinals, currency, decimals, times, units and `20-krát`. It deliberately does **not** expand ordinals, and `unexpandable()` reports them so the sentence is skipped or hand-written.
+**Why** Slovak ordinals inflect for case — `na 5. poschodí` needs `piatom`, not `päť`. Emitting the cardinal would teach wrong Slovak, which is worse than having no audio. Of 148 sentences containing digits, 131 expand safely and 17 are refused (dates, centuries, `47. prezident`, `km2`).
+**Consequence** Four bugs found by testing rather than by listening, all now covered by `pipeline/test_num2words.py` (57 checks): gender only attaches to a *bare* 1/2 (`dvetisíc` but `dvadsaťdvatisíc`); `eur[a-z]*` never matched `eurá` because `á` is not ASCII; a sentence-final period is punctuation, not an ordinal marker (`v roku 1650.`); and space-grouped thousands (`10 000`) were read as two numbers.
+
+## D112 — Review sign-off is per language, not per record
+**Date** 2026-09-07
+**Decision** `data/glosses_manual.json` carries `reviewed_en` and `reviewed_ro` separately; a record's `overall` status is the weakest of its parts.
+**Why** Caught while round-tripping the review loop: a reviewer correcting an *English* gloss was silently marking the *Romanian draft* in the next column as native-reviewed. That quietly launders a draft into an approved translation, which is exactly what the "MT is a draft, never a shipped answer" guardrail exists to prevent.
+**Consequence** All 300 band-1 records read `needs_review` overall — honest, since every Romanian gloss is currently a model-authored draft.
+
+## D113 — Band-1 Romanian glosses drafted; 12 flagged for a register call
+**Date** 2026-09-07
+**Decision** All 300 band-1 Romanian glosses drafted into `data/glosses_manual.json` with `reviewed_ro: false`.
+**Why** Per the agreed split (hand-write band 1 English, draft the rest). Romanian had zero coverage from any source.
+**Consequence** Twelve carry a `notes` field flagging a judgement call rather than burying it: `no`/`nuž` (discourse particles, not "no"), `hej` (informal yes — §11.2 measured `áno` 32 / `hej` 58, so they are equals), `fajn`, `chlap` (`tip` colloquial vs `bărbat` neutral), `ok`, `kurva` (vulgar, recognition only), `rád` (`rád + verb` = "îmi place să"), `páčiť` (`páči sa mi` ≈ `îmi place` — dative experiencer in both, per §11.9), `stať` (almost always reflexive), `však` (two distinct uses), and `ký`, which looks like a lemmatiser artefact that may not belong in band 1 at all.

@@ -30,11 +30,24 @@ POS_MAP = {
     "particle": "PART", "det": "DET", "name": "PROPN", "character": "X",
     "suffix": "X", "prefix": "X", "phrase": "X", "proverb": "X",
 }
+# Entries whose POS is a lexical word beat entries that merely describe a
+# glyph or a name; see rank_entry().
+POS_PRIORITY = {"character": 0, "name": 0, "suffix": 0, "prefix": 0, "phrase": 0}
+
 # kaikki noun head arg -> (gender, animacy)
 GENDER_MAP = {
     "m": ("masc", None), "m-in": ("masc", "inanimate"), "m-pr": ("masc", "animate"),
     "m-anml": ("masc", "animate"), "f": ("fem", None), "n": ("neut", None),
 }
+
+
+STATUS_RANK = {REVIEW_NEEDS: 0, REVIEW_UNREVIEWED: 1, REVIEW_OK: 2, None: 0}
+
+
+def worst_status(en_status, ro_status, gloss_en, gloss_ro):
+    if not gloss_en or not gloss_ro:
+        return REVIEW_NEEDS
+    return min((en_status, ro_status), key=lambda s: STATUS_RANK.get(s, 0))
 
 
 def load_json(name: str) -> dict:
@@ -66,8 +79,15 @@ def main() -> None:
     for lemma, meta in sorted(bands.items(), key=lambda kv: kv[1]["rank"]):
         kk = kaikki.get(lemma)
         entries = kk["entries"] if kk else []
-        # prefer the entry that actually carries a gloss, then the richest one
-        entries = sorted(entries, key=lambda e: (bool(e["senses"]), len(e["forms"])), reverse=True)
+        # Prefer the entry that carries a gloss, then a *useful* part of speech,
+        # then the richest one. Without the POS term, `a` picks its "character"
+        # entry ("the first letter of the Slovak alphabet") over its conjunction
+        # entry ("and") -- the single most common word in the language, glossed
+        # as a letter.
+        def rank_entry(e):
+            return (bool(e["senses"]), POS_PRIORITY.get(e["pos"], 1), len(e["forms"]))
+
+        entries = sorted(entries, key=rank_entry, reverse=True)
         main_e = entries[0] if entries else None
 
         gloss_en, sources, gloss_status = [], [], None
@@ -75,7 +95,7 @@ def main() -> None:
         if man.get("en"):
             gloss_en = list(man["en"])
             sources.append("authored")
-            gloss_status = REVIEW_OK if man.get("reviewed") else REVIEW_NEEDS
+            gloss_status = REVIEW_OK if man.get("reviewed_en") else REVIEW_NEEDS
             stats["gloss_en_manual"] += 1
         elif main_e and main_e["senses"]:
             gloss_en = [g for s in main_e["senses"] for g in s["glosses"]][:4]
@@ -88,7 +108,7 @@ def main() -> None:
         gloss_ro, ro_status = [], None
         if man.get("ro"):
             gloss_ro = list(man["ro"])
-            ro_status = REVIEW_OK if man.get("reviewed") else REVIEW_NEEDS
+            ro_status = REVIEW_OK if man.get("reviewed_ro") else REVIEW_NEEDS
             stats["gloss_ro_manual"] += 1
         else:
             stats["gloss_ro_MISSING"] += 1
@@ -139,7 +159,9 @@ def main() -> None:
             "review_status": {
                 "gloss_en": gloss_status,
                 "gloss_ro": ro_status,
-                "overall": REVIEW_NEEDS if (not gloss_en or not gloss_ro) else REVIEW_UNREVIEWED,
+                # the weakest component wins: a record is only as trustworthy as
+                # its least-checked field
+                "overall": worst_status(gloss_status, ro_status, gloss_en, gloss_ro),
             },
         }
         if flag:
