@@ -1,0 +1,88 @@
+/* generated from design/tokens.json — do not edit by hand */
+:root {
+  color-scheme: light dark;
+  --primary: #2457C5;
+  --primary-strong: #1B44A0;
+  --primary-soft: #E4ECFA;
+  --primary-light: #8FB0F2;
+  --secondary: #F2B233;
+  --secondary-deep: #8A5A08;
+  --secondary-soft: #FCF1D6;
+  --accent: #E4573D;
+  --accent-deep: #B3311B;
+  --accent-soft: #FCE6E1;
+  --success: #1E9E62;
+  --success-deep: #157A4A;
+  --success-soft: #DDF3E8;
+  --error: #C42F2F;
+  --error-soft: #F9E1E1;
+  --warning: #D97706;
+  --warning-deep: #A85A05;
+  --warning-soft: #FBEBD3;
+  --info: #2457C5;
+  --ink: #1B2430;
+  --ink-muted: #4F5B6B;
+  --ink-faint: #8A94A3;
+  --line: #DDD6CB;
+  --paper: #FAF8F4;
+  --surface: #FFFFFF;
+  --surface-sunk: #F1ECE3;
+  --reg-standard: #2457C5;
+  --reg-colloquial: #8A5A08;
+  --reg-formal: #5B6B85;
+  --reg-regional: #6D4C9F;
+  --reg-archaic: #7A7A7A;
+  --reg-vulgar: #C42F2F;
+  --font-body: "Inter", system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-display: "Fraunces", Georgia, serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+  --radius-sm: 6px; --radius-md: 12px; --radius-lg: 20px; --radius-pill: 999px;
+  --shadow-card: 0 1px 2px rgba(27,36,48,.06), 0 4px 16px rgba(27,36,48,.06); --shadow-raised: 0 8px 32px rgba(27,36,48,.12);
+  --motion-fast: 120ms; --motion-base: 200ms; --motion-slow: 320ms;
+  --ease: cubic-bezier(.2,.8,.2,1);
+  --slovak-min: 1.125rem;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+  --ink: #EEF1F5;
+  --ink-muted: #A9B3C1;
+  --ink-faint: #6C7887;
+  --line: #2C3644;
+  --paper: #121820;
+  --surface: #1B2430;
+  --surface-sunk: #0D1218;
+  --primary: #8FB0F2;
+  --primary-soft: #1C2A48;
+  --secondary: #F2B233;
+  --secondary-soft: #3A2E12;
+  --accent: #F0806A;
+  --accent-soft: #3E1F19;
+  --success: #3FC287;
+  --success-soft: #12301F;
+  --error: #F06B6B;
+  --error-soft: #3A1515;
+  --warning: #F5A742;
+  --warning-soft: #3B2A0F;
+  }
+}
+:root[data-theme="dark"] {
+  --ink: #EEF1F5;
+  --ink-muted: #A9B3C1;
+  --ink-faint: #6C7887;
+  --line: #2C3644;
+  --paper: #121820;
+  --surface: #1B2430;
+  --surface-sunk: #0D1218;
+  --primary: #8FB0F2;
+  --primary-soft: #1C2A48;
+  --secondary: #F2B233;
+  --secondary-soft: #3A2E12;
+  --accent: #F0806A;
+  --accent-soft: #3E1F19;
+  --success: #3FC287;
+  --success-soft: #12301F;
+  --error: #F06B6B;
+  --error-soft: #3A1515;
+  --warning: #F5A742;
+  --warning-soft: #3B2A0F;
+}

@@ -166,3 +166,15 @@ Then hunspell-sk turned out to be better than the §7.4 fallback assumed: its af
 **Decision** `content/domain_packs.jsonl` (food/market 109, work/tech 73, church 65) is ordered by real-life need within sections; `spoken_rank` is stored per entry but never used for ordering.
 **Why** §15.3. Only 6/109 food-market entries are inside bands 1–2 — the frequency list would have taught none of *deko, bryndza, akcia, zľava, pokladňa* in the first year.
 **Consequence** Pack entries outside the 3,000 need a kaikki/hunspell join for paradigms and IPA (pipeline task); RO glosses are drafted inline.
+
+## D118 — Stack: Vite + React + TypeScript PWA; Dexie; ts-fsrs; deployed as a prebuilt folder to Vercel
+**Date** 2026-09-08
+**Decision** `app/` is a Vite React-TS PWA (vite-plugin-pwa/Workbox), IndexedDB via Dexie, scheduling via ts-fsrs (FSRS-6, retention 0.88), react-router. Deployed with `vercel deploy dist --prod` from the laptop; no CI build.
+**Why** The learner chose React+TS, phone-first, and asked for free hosting that does not depend on the laptop, preferring Vercel. Vercel Hobby fits: private, free, 100 GB/month, 15k files / 100 MB per upload. The build needs Python + Piper, so it runs locally and only the static output is uploaded — the site then lives on Vercel's CDN. GitHub Pages was rejected because it needs a public repo and parts of the data are research/non-commercial licensed.
+**Consequence** `pipeline/export_app_content.py` ships only referenced audio (1,254 clips, 14.7 MB) instead of all 5,572, and per-unit JSON, so first load is small and each unit becomes offline-capable after one visit. Progress export/import is the backup story (no accounts). Fonts still load from Google Fonts; self-host them before relying on full offline.
+
+## D119 — The first card type is listen → type, graded on token alignment with a diacritics tier
+**Date** 2026-09-08
+**Decision** `app/src/lib/grade.ts` aligns typed vs reference tokens (DP, costs 0 / 0.4 / 1) and yields ok / warn (diacritics only) / bad / missing / extra. Pass = no bad; strict mode (card stability > 14 days) also requires no warn. Ratings: wrong → Again, diacritics → Hard, right → Good, right on first listen → Easy. Wrong cards are re-queued to the end of the same session.
+**Why** Research §2 P5 (retrieval) and §10.1 (lenient → strict diacritics). A word-level diff is far more informative than a whole-sentence boolean, and the diacritics tier is what makes early sessions survivable for a Romanian speaker.
+**Consequence** Lemma status: `learning` after the first correct answer, `known` when a card carrying it reaches ≥ 3 reps with stability > 7 days; the coverage meter weights known 1.0 / learning 0.5.

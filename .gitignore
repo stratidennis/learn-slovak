@@ -19,3 +19,10 @@ dist/
 
 # OS
 .DS_Store
+
+# app (Vite)
+app/node_modules/
+app/dist/
+app/public/content/
+app/public/audio
+app/.vercel/
