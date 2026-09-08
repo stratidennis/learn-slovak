@@ -1,0 +1,21 @@
+# Python
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# Spike + pipeline working data (large downloads, regenerable)
+spike_data/
+pipeline/work/
+
+# Generated audio (regenerable from content/*.jsonl via Piper)
+content/audio/
+
+# Node / web app
+node_modules/
+dist/
+.vite/
+*.local
+
+# OS
+.DS_Store
