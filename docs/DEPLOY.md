@@ -54,7 +54,7 @@ cd app
 npm run deploy            # = export content → build → vercel deploy dist --prod
 ```
 
-Prints the production URL (something like `https://learn-slovak-app.vercel.app`). On the phone:
+Production URL: **https://learn-slovak-tau.vercel.app** (the team-scoped `…-projects.vercel.app` URL redirects to Vercel SSO — that is deployment protection on non-production URLs, expected). On the phone:
 open it in Safari/Chrome → *Add to Home Screen*. From then on it launches like an app, works
 offline for every unit you have opened once, and updates itself on the next launch.
 

@@ -14,7 +14,7 @@ translation + audio, no register flags, spread across target lemmas.
 """
 from __future__ import annotations
 import json, os, re, shutil, collections, random
-from .common import CONTENT, ROOT, read_jsonl
+from .common import CONTENT, ROOT, read_jsonl, write_jsonl
 from .pronounce import respell_ro, ipa as ipa_of, ALPHABET, DIPHTHONGS
 
 APP_PUBLIC = os.path.join(ROOT, "app", "public")
@@ -36,7 +36,21 @@ def _get_voice():
         _voice = PiperVoice.load(os.path.join(VOICE_DIR, f"{VOICE}.onnx"))
     return _voice
 
-from .tts import render as tts_render, DEFAULT_VOICE as TTS_VOICE
+from .tts import render as tts_render, DEFAULT_VOICE as TTS_VOICE, flush as tts_flush
+
+# Two speakers so the ear does not lock onto one. Only meaningful for the edge backend; with
+# piper every entry resolves to the single Slovak model.
+VOICES = {"f": "edge:sk-SK-ViktoriaNeural", "m": "edge:sk-SK-LukasNeural"} if TTS_VOICE.startswith("edge") \
+    else {"f": TTS_VOICE, "m": TTS_VOICE}
+def unit_voice(unit_id: str, other: bool = False) -> str:
+    """Even units → Viktória, odd → Lukáš (by position in the phase); `other` flips it."""
+    try:
+        n = int(unit_id.split(".")[1])
+    except (IndexError, ValueError):
+        n = 0
+    key = "f" if n % 2 == 0 else "m"
+    if other: key = "m" if key == "f" else "f"
+    return VOICES[key]
 
 def _existing(stem: str) -> str | None:
     for ext in (".mp3", ".ogg"):
@@ -44,13 +58,13 @@ def _existing(stem: str) -> str | None:
             return f"audio/{stem}{ext}"
     return None
 
-def slow_clip(file: str, text: str) -> str:
+def slow_clip(file: str, text: str, voice: str = TTS_VOICE) -> str:
     """content/audio/<stem>-slow.<ext> — slow speech rendered by the TTS itself (Piper length_scale
-    1.4 / Edge rate -30%), never playbackRate. Idempotent; backend = SK_TTS_VOICE."""
+    1.4 / Edge rate -30%), never playbackRate. Idempotent; same speaker as the normal clip."""
     stem = os.path.splitext(os.path.basename(file))[0].removesuffix("-slow")
     have = _existing(stem + "-slow")
     if have: return have
-    rec = tts_render(text, os.path.join(CONTENT, "audio", stem + "-slow"), voice=TTS_VOICE, slow=True)
+    rec = tts_render(text, os.path.join(CONTENT, "audio", stem + "-slow"), voice=voice, slow=True)
     slow_clip.rendered = getattr(slow_clip, "rendered", 0) + 1
     return rec["file"]
 
@@ -59,10 +73,10 @@ def alphabet_json(audio_refs: set) -> list:
     out = []
     for letter, name, ipa_, ro_anchor, example, note in ALPHABET:
         stem = "alpha-" + re.sub(r"[^a-z]", lambda m: f"u{ord(m.group(0)):04x}", letter)
-        name_rel = _existing(stem + "-name") or tts_render(name, os.path.join(CONTENT, "audio", stem + "-name"), voice=TTS_VOICE, slow=True)["file"]
+        name_rel = _existing(stem + "-name") or tts_render(name, os.path.join(CONTENT, "audio", stem + "-name"), voice=VOICES["f"], slow=True)["file"]
         ex_rel = None
         if example and example != "—":
-            ex_rel = _existing(stem + "-ex") or tts_render(example, os.path.join(CONTENT, "audio", stem + "-ex"), voice=TTS_VOICE)["file"]
+            ex_rel = _existing(stem + "-ex") or tts_render(example, os.path.join(CONTENT, "audio", stem + "-ex"), voice=VOICES["f"])["file"]
             audio_refs.add(ex_rel)
         audio_refs.add(name_rel)
         out.append({"letter": letter, "name": name, "ipa": ipa_, "ro": ro_anchor, "example": example,
@@ -71,16 +85,16 @@ def alphabet_json(audio_refs: set) -> list:
     return [{"letters": out, "diphthongs": [{"d": d, "ipa": i, "ro": r, "example": e} for d, i, r, e in DIPHTHONGS]}]
 
 _voice = None
-def ensure_audio(picked):
-    """Render clips for selected sentences that have none yet, and persist the audio field."""
-    global _voice
-    todo = [s for s in picked if not s.get("audio")]
+def ensure_audio(picked, voice=TTS_VOICE):
+    """Render clips for selected sentences that have none yet (or whose file vanished after a
+    re-voice), and persist the audio field."""
+    todo = [s for s in picked if not s.get("audio") or not os.path.exists(os.path.join(CONTENT, s["audio"]["file"]))]
     if not todo:
         return
     for s in todo:
         stem = s["id"].replace(":", "")
         have = _existing(stem)
-        s["audio"] = {"file": have, "tts_voice": "existing"} if have else tts_render(s["sk"], os.path.join(CONTENT, "audio", stem), voice=TTS_VOICE)
+        s["audio"] = {"file": have, "tts_voice": "existing"} if have else tts_render(s["sk"], os.path.join(CONTENT, "audio", stem), voice=voice)
     ensure_audio.rendered = getattr(ensure_audio, "rendered", 0) + sum(1 for s in todo if s["audio"])
 
 
@@ -120,21 +134,37 @@ def main():
     sizes["units.json"] = dump("units.json", [{k: u.get(k) for k in ("id","title","title_ro","sas_area","can_do","grammar_notes",
         "exercise_sequence","roleplay","creative","domain_pack","milestone","phase","chunks")} for u in units])
     by_unit = collections.defaultdict(list)
+    chunks_changed = False
     for c in chunks:
         by_unit[c["unit"]].append(c)
         c["guide"] = {"ro": respell_ro(c["sk"]), "ipa": ipa_of(c["sk"])}
+        stem = c["id"].replace(":", "-").replace(".", "_")
+        if not c.get("audio"):
+            c["audio"] = tts_render(c["sk"], os.path.join(CONTENT, "audio", stem), voice=unit_voice(c["unit"])); chunks_changed = True
         if c.get("audio"):
-            audio_refs.add(c["audio"]["file"]); c["audio_slow"] = slow_clip(c["audio"]["file"], c["sk"]); audio_refs.add(c["audio_slow"])
-        for v in c.get("variants", []):
+            audio_refs.add(c["audio"]["file"]); c["audio_slow"] = slow_clip(c["audio"]["file"], c["sk"], unit_voice(c["unit"])); audio_refs.add(c["audio_slow"])
+        for i, v in enumerate(c.get("variants", [])):
             v["guide"] = {"ro": respell_ro(v["sk"]), "ipa": ipa_of(v["sk"])}
+            if not v.get("audio"):
+                v["audio"] = tts_render(v["sk"], os.path.join(CONTENT, "audio", f"{stem}-v{i+1}"), voice=unit_voice(c["unit"], other=True)); chunks_changed = True
             if v.get("audio"):
-                audio_refs.add(v["audio"]["file"]); v["audio_slow"] = slow_clip(v["audio"]["file"], v["sk"]); audio_refs.add(v["audio_slow"])
+                audio_refs.add(v["audio"]["file"]); v["audio_slow"] = slow_clip(v["audio"]["file"], v["sk"], unit_voice(c["unit"], other=True)); audio_refs.add(v["audio_slow"])
+    if chunks_changed:
+        write_jsonl(f"{CONTENT}/chunks.jsonl", chunks)
     for uid, cs in by_unit.items():
         sizes[f"chunks/{uid}.json"] = dump(f"chunks/{uid}.json", cs)
     sizes["grammar_notes.json"] = dump("grammar_notes.json", notes)
+    pairs_changed = False
     for p in pairs:
+        if not p.get("audio"):
+            stem = p["id"].replace(":", "-").replace("/", "_")
+            p["audio"] = {"a": tts_render(p["a"], os.path.join(CONTENT, "audio", stem + "-a"), voice=VOICES["f"], slow=True)}
+            if p.get("b"): p["audio"]["b"] = tts_render(p["b"], os.path.join(CONTENT, "audio", stem + "-b"), voice=VOICES["f"], slow=True)
+            pairs_changed = True
         for k in ("a", "b"):
             if p.get("audio") and p["audio"].get(k): audio_refs.add(p["audio"][k]["file"])
+    if pairs_changed:
+        write_jsonl(f"{CONTENT}/minimal_pairs.jsonl", pairs)
     for p in pairs:
         p["guide"] = {"a": respell_ro(p["a"], mark_stress=False), "b": respell_ro(p["b"], mark_stress=False) if p.get("b") else None}
     sizes["minimal_pairs.json"] = dump("minimal_pairs.json", pairs)
@@ -185,18 +215,18 @@ def main():
             for h in hits: per_lemma[h] += 1
             if len(picked) >= n: break
         rnd.shuffle(picked)
-        ensure_audio(picked)
+        ensure_audio(picked, unit_voice(u["id"]))
         picked = [s for s in picked if s.get("audio")]
         for s in picked:
             audio_refs.add(s["audio"]["file"]); used.add(s["id"])
         n_sent += len(picked)
         sizes[f"sentences/{u['id']}.json"] = dump(f"sentences/{u['id']}.json",
             [{"id": s["id"], "sk": s["sk"], "en": s["en"][:1], "ro": s["ro"][:1], "lemmas": s["content_lemmas"],
-              "audio": s["audio"]["file"], "audio_slow": slow_clip(s["audio"]["file"], s["sk"]),
+              "audio": s["audio"]["file"], "audio_slow": slow_clip(s["audio"]["file"], s["sk"], unit_voice(u["id"])),
               "guide": {"ro": respell_ro(s["sk"]), "ipa": ipa_of(s["sk"])},
               "native": s["native_author"], "band": s["band"],
               "attr": s["attribution"], "lic": s["licence"]} for s in picked])
-        for s in picked: audio_refs.add(slow_clip(s["audio"]["file"], s["sk"]))
+        for s in picked: audio_refs.add(slow_clip(s["audio"]["file"], s["sk"], unit_voice(u["id"])))
 
     if getattr(slow_clip, "rendered", 0):
         print(f"  rendered {slow_clip.rendered} slow clips (length_scale 1.4)")
@@ -204,6 +234,9 @@ def main():
         from .common import write_jsonl as _w
         _w(f"{CONTENT}/sentences.jsonl", sents)
         print(f"  synthesized {ensure_audio.rendered} new clips for selected sentences (persisted to content/sentences.jsonl)")
+
+    n_flushed = tts_flush()                     # wait for queued Edge renders before copying
+    if n_flushed: print(f"  rendered {n_flushed} clips with {TTS_VOICE.split(':')[0]} (concurrent)")
 
     # ---- referenced audio only ------------------------------------------------------
     if os.path.islink(AUDIO_OUT): os.remove(AUDIO_OUT)

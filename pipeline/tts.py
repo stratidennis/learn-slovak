@@ -18,12 +18,29 @@ Numbers are spelled out before either backend (Q3). Output format follows the ba
 Piper, MP3 for Edge — the app plays both; the `audio.file` field carries the extension.
 """
 from __future__ import annotations
-import asyncio, os, wave
+import asyncio, os, wave, threading
+from concurrent.futures import ThreadPoolExecutor
 from .num2words_sk import expand_numbers, has_digits, unexpandable
 from .common import LICENCES
 
 DEFAULT_VOICE = os.environ.get("SK_TTS_VOICE", "piper:sk_SK-lili-medium")
 _piper = {}
+
+# Edge requests are network-bound, so they run on a small pool; render() returns the record
+# immediately (paths are deterministic) and flush() waits for the files before anything copies
+# them. Four in flight is gentle enough for the unofficial endpoint.
+_pool = ThreadPoolExecutor(max_workers=int(os.environ.get("SK_TTS_CONCURRENCY", "4")))
+_pending: dict[str, object] = {}
+_lock = threading.Lock()
+
+def flush() -> int:
+    """Wait for every queued Edge render; re-raise the first failure. Returns how many finished."""
+    with _lock:
+        futs = list(_pending.items()); _pending.clear()
+    n = 0
+    for path, f in futs:
+        f.result(); n += 1
+    return n
 
 def _piper_voice(model: str):
     if model not in _piper:
@@ -53,17 +70,29 @@ def render(text: str, out_path_no_ext: str, voice: str = DEFAULT_VOICE, slow: bo
         return {"file": os.path.relpath(ogg, os.path.dirname(os.path.dirname(ogg))), "spoken_text": spoken if spoken != text else None,
                 "tts_voice": voice, **{k: v_ for k, v_ in LICENCES["piper"].items() if k != "url"}}
     if backend == "edge":
-        import edge_tts
         mp3 = out_path_no_ext + ".mp3"
-        async def go():
-            await edge_tts.Communicate(spoken, name, rate="-30%" if slow else "+0%").save(mp3)
-        for attempt in range(3):
-            try:
-                asyncio.run(go()); break
-            except Exception as e:                     # the unofficial endpoint occasionally drops a request
-                if attempt == 2: raise
-                import time; time.sleep(2 * (attempt + 1))
+        if not os.path.exists(mp3):
+            with _lock:
+                if mp3 not in _pending:
+                    _pending[mp3] = _pool.submit(_edge_job, spoken, name, mp3, slow)
         return {"file": os.path.relpath(mp3, os.path.dirname(os.path.dirname(mp3))), "spoken_text": spoken if spoken != text else None,
                 "tts_voice": voice, "licence": "Microsoft Edge Read Aloud voice via edge-tts — personal use; no redistribution terms",
                 "attribution": f"Microsoft neural voice {name}"}
     raise ValueError(f"unknown TTS backend in {voice!r}")
+
+
+def _edge_job(spoken: str, name: str, mp3: str, slow: bool) -> None:
+    import edge_tts, time
+    tmp = mp3 + ".part"
+    async def go():
+        await edge_tts.Communicate(spoken, name, rate="-30%" if slow else "+0%").save(tmp)
+    for attempt in range(4):
+        try:
+            asyncio.run(go())
+            if os.path.getsize(tmp) < 1000:
+                raise RuntimeError("empty audio from Edge")
+            os.replace(tmp, mp3); return
+        except Exception:                          # the unofficial endpoint occasionally drops a request
+            if os.path.exists(tmp): os.remove(tmp)
+            if attempt == 3: raise
+            time.sleep(2 * (attempt + 1))
