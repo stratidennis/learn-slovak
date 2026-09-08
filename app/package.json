@@ -9,7 +9,8 @@
     "build": "tsc -b && vite build && cp vercel.json dist/vercel.json",
     "preview": "vite preview --host",
     "lint": "oxlint",
-    "deploy": "npm run export && npm run build && npx vercel deploy dist --prod --yes"
+    "deploy": "npm run export && npm run build && npx vercel deploy dist --prod --yes",
+    "test": "vitest run"
   },
   "dependencies": {
     "dexie": "^4.4.5",
@@ -27,6 +28,7 @@
     "typescript": "~6.0.2",
     "vite": "^8.2.2",
     "vite-plugin-pwa": "^1.3.0",
+    "vitest": "^5.0.0",
     "workbox-window": "^7.4.1"
   }
 }

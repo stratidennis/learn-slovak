@@ -27,6 +27,23 @@ def dump(name, obj):
         json.dump(obj, fh, ensure_ascii=False, separators=(",", ":"))
     return os.path.getsize(path)
 
+_voice = None
+def ensure_audio(picked):
+    """Render clips for selected sentences that have none yet, and persist the audio field."""
+    global _voice
+    todo = [s for s in picked if not s.get("audio")]
+    if not todo:
+        return
+    from .build_audio import _render_one, VOICE_DIR, VOICE
+    from piper import PiperVoice, SynthesisConfig
+    if _voice is None:
+        _voice = PiperVoice.load(os.path.join(VOICE_DIR, f"{VOICE}.onnx"))
+    cfg = SynthesisConfig(length_scale=1.0)
+    for s in todo:
+        s["audio"] = _render_one(_voice, cfg, True, s["sk"], s["id"].replace(":", ""))
+    ensure_audio.rendered = getattr(ensure_audio, "rendered", 0) + sum(1 for s in todo if s["audio"])
+
+
 def main():
     lex = list(read_jsonl(f"{CONTENT}/lexemes.jsonl"))
     sents = list(read_jsonl(f"{CONTENT}/sentences.jsonl"))
@@ -74,10 +91,20 @@ def main():
     sizes["minimal_pairs.json"] = dump("minimal_pairs.json", pairs)
 
     # ---- lesson sentences per unit ---------------------------------------------
-    good = [s for s in sents if s["audio"] and not s["register_flags"] and s["band"] is not None]
+    # NOT filtered on audio: only band-1 sentences were pre-rendered, which silently excluded every
+    # sentence containing a band-3 market word. Missing clips are synthesized after selection.
+    good = [s for s in sents if not s["register_flags"] and s["band"] is not None and not s["unknown_lemmas"]]
     rnd = random.Random(7)
+    rank_of = {r["lemma"]: r["spoken_rank"] for r in lex}
+    band_of = {r["lemma"]: r["band"] for r in lex}
+    import math
     def score(s, targets):
-        return (len(set(s["content_lemmas"]) & targets), s["native_author"], bool(s["en"]), -abs(s["n_words"] - 6))
+        # A hit on a rare target lemma (káva #615, platiť #532) is worth far more than a hit on a
+        # glue verb (chcieť #25): otherwise the unit "Coffee" fills up with sentences about wanting.
+        # Same failure §15.3 describes, at sentence level.
+        w = sum(math.sqrt(rank_of.get(l, 3000)) for l in set(s["content_lemmas"]) & targets)
+        short = s["n_words"] <= 8
+        return (round(w, 1), short, s["native_author"], bool(s["en"]), -abs(s["n_words"] - 5))
     n_sent = 0
     used: set[str] = set()          # a sentence should teach in ONE unit, not be recycled by every unit
     for u in units:
@@ -86,12 +113,20 @@ def main():
         max_band = 2 if "2" in pool else 1
         n = sel["n"] if isinstance(sel.get("n"), int) else 30
         targets = set(sel.get("lemmas", []))
-        cands = [s for s in good if s["band"] <= max_band]
+        # A sentence qualifies when every content lemma is inside the pool band OR is one of the
+        # unit's own target lemmas. Market words are band 3 (chlieb #2142, kilo #2770 — §15.3), so
+        # a plain "band <= 2" filter threw away exactly the sentences unit 1.6 exists to teach.
+        allowance = 0 if u["phase"] <= 1 else 1
+        def fits(s):
+            out = [l for l in s["content_lemmas"] if band_of.get(l, 99) > max_band and l not in targets]
+            return len(out) <= allowance
+        cands = [s for s in good if fits(s)]
         if targets:
-            cands = [s for s in cands if set(s["content_lemmas"]) & targets] or cands
+            hits = [s for s in cands if set(s["content_lemmas"]) & targets]
+            cands = hits or cands
         cands.sort(key=lambda s: (s["id"] not in used,) + score(s, targets), reverse=True)
         picked, per_lemma = [], collections.Counter()
-        cap = max(2, n // max(1, len(targets)) + 1) if targets else n
+        cap = max(3, n // max(1, len(targets)) + 2) if targets else n
         for s in cands:
             hits = set(s["content_lemmas"]) & targets
             if targets and hits and all(per_lemma[h] >= cap for h in hits):
@@ -100,6 +135,8 @@ def main():
             for h in hits: per_lemma[h] += 1
             if len(picked) >= n: break
         rnd.shuffle(picked)
+        ensure_audio(picked)
+        picked = [s for s in picked if s.get("audio")]
         for s in picked:
             audio_refs.add(s["audio"]["file"]); used.add(s["id"])
         n_sent += len(picked)
@@ -107,6 +144,11 @@ def main():
             [{"id": s["id"], "sk": s["sk"], "en": s["en"][:1], "ro": s["ro"][:1], "lemmas": s["content_lemmas"],
               "audio": s["audio"]["file"], "native": s["native_author"], "band": s["band"],
               "attr": s["attribution"], "lic": s["licence"]} for s in picked])
+
+    if getattr(ensure_audio, "rendered", 0):
+        from .common import write_jsonl as _w
+        _w(f"{CONTENT}/sentences.jsonl", sents)
+        print(f"  synthesized {ensure_audio.rendered} new clips for selected sentences (persisted to content/sentences.jsonl)")
 
     # ---- referenced audio only ------------------------------------------------------
     if os.path.islink(AUDIO_OUT): os.remove(AUDIO_OUT)

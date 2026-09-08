@@ -47,13 +47,16 @@ export function ListenTypeSession() {
 
   const item = queue?.[i]
   const strict = useMemo(() => !!item && item.card.fsrs.stability > 14, [item])
-  useEffect(() => { setTyped(''); setResult(null); setReplays(0); setShowRo(false); startedAt.current = Date.now(); setTimeout(() => inputRef.current?.focus(), 50) }, [i])
+  useEffect(() => { setTyped(''); setResult(null); setGaveUp(false); setReplays(0); setShowRo(false); startedAt.current = Date.now(); setTimeout(() => inputRef.current?.focus(), 50) }, [i])
 
-  const submit = async () => {
+  const [gaveUp, setGaveUp] = useState(false)
+  const submit = async (text = typed, reveal = false) => {
     if (!item || result) return
-    const g = grade(item.sentence.sk, typed, strict)
-    setResult(g)
-    const tier = g.nBad > 0 ? 'wrong' : g.nWarn > 0 ? 'diacritics' : 'exact'
+    // "I don't know" reveals the answer and counts as Again; grading the reference against
+    // itself would show a perfect diff, grading the stale empty state showed everything missing.
+    const g = grade(item.sentence.sk, reveal ? '' : text, strict)
+    setGaveUp(reveal); setResult(g)
+    const tier = reveal || g.nBad > 0 ? 'wrong' : g.nWarn > 0 ? 'diacritics' : 'exact'
     const rating = ratingFor(tier, replays)
     if (item.isNew) await db.cards.put(item.card)
     const updated = await review(item.card, rating)
@@ -92,13 +95,13 @@ export function ListenTypeSession() {
               onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); void submit() } }} placeholder="…" />
             <SlovakKeyboard inputRef={inputRef} onChange={setTyped} />
             <div className="row" style={{ marginTop: 8 }}>
-              <button className="btn primary" onClick={submit} disabled={!typed.trim()}>Check</button>
-              <button className="btn ghost" onClick={() => { setTyped(item.sentence.sk); void submit() }}>I don't know</button>
+              <button className="btn primary" onClick={() => submit()} disabled={!typed.trim()}>Check</button>
+              <button className="btn ghost" onClick={() => submit('', true)}>I don't know</button>
             </div>
           </>
         ) : (
           <div className="stack fade" style={{ marginTop: 16 }}>
-            <Diff grade={result} />
+            {gaveUp ? <p className="muted" style={{ margin: 0 }}>Revealed — listen once more, then say it.</p> : <Diff grade={result} />}
             <div style={{ padding: '12px 0', borderTop: '1px solid var(--line)' }}>
               <TappableSentence text={item.sentence.sk} />
               <p className="small muted" style={{ margin: '6px 0 0' }}>tap a word for its meaning</p>
@@ -107,7 +110,7 @@ export function ListenTypeSession() {
             {item.sentence.ro[0] ? <p className="muted" style={{ margin: 0 }}>{item.sentence.ro[0]}</p>
               : <button className="small muted" onClick={() => setShowRo(true)}>{showRo ? 'no Romanian for this sentence yet' : 'RO ▾'}</button>}
             <p className={`small ${result.nBad ? '' : 'muted'}`} style={{ margin: 0, color: result.nBad ? 'var(--error)' : result.nWarn ? 'var(--warning-deep)' : 'var(--success-deep)' }}>
-              {result.nBad ? 'Not yet — you\'ll see this one again.' : result.nWarn ? `Right, but mind the diacritics${strict ? ' (strict now)' : ''}.` : replays <= 1 ? 'First time. Easy.' : 'Good.'}
+              {gaveUp ? 'You\'ll see this one again today.' : result.nBad ? 'Not yet — you\'ll see this one again.' : result.nWarn ? `Right, but mind the diacritics${strict ? ' (strict now)' : ''}.` : replays <= 1 ? 'First time. Easy.' : 'Good.'}
             </p>
             <p className="small muted" style={{ margin: 0 }}>{item.sentence.attr} · {item.sentence.lic}</p>
             <button className="btn primary block" onClick={() => setI(i + 1)} autoFocus>Next →</button>
