@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "export": "cd .. && .venv/bin/python -m pipeline.export_app_content",
+    "export": "cd .. && SK_TTS_VOICE=${SK_TTS_VOICE:-edge:sk-SK-ViktoriaNeural} .venv/bin/python -m pipeline.export_app_content",
     "dev": "vite",
     "build": "tsc -b && vite build && cp vercel.json dist/vercel.json",
     "preview": "vite preview --host",
