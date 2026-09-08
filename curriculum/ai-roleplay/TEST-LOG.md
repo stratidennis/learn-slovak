@@ -50,3 +50,19 @@ applied:
 - All eight on an actual ChatGPT session (you — paste and play; send me the transcript).
 - Whether the `KNOWN_WORDS` list (300–1,000 lemmas, ~2–9 KB) is respected or ignored by a
   smaller model — in both runs the model stayed close to the list, but the scripts were short.
+
+## 2026-09-08 — Claude Sonnet, R1 market, v1.1 prompt (same learner script)
+
+| Check | v1 | v1.1 |
+|---|---|---|
+| Invented address forms (*pán!*, *priateľu*) | ✘ | ✔ none |
+| Register consistent to the goodbye | ✘ *vy* → *ahoj* | ✔ *Dovidenia … Pekný deň* |
+| Model's own Slovak natural | ✘ *Tu iba peniaze*, *Syr domáci máme* | ✔ *Len v hotovosti, prosím.* · *Domáci syr, dobre.* |
+| Unnatural phrase leaked into flashcards | ✘ | ✔ all three natural, tagged [standard]/[colloquial] |
+| "why" ≤ one line | ✘ | ✔ |
+| Learner corrections accurate | ✔ | ✔ (*jedno kilo jabĺk · kartu · aj · register*) |
+| Commands `?` `!` `koniec` | ✔ | ✔ |
+
+Residual: *"pán Dennis"* — Slovak uses *pán* + surname. Rule changed to "no address word at all"
+(v1.2). Otherwise v1.1 fixed every flagged failure on the weaker model. Conclusion stands: use
+the strongest model available for roleplay; treat debrief flashcards as `needs_review`.
