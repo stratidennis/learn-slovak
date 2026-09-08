@@ -8,7 +8,9 @@ if (!existsSync(envPath)) {
 }
 const env = Object.fromEntries(readFileSync(envPath, 'utf8').split('\n').filter(l => l.includes('=') && !l.startsWith('#')).map(l => { const i = l.indexOf('='); return [l.slice(0, i).trim(), l.slice(i + 1).trim()] }))
 if (!env.VERCEL_TOKEN || !env.VERCEL_SCOPE) { console.error('.env.deploy needs both VERCEL_TOKEN and VERCEL_SCOPE.'); process.exit(1) }
-const args = ['vercel', 'deploy', 'dist', '--prod', '--yes', '--token', env.VERCEL_TOKEN, '--scope', env.VERCEL_SCOPE, '--name', 'learn-slovak']
+// --archive=tgz: one tarball instead of ~2,800 individual uploads. Hobby caps API file uploads at
+// 5,000 per 24h ("api-upload-free"); two per-file deploys hit it on day one.
+const args = ['vercel', 'deploy', 'dist', '--prod', '--yes', '--archive=tgz', '--token', env.VERCEL_TOKEN, '--scope', env.VERCEL_SCOPE, '--name', 'learn-slovak']
 console.log('deploying dist/ to Vercel scope', env.VERCEL_SCOPE, '…')
 const r = spawnSync('npx', args, { stdio: 'inherit', env: { ...process.env, VERCEL_TOKEN: env.VERCEL_TOKEN } })
 process.exit(r.status ?? 1)

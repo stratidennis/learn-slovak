@@ -65,8 +65,11 @@ offline for every unit you have opened once, and updates itself on the next laun
 2. `tsc -b && vite build` — type-checks and bundles; the PWA plugin writes `sw.js` with:
    precached shell; `/audio/*` cache-first for a year; `/content/*` stale-while-revalidate.
 3. copies `vercel.json` into `dist/` (SPA rewrites, immutable cache headers on audio, `noindex`).
-4. `vercel deploy dist --prod --yes --token $VERCEL_TOKEN --scope $VERCEL_SCOPE --name learn-slovak`
-   with both variables read from `app/.env.deploy`.
+4. `vercel deploy dist --prod --yes --archive=tgz --token $VERCEL_TOKEN --scope $VERCEL_SCOPE --name learn-slovak`
+   with both variables read from `app/.env.deploy`. **`--archive=tgz` is not optional:** Hobby caps
+   API file uploads at 5,000 per 24 hours (`api-upload-free`), and one per-file deploy of this app is
+   ~2,800 files. The tarball counts as one upload; the 15,000-file / 100 MB limits still apply to the
+   extracted output (we are at ~2,800 files / ~50 MB).
 
 ## Keeping it private-ish
 
