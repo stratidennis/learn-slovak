@@ -1,0 +1,246 @@
+{
+  "_comment": "Hand-picked from undraw.co's catalogue; recoloured at build time to the primary token. Not bulk-downloaded.",
+  "primary": "#2457C5",
+  "illustrations": [
+    {
+      "slug": "navigation_agc7",
+      "title": "Navigation",
+      "used_for": "1.7 Where is…?",
+      "file": "illustrations/navigation_agc7.svg",
+      "source": "https://cdn.undraw.co/illustration/navigation_agc7.svg",
+      "recoloured": "#6c63ff -> #2457C5 (3 fills)",
+      "bytes": 6706,
+      "licence": "unDraw licence — free for personal/commercial use, no attribution, modification allowed"
+    },
+    {
+      "slug": "sweet-home_b054",
+      "title": "Sweet Home",
+      "used_for": "1.11 Home & things",
+      "file": "illustrations/sweet-home_b054.svg",
+      "source": "https://cdn.undraw.co/illustration/sweet-home_b054.svg",
+      "recoloured": "#6c63ff -> #2457C5 (5 fills)",
+      "bytes": 8363,
+      "licence": "unDraw licence — free for personal/commercial use, no attribution, modification allowed"
+    },
+    {
+      "slug": "working-at-home_usrj",
+      "title": "Working at Home",
+      "used_for": "1.3 Who I am / 2.8 Work & tech",
+      "file": "illustrations/working-at-home_usrj.svg",
+      "source": "https://cdn.undraw.co/illustration/working-at-home_usrj.svg",
+      "recoloured": "#6c63ff -> #2457C5 (4 fills)",
+      "bytes": 15843,
+      "licence": "unDraw licence — free for personal/commercial use, no attribution, modification allowed"
+    },
+    {
+      "slug": "bug-detected_71if",
+      "title": "Bug Detected",
+      "used_for": "2.8 Work & tech — the bug",
+      "file": "illustrations/bug-detected_71if.svg",
+      "source": "https://cdn.undraw.co/illustration/bug-detected_71if.svg",
+      "recoloured": "#6c63ff -> #2457C5 (3 fills)",
+      "bytes": 4323,
+      "licence": "unDraw licence — free for personal/commercial use, no attribution, modification allowed"
+    },
+    {
+      "slug": "deploy-globally_2k9s",
+      "title": "Deploy Globally",
+      "used_for": "2.8 Work & tech — deploy",
+      "file": "illustrations/deploy-globally_2k9s.svg",
+      "source": "https://cdn.undraw.co/illustration/deploy-globally_2k9s.svg",
+      "recoloured": "#6c63ff -> #2457C5 (19 fills)",
+      "bytes": 35430,
+      "licence": "unDraw licence — free for personal/commercial use, no attribution, modification allowed"
+    },
+    {
+      "slug": "organizing-work_gmo9",
+      "title": "Organizing Work",
+      "used_for": "2.8 stand-up / R5",
+      "file": "illustrations/organizing-work_gmo9.svg",
+      "source": "https://cdn.undraw.co/illustration/organizing-work_gmo9.svg",
+      "recoloured": "#6c63ff -> #2457C5 (9 fills)",
+      "bytes": 19165,
+      "licence": "unDraw licence — free for personal/commercial use, no attribution, modification allowed"
+    },
+    {
+      "slug": "team_mmq0",
+      "title": "Team",
+      "used_for": "1.12 Family & people / 2.11",
+      "file": "illustrations/team_mmq0.svg",
+      "source": "https://cdn.undraw.co/illustration/team_mmq0.svg",
+      "recoloured": "#6c63ff -> #2457C5 (8 fills)",
+      "bytes": 9874,
+      "licence": "unDraw licence — free for personal/commercial use, no attribution, modification allowed"
+    },
+    {
+      "slug": "online-connection_ls95",
+      "title": "Online Connection",
+      "used_for": "1.10 Phone & messages",
+      "file": "illustrations/online-connection_ls95.svg",
+      "source": "https://cdn.undraw.co/illustration/online-connection_ls95.svg",
+      "recoloured": "#6c63ff -> #2457C5 (7 fills)",
+      "bytes": 12223,
+      "licence": "unDraw licence — free for personal/commercial use, no attribution, modification allowed"
+    },
+    {
+      "slug": "live-support_9y6n",
+      "title": "Live Support",
+      "used_for": "R8 phone booking",
+      "file": "illustrations/live-support_9y6n.svg",
+      "source": "https://cdn.undraw.co/illustration/live-support_9y6n.svg",
+      "recoloured": "#6c63ff -> #2457C5 (4 fills)",
+      "bytes": 10014,
+      "licence": "unDraw licence — free for personal/commercial use, no attribution, modification allowed"
+    },
+    {
+      "slug": "progress-bar_o44f",
+      "title": "Progress Bar",
+      "used_for": "Progress screen",
+      "file": "illustrations/progress-bar_o44f.svg",
+      "source": "https://cdn.undraw.co/illustration/progress-bar_o44f.svg",
+      "recoloured": "#6c63ff -> #2457C5 (9 fills)",
+      "bytes": 2883,
+      "licence": "unDraw licence — free for personal/commercial use, no attribution, modification allowed"
+    },
+    {
+      "slug": "winner_x40e",
+      "title": "Winner",
+      "used_for": "Unit complete",
+      "file": "illustrations/winner_x40e.svg",
+      "source": "https://cdn.undraw.co/illustration/winner_x40e.svg",
+      "recoloured": "#6c63ff -> #2457C5 (5 fills)",
+      "bytes": 5502,
+      "licence": "unDraw licence — free for personal/commercial use, no attribution, modification allowed"
+    },
+    {
+      "slug": "done_erdp",
+      "title": "Done",
+      "used_for": "Session done",
+      "file": "illustrations/done_erdp.svg",
+      "source": "https://cdn.undraw.co/illustration/done_erdp.svg",
+      "recoloured": "#6c63ff -> #2457C5 (4 fills)",
+      "bytes": 8436,
+      "licence": "unDraw licence — free for personal/commercial use, no attribution, modification allowed"
+    },
+    {
+      "slug": "thumbs-up_f300",
+      "title": "Thumbs Up",
+      "used_for": "Correct answer / streak",
+      "file": "illustrations/thumbs-up_f300.svg",
+      "source": "https://cdn.undraw.co/illustration/thumbs-up_f300.svg",
+      "recoloured": "#6c63ff -> #2457C5 (1 fills)",
+      "bytes": 2498,
+      "licence": "unDraw licence — free for personal/commercial use, no attribution, modification allowed"
+    },
+    {
+      "slug": "ready-set-go_wr4s",
+      "title": "Ready Set Go",
+      "used_for": "Onboarding — start",
+      "file": "illustrations/ready-set-go_wr4s.svg",
+      "source": "https://cdn.undraw.co/illustration/ready-set-go_wr4s.svg",
+      "recoloured": "#6c63ff -> #2457C5 (2 fills)",
+      "bytes": 4391,
+      "licence": "unDraw licence — free for personal/commercial use, no attribution, modification allowed"
+    },
+    {
+      "slug": "career-growth_wjul",
+      "title": "Career Growth",
+      "used_for": "Coverage meter / phase gate",
+      "file": "illustrations/career-growth_wjul.svg",
+      "source": "https://cdn.undraw.co/illustration/career-growth_wjul.svg",
+      "recoloured": "#6c63ff -> #2457C5 (3 fills)",
+      "bytes": 16952,
+      "licence": "unDraw licence — free for personal/commercial use, no attribution, modification allowed"
+    },
+    {
+      "slug": "arriving_3rs3",
+      "title": "Arriving",
+      "used_for": "2.4 Where vs where to / transport",
+      "file": "illustrations/arriving_3rs3.svg",
+      "source": "https://cdn.undraw.co/illustration/arriving_3rs3.svg",
+      "recoloured": "#6c63ff -> #2457C5 (4 fills)",
+      "bytes": 5041,
+      "licence": "unDraw licence — free for personal/commercial use, no attribution, modification allowed"
+    },
+    {
+      "slug": "currency-conversion_933g",
+      "title": "Currency Conversion",
+      "used_for": "1.5 Numbers, prices",
+      "file": "illustrations/currency-conversion_933g.svg",
+      "source": "https://cdn.undraw.co/illustration/currency-conversion_933g.svg",
+      "recoloured": "#6c63ff -> #2457C5 (32 fills)",
+      "bytes": 14831,
+      "licence": "unDraw licence — free for personal/commercial use, no attribution, modification allowed"
+    },
+    {
+      "slug": "mail-sent_dagx",
+      "title": "Mail Sent",
+      "used_for": "Review outbox — exported",
+      "file": "illustrations/mail-sent_dagx.svg",
+      "source": "https://cdn.undraw.co/illustration/mail-sent_dagx.svg",
+      "recoloured": "#6c63ff -> #2457C5 (2 fills)",
+      "bytes": 2589,
+      "licence": "unDraw licence — free for personal/commercial use, no attribution, modification allowed"
+    },
+    {
+      "slug": "document-review_lfir",
+      "title": "Document Review",
+      "used_for": "Review outbox — reviewer",
+      "file": "illustrations/document-review_lfir.svg",
+      "source": "https://cdn.undraw.co/illustration/document-review_lfir.svg",
+      "recoloured": "#6c63ff -> #2457C5 (4 fills)",
+      "bytes": 5622,
+      "licence": "unDraw licence — free for personal/commercial use, no attribution, modification allowed"
+    },
+    {
+      "slug": "personal-notes_xrz8",
+      "title": "Personal Notes",
+      "used_for": "Reader / mistake diary",
+      "file": "illustrations/personal-notes_xrz8.svg",
+      "source": "https://cdn.undraw.co/illustration/personal-notes_xrz8.svg",
+      "recoloured": "#6c63ff -> #2457C5 (1 fills)",
+      "bytes": 11806,
+      "licence": "unDraw licence — free for personal/commercial use, no attribution, modification allowed"
+    },
+    {
+      "slug": "decision-point_yhu3",
+      "title": "Decision Point",
+      "used_for": "F3 two-way prepositions / choices",
+      "file": "illustrations/decision-point_yhu3.svg",
+      "source": "https://cdn.undraw.co/illustration/decision-point_yhu3.svg",
+      "recoloured": "#6c63ff -> #2457C5 (1 fills)",
+      "bytes": 4837,
+      "licence": "unDraw licence — free for personal/commercial use, no attribution, modification allowed"
+    },
+    {
+      "slug": "random-idea_a29k",
+      "title": "Random Idea",
+      "used_for": "Grammar note callout",
+      "file": "illustrations/random-idea_a29k.svg",
+      "source": "https://cdn.undraw.co/illustration/random-idea_a29k.svg",
+      "recoloured": "#6c63ff -> #2457C5 (2 fills)",
+      "bytes": 8916,
+      "licence": "unDraw licence — free for personal/commercial use, no attribution, modification allowed"
+    },
+    {
+      "slug": "looking-for-answers_5p23",
+      "title": "Looking for Answers",
+      "used_for": "Empty search / no results",
+      "file": "illustrations/looking-for-answers_5p23.svg",
+      "source": "https://cdn.undraw.co/illustration/looking-for-answers_5p23.svg",
+      "recoloured": "#6c63ff -> #2457C5 (3 fills)",
+      "bytes": 13772,
+      "licence": "unDraw licence — free for personal/commercial use, no attribution, modification allowed"
+    },
+    {
+      "slug": "vacation-photos_070r",
+      "title": "Vacation Photos",
+      "used_for": "2.10 Slovakia & Romania / travel",
+      "file": "illustrations/vacation-photos_070r.svg",
+      "source": "https://cdn.undraw.co/illustration/vacation-photos_070r.svg",
+      "recoloured": "#6c63ff -> #2457C5 (12 fills)",
+      "bytes": 15216,
+      "licence": "unDraw licence — free for personal/commercial use, no attribution, modification allowed"
+    }
+  ]
+}
