@@ -17,11 +17,12 @@ export default defineConfig({
         start_url: '/',
         display: 'standalone',
         background_color: '#FAF8F4',
-        theme_color: '#2457C5',
+        theme_color: '#0B4EA2',
+        // the Slovak flag (D129): rounded for 'any', full-bleed for the launcher masks
         icons: [
           { src: '/icons/icon-192.png', sizes: '192x192', type: 'image/png' },
           { src: '/icons/icon-512.png', sizes: '512x512', type: 'image/png' },
-          { src: '/icons/icon-512.png', sizes: '512x512', type: 'image/png', purpose: 'maskable' },
+          { src: '/icons/icon-512-maskable.png', sizes: '512x512', type: 'image/png', purpose: 'maskable' },
         ],
       },
       workbox: {

@@ -15,9 +15,9 @@ export function playAudio(src: string, rate = 1): Promise<boolean> {
 }
 
 /** Play clips one after another (dialogue A then B). Stops if another play() takes over. */
-export async function playSequence(srcs: string[], gapMs = 400): Promise<boolean> {
+export async function playSequence(srcs: string[], gapMs = 400, rate = 1): Promise<boolean> {
   for (let i = 0; i < srcs.length; i++) {
-    const ok = await playAudio(srcs[i]); if (!ok || !player) return false
+    const ok = await playAudio(srcs[i], rate); if (!ok || !player) return false
     const my = gen
     await new Promise<void>(res => { const done = () => { player.removeEventListener('ended', done); player.removeEventListener('pause', done); res() }
       player.addEventListener('ended', done); player.addEventListener('pause', done); setTimeout(done, 15000) })
@@ -30,6 +30,8 @@ export async function playSequence(srcs: string[], gapMs = 400): Promise<boolean
 
 type Props = {
   src: string
+  /** play these clips one after another instead of src (a letter, then a word that contains it) */
+  seq?: string[]
   /** a clip rendered slowly by the TTS itself (length_scale 1.4) — sounds far better than playbackRate */
   slowSrc?: string | null
   autoPlay?: boolean
@@ -37,20 +39,21 @@ type Props = {
   compact?: boolean
 }
 /** Replay as often as you like; "Slow" uses the natural slow render when there is one, else 0.7×; "Slower" is 0.5×. */
-export function AudioButton({ src, slowSrc, autoPlay, onPlayed, compact }: Props) {
+export function AudioButton({ src, seq, slowSrc, autoPlay, onPlayed, compact }: Props) {
   const t = useT()
   const [blocked, setBlocked] = useState(false)
   const [last, setLast] = useState<'normal' | 'slow' | 'slower'>('normal')
   const count = useRef(0)
   const play = async (mode: 'normal' | 'slow' | 'slower' = 'normal') => {
     setLast(mode)
-    const ok = mode === 'normal' ? await playAudio(src, 1)
+    const ok = seq && seq.length > 1 ? await playSequence(seq, 350, mode === 'normal' ? 1 : mode === 'slow' ? 0.75 : 0.55)
+      : mode === 'normal' ? await playAudio(src, 1)
       : mode === 'slow' ? (slowSrc ? await playAudio(slowSrc, 1) : await playAudio(src, 0.7))
       : (slowSrc ? await playAudio(slowSrc, 0.75) : await playAudio(src, 0.5))
     setBlocked(!ok)
     if (ok) { count.current++; onPlayed?.(count.current) }
   }
-  useEffect(() => { count.current = 0; if (autoPlay) void play('normal') }, [src]) // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => { count.current = 0; if (autoPlay) void play('normal') }, [src, seq?.join('|')]) // eslint-disable-line react-hooks/exhaustive-deps
   if (compact) return <button className="audiobtn small" onClick={() => play('normal')} aria-label="Prehrať">▶</button>
   return (
     <div className="row" style={{ gap: 8 }}>

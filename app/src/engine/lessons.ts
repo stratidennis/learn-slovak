@@ -1,0 +1,80 @@
+// Lessons (D129): a unit's items are cut into fixed, numbered lessons of ~8–10 items so the learner
+// sees a road map, can pick any lesson, and can come back to redo one. Membership is derived from the
+// unit's declared item order alone (no content needs loading), so Home can draw every road map from
+// units.json + the item states. Mastery stays per item (curriculum/LEARNING-ENGINE.md §2); a lesson is
+// "done" when every item in it has been introduced and answered at least once, "mastered" when every
+// item sits at its top stage.
+import type { Unit } from '../data/types'
+import type { Item, ItemRef, ItemState } from './types'
+import { maxStageFor } from './session'
+
+export type LessonDef = { id: string; unitId: string; n: number; refs: ItemRef[] }
+export type LessonStatus = 'new' | 'started' | 'done' | 'mastered'
+export type LessonProgress = { total: number; seen: number; mastered: number; pct: number; status: LessonStatus }
+
+const RECOGNITION_ONLY = new Set(['letter', 'pair', 'cognate'])
+/** Recognition-only kinds (letters, sound pairs, cognates) take 10 per lesson; everything else 8. */
+export function lessonSize(kinds: Iterable<string>): number {
+  for (const k of kinds) if (!RECOGNITION_ONLY.has(k)) return 8
+  return 10
+}
+
+/** Cut the unit's refs into N lessons; each kind is spread evenly so every lesson mixes chunks,
+ *  dialogues and sentences instead of front-loading one kind. Declared order is kept within a kind. */
+export function lessonsFor(unit: Pick<Unit, 'id' | 'items'>): LessonDef[] {
+  const refs = (unit.items ?? []) as ItemRef[]
+  if (!refs.length) return []
+  const kinds = [...new Set(refs.map(r => r.kind))]
+  const n = Math.max(1, Math.ceil(refs.length / lessonSize(kinds)))
+  const out: LessonDef[] = Array.from({ length: n }, (_, i) => ({ id: `${unit.id}/${i + 1}`, unitId: unit.id, n: i + 1, refs: [] }))
+  // each kind is dealt base + (0|1) per lesson; the "+1"s rotate across lessons from kind to kind,
+  // so remainders never pile up on the same lesson (15 chunks + 7 dialogues + 24 sentences → 8,8,8,8,7,7)
+  let rot = 0
+  for (const k of kinds) {
+    const of = refs.filter(r => r.kind === k)
+    const base = Math.floor(of.length / n), extra = of.length % n
+    const gets = Array.from({ length: n }, (_, j) => base + ((j - rot + n) % n < extra ? 1 : 0))
+    let at = 0
+    for (let j = 0; j < n; j++) { out[j].refs.push(...of.slice(at, at + gets[j])); at += gets[j] }
+    rot = (rot + extra) % n
+  }
+  return out.filter(l => l.refs.length > 0).map((l, i) => ({ ...l, n: i + 1, id: `${unit.id}/${i + 1}` }))
+}
+
+export function lessonProgress(l: LessonDef, states: Map<string, ItemState>): LessonProgress {
+  let seen = 0, mastered = 0, sum = 0, max = 0
+  for (const r of l.refs) {
+    const st = states.get(r.id)?.stage ?? 0, top = maxStageFor(r.kind, l.unitId)
+    if (st >= 1) seen++
+    if (st >= top) mastered++
+    sum += Math.min(st, top); max += top
+  }
+  const total = l.refs.length
+  const status: LessonStatus = total > 0 && mastered >= total ? 'mastered' : seen >= total ? 'done' : seen > 0 ? 'started' : 'new'
+  return { total, seen, mastered, pct: max ? sum / max : 0, status }
+}
+
+/** The lesson to continue with: the first one not yet done. Null when the unit is complete. */
+export function nextLesson(defs: LessonDef[], states: Map<string, ItemState>): LessonDef | null {
+  return defs.find(l => { const s = lessonProgress(l, states).status; return s === 'new' || s === 'started' }) ?? null
+}
+
+/** Resolve a lesson's refs against loaded items, in lesson order. */
+export function lessonItems(l: LessonDef, items: Item[]): Item[] {
+  const by = new Map(items.map(it => [it.ref.id, it]))
+  return l.refs.map(r => by.get(r.id)).filter((x): x is Item => !!x)
+}
+
+/** Count of items per kind, for the "3 chunks · 1 dialogue · 4 sentences" line. */
+export function kindCounts(l: LessonDef): [string, number][] {
+  const c = new Map<string, number>()
+  for (const r of l.refs) c.set(r.kind, (c.get(r.kind) ?? 0) + 1)
+  return [...c.entries()]
+}
+
+/** Group every stored item state by unit, for Home. */
+export function statesByUnit(rows: ItemState[]): Map<string, Map<string, ItemState>> {
+  const m = new Map<string, Map<string, ItemState>>()
+  for (const r of rows) { if (!m.has(r.unitId)) m.set(r.unitId, new Map()); m.get(r.unitId)!.set(r.id, r) }
+  return m
+}

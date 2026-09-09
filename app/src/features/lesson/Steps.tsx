@@ -10,6 +10,8 @@ import { grade } from '../../lib/grade'
 import { stripDiacritics } from '../../lib/normalize'
 import { hasRecorder, hasSpeechCheck, startTake, type Take } from '../../lib/speech'
 import { useLang, useT } from '../../i18n'
+import { sfx } from '../../lib/sfx'
+import { letterSeq } from '../../engine/items'
 
 type Props<S extends Step> = { step: S; onAnswer: (r: StepResult) => void; locked: boolean }
 const meaningOf = (it: Item, lang: 'ro' | 'en') => lang === 'ro' ? it.meaning.ro : it.meaning.en
@@ -25,13 +27,18 @@ export function IntroStep({ step, onAnswer }: Props<Extract<Step, { type: 'intro
       <div className="card center" style={{ padding: 28 }}>
         {it.emoji && <Pic emoji={it.emoji} size={72} />}
         <div className="sk big" style={{ fontSize: it.ref.kind === 'letter' ? '4rem' : '2.25rem', marginTop: 8 }}>{it.sk}</div>
-        {it.ref.kind === 'letter' ? <div className="muted">{t.letter_name}: <b>{it.spell}</b> · <span className="mono">{it.ipa}</span></div> : <Pronunciation ro={it.spell} ipa={it.ipa} />}
+        {it.ref.kind === 'letter' ? <div className="muted"><span className="mono">{it.ipa}</span></div> : <Pronunciation ro={it.spell} ipa={it.ipa} />}
         <div style={{ fontSize: '1.25rem', marginTop: 10 }}>{meaningOf(it, lang)}</div>
-        <div className="row" style={{ justifyContent: 'center', marginTop: 14 }}>{it.audio && <AudioButton src={it.audio} slowSrc={it.audioSlow} autoPlay />}</div>
+        {it.ref.kind === 'letter' && it.letter?.audio_example && it.letter.example !== '—' && (
+          <button className="row" style={{ justifyContent: 'center', gap: 8, marginTop: 8, width: '100%' }} onClick={() => void playAudio(`/${it.letter!.audio_example}`)}>
+            <span className="small muted">{t.letter_in_word}:</span><span className="sk" style={{ fontSize: '1.3rem' }}>{it.letter.example}</span><span className="guide-ro small">{it.letter.example_spell}</span><span className="muted">▶</span>
+          </button>)}
+        {it.ref.kind === 'letter' && <div className="small muted" style={{ marginTop: 4 }}>{t.letter_spell_name}: <b>{it.spell}</b></div>}
+        <div className="row" style={{ justifyContent: 'center', marginTop: 14 }}>{it.audio && <AudioButton src={it.audio} seq={letterSeq(it)} slowSrc={it.audioSlow} autoPlay />}</div>
         {it.register && <div style={{ marginTop: 8 }}><RegisterChip register={it.register} /></div>}
         {note && <p className="small" style={{ background: 'var(--primary-soft)', padding: '10px 12px', borderRadius: 12, marginTop: 14, textAlign: 'left' }}>{note}</p>}
       </div>
-      <button className="btn primary block" onClick={() => onAnswer({ correct: true })}>{t.got_it}</button>
+      <button className="btn primary block" onClick={() => { sfx.tap(); onAnswer({ correct: true }) }}>{t.got_it}</button>
     </div>
   )
 }
@@ -56,7 +63,7 @@ export function DialogueIntroStep({ step, onAnswer }: Props<Extract<Step, { type
       <div className="dlg"><Line l={x.a} side="a" /><Line l={x.b} side="b" /></div>
       <div className="row" style={{ justifyContent: 'center' }}><button className="btn ghost" onClick={both}>▶ {t.replay_both}</button></div>
       {note && <p className="small" style={{ background: 'var(--primary-soft)', padding: '10px 12px', borderRadius: 12, margin: 0 }}>{note}</p>}
-      <button className="btn primary block" onClick={() => onAnswer({ correct: true })}>{t.got_it}</button>
+      <button className="btn primary block" onClick={() => { sfx.tap(); onAnswer({ correct: true }) }}>{t.got_it}</button>
     </div>
   )
 }
@@ -105,7 +112,7 @@ export function ChoiceStep({ step, onAnswer, locked }: Props<Extract<Step, { typ
     <div className="stack fade">
       <p className="muted small" style={{ margin: 0 }}>{prompt}</p>
       <div className="card center">
-        {(step.type === 'form' && step.audioOnly) || step.type === 'letterpick' ? <div className="row" style={{ justifyContent: 'center' }}><AudioButton src={it.audio!} slowSrc={it.audioSlow} autoPlay /></div>
+        {(step.type === 'form' && step.audioOnly) || step.type === 'letterpick' ? <div className="row" style={{ justifyContent: 'center' }}><AudioButton src={it.audio!} seq={letterSeq(it)} slowSrc={it.audioSlow} autoPlay /></div>
           : <>
             {it.emoji && step.type === 'meaning' && <Pic emoji={it.emoji} size={64} />}
             <div className="sk big" style={{ fontSize: step.type === 'anchor' ? '4rem' : '2rem' }}>{showSk || step.type === 'anchor' ? it.sk : meaningOf(it, lang)}</div>
@@ -135,11 +142,11 @@ export function MatchStep({ step, onAnswer, locked }: Props<Extract<Step, { type
   const [done, setDone] = useState<Set<string>>(new Set())
   const [wrong, setWrong] = useState(0)
   const [shake, setShake] = useState<string | null>(null)
-  const pickLeft = (id: string) => { if (locked || done.has(id)) return; setSel(id); const it = step.items.find(i => i.ref.id === id); if (it?.audio) void playAudio(it.audio) }
+  const pickLeft = (id: string) => { if (locked || done.has(id)) return; sfx.tap(); setSel(id); const it = step.items.find(i => i.ref.id === id); if (it?.audio) void playAudio(it.audio) }
   const pickRight = (id: string) => {
     if (locked || !sel || done.has(id)) return
-    if (id === sel) { const d = new Set(done); d.add(id); setDone(d); setSel(null); if (d.size === step.items.length) onAnswer({ correct: wrong === 0 }) }
-    else { setWrong(w => w + 1); setShake(id); setTimeout(() => setShake(null), 400); setSel(null) }
+    if (id === sel) { const d = new Set(done); d.add(id); setDone(d); setSel(null); if (d.size === step.items.length) onAnswer({ correct: wrong === 0 }); else sfx.pop() }
+    else { sfx.wrong(); setWrong(w => w + 1); setShake(id); setTimeout(() => setShake(null), 400); setSel(null) }
   }
   return (
     <div className="stack fade">
@@ -167,8 +174,8 @@ export function TilesStep({ step, onAnswer, locked }: Props<Extract<Step, { type
         <div className="bubble b"><span className="small muted">{meaningOf(it, lang)}</span></div></div>
         : <div className="card"><div style={{ fontSize: '1.25rem', display: 'flex', alignItems: 'center', gap: 10 }}>{it.emoji && <Pic emoji={it.emoji} size={36} />}<span>{meaningOf(it, lang)}</span></div>
           {it.audio && <div style={{ marginTop: 8 }}><AudioButton src={it.audio} slowSrc={it.audioSlow} compact /></div>}</div>}
-      <div className="tilebox">{chosen.length === 0 ? <span className="muted small">{t.tiles_hint}</span> : chosen.map((c, k) => <button key={c.i} className="tile on" onClick={() => { if (locked) return; setChosen(chosen.filter((_, j) => j !== k)); setBank([...bank, c].sort((a, b) => a.i - b.i)) }}>{c.w}</button>)}</div>
-      <div className="row" style={{ gap: 8 }}>{bank.map(b => <button key={b.i} className="tile" onClick={() => { if (locked) return; setBank(bank.filter(x => x.i !== b.i)); setChosen([...chosen, b]) }}>{b.w}</button>)}</div>
+      <div className="tilebox">{chosen.length === 0 ? <span className="muted small">{t.tiles_hint}</span> : chosen.map((c, k) => <button key={c.i} className="tile on" onClick={() => { if (locked) return; sfx.tap(); setChosen(chosen.filter((_, j) => j !== k)); setBank([...bank, c].sort((a, b) => a.i - b.i)) }}>{c.w}</button>)}</div>
+      <div className="row" style={{ gap: 8 }}>{bank.map(b => <button key={b.i} className="tile" onClick={() => { if (locked) return; sfx.tap(); setBank(bank.filter(x => x.i !== b.i)); setChosen([...chosen, b]) }}>{b.w}</button>)}</div>
       <button className="btn primary block" onClick={check} disabled={locked || chosen.length === 0}>{t.check}</button>
     </div>
   )
@@ -272,7 +279,7 @@ export function SpeakStep({ step, onAnswer, locked, speechCheck }: Props<Extract
     const h = handle.current; if (!h) return
     handle.current = null; setPhase('processing')
     const tk = await h.stop(); if (tk.url) urls.current.push(tk.url)
-    setTake(tk); setPhase('done')
+    sfx.pop(); setTake(tk); setPhase('done')
   }
   const start = async () => {
     if (locked || phase === 'rec' || phase === 'processing') return

@@ -74,21 +74,32 @@ def slow_clip(file: str, text: str, voice: str = TTS_VOICE) -> str:
     slow_clip.rendered = getattr(slow_clip, "rendered", 0) + 1
     return rec["file"]
 
+# How a letter is read aloud on its own (D129). A vowel says itself — "á", never the description
+# "dlhé á" — and the two i-letters say the sound they share ([i]/[iː]); ĺ/ŕ are long syllabic sounds
+# the voice can hold. A consonant cannot be voiced alone, so it is read by its Slovak letter name
+# ("bé"), and the example word right after it shows the sound inside a word ("bé — brat").
+SOUND_TEXT = {"y": "i", "ý": "í"}
+SELF_VOICED = set("aáäeéiíoóôuúyý") | {"ĺ", "ŕ"}
+
 def alphabet_json(audio_refs: set) -> list:
-    """Letters with name + example audio (Piper). Letter names are spoken via their Slovak name text."""
+    """Letters with sound + name + example audio. `audio_sound` is the letter read on its own (see
+    SOUND_TEXT); `audio_name` the spelling name (for saying your name letter by letter)."""
     out = []
     for letter, name, ipa_, ro_anchor, example, note in ALPHABET:
         stem = "alpha-" + re.sub(r"[^a-z]", lambda m: f"u{ord(m.group(0)):04x}", letter)
         name_rel = _existing(stem + "-name") or tts_render(name, os.path.join(CONTENT, "audio", stem + "-name"), voice=VOICES["f"], slow=True)["file"]
+        sound_text = SOUND_TEXT.get(letter, letter if letter in SELF_VOICED else name)
+        sound_rel = name_rel if sound_text == name else \
+            (_existing(stem + "-sound") or tts_render(sound_text, os.path.join(CONTENT, "audio", stem + "-sound"), voice=VOICES["f"], slow=True)["file"])
         ex_rel = None
         if example and example != "—":
             ex_rel = _existing(stem + "-ex") or tts_render(example, os.path.join(CONTENT, "audio", stem + "-ex"), voice=VOICES["f"])["file"]
             audio_refs.add(ex_rel)
-        audio_refs.add(name_rel)
+        audio_refs.add(name_rel); audio_refs.add(sound_rel)
         a_en, a_ro, n_en, n_ro = ALPHABET_I18N.get(letter, (ro_anchor, ro_anchor, note, note))
         out.append({"letter": letter, "name": name, "ipa": ipa_, "anchor": {"en": a_en, "ro": a_ro}, "example": example,
                     "example_spell": respell_ro(example) if example and example != "—" else None,
-                    "note": {"en": n_en, "ro": n_ro}, "audio_name": name_rel, "audio_example": ex_rel})
+                    "note": {"en": n_en, "ro": n_ro}, "audio_sound": sound_rel, "audio_name": name_rel, "audio_example": ex_rel})
     return [{"letters": out, "diphthongs": [{"d": d, "ipa": i, "anchor": {"en": DIPHTHONGS_I18N.get(d, (r, r))[0], "ro": DIPHTHONGS_I18N.get(d, (r, r))[1]}, "example": e} for d, i, r, e in DIPHTHONGS]}]
 
 IMG_OUT = os.path.join(APP_PUBLIC, "img")

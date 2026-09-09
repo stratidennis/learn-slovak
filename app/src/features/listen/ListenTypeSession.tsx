@@ -11,6 +11,7 @@ import { Diff } from '../../components/Diff'
 import { TappableSentence } from '../gloss/TappableSentence'
 import { Pronunciation } from '../../components/Pronunciation'
 import { fmt, useLang, useT } from '../../i18n'
+import { sfx } from '../../lib/sfx'
 
 type Item = { card: CardRow; sentence: Sentence; isNew: boolean }
 
@@ -47,6 +48,7 @@ export function ListenTypeSession() {
   }, [id])
 
   const item = queue?.[i]
+  useEffect(() => { if (queue && queue.length && !queue[i]) sfx.complete() }, [queue, i])
   const strict = useMemo(() => !!item && item.card.fsrs.stability > 14, [item])
   useEffect(() => { setTyped(''); setResult(null); setGaveUp(false); setReplays(0); startedAt.current = Date.now(); setTimeout(() => inputRef.current?.focus(), 50) }, [i])
 
@@ -55,6 +57,7 @@ export function ListenTypeSession() {
     const g = grade(item.sentence.sk, reveal ? '' : text, strict)
     setGaveUp(reveal); setResult(g)
     const tier = reveal || g.nBad > 0 ? 'wrong' : g.nWarn > 0 ? 'diacritics' : 'exact'
+    sfx.result(tier !== 'wrong', tier)
     const rating = ratingFor(tier, replays)
     if (item.isNew) await db.cards.put(item.card)
     const updated = await review(item.card, rating)

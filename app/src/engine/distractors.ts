@@ -9,14 +9,15 @@ export function pickDistractors(target: Item, pool: Item[], n: number, lang: 'ro
   const key = (it: Item) => (lang === 'ro' ? it.meaning.ro : it.meaning.en).toLowerCase()
   const seen = new Set([key(target), target.sk.toLowerCase()])
   const out: Item[] = []
+  const homophone = (it: Item) => target.ref.kind === 'letter' && it.ref.kind === 'letter' && !!target.ipa && it.ipa === target.ipa
   for (const it of shuffle(pool.filter(p => p.ref.kind === target.ref.kind))) {
     if (out.length >= n) break
-    if (it.ref.id === target.ref.id || seen.has(key(it)) || it.sk.toLowerCase() === target.sk.toLowerCase()) continue
+    if (it.ref.id === target.ref.id || seen.has(key(it)) || it.sk.toLowerCase() === target.sk.toLowerCase() || homophone(it)) continue
     seen.add(key(it)); out.push(it)
   }
   for (const it of shuffle(pool)) {
     if (out.length >= n) break
-    if (it.ref.id === target.ref.id || seen.has(key(it))) continue
+    if (it.ref.id === target.ref.id || seen.has(key(it)) || homophone(it)) continue
     seen.add(key(it)); out.push(it)
   }
   return out

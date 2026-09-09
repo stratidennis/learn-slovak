@@ -6,6 +6,9 @@ import { ListenTypeSession } from './features/listen/ListenTypeSession'
 import { Settings } from './features/settings/Settings'
 import { Alphabet } from './features/alphabet/Alphabet'
 import { LessonSession } from './features/lesson/LessonSession'
+import { Practice } from './features/practice/Practice'
+import { Flashcards } from './features/practice/Flashcards'
+import { SpeedMatch } from './features/practice/SpeedMatch'
 import { useT } from './i18n'
 
 export default function App() {
@@ -17,6 +20,10 @@ export default function App() {
         <Route path="/unit/:id" element={<UnitPage />} />
         <Route path="/unit/:id/chunks" element={<ChunkShadow />} />
         <Route path="/unit/:id/lesson" element={<LessonSession />} />
+        <Route path="/unit/:id/lesson/:n" element={<LessonSession />} />
+        <Route path="/practice" element={<Practice />} />
+        <Route path="/practice/flashcards" element={<Flashcards />} />
+        <Route path="/practice/match" element={<SpeedMatch />} />
         <Route path="/unit/:id/dictation" element={<ListenTypeSession />} />
         <Route path="/review" element={<ListenTypeSession />} />
         <Route path="/settings" element={<Settings />} />
@@ -24,6 +31,7 @@ export default function App() {
       </Routes>
       <nav className="nav">
         <NavLink to="/" end><span>🏠</span>{t.nav_home}</NavLink>
+        <NavLink to="/practice"><span>🃏</span>{t.nav_practice}</NavLink>
         <NavLink to="/review"><span>🔁</span>{t.nav_review}</NavLink>
         <NavLink to="/settings"><span>⚙️</span>{t.nav_settings}</NavLink>
       </nav>

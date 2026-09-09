@@ -1,1 +1,14 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><rect width="512" height="512" rx="112" fill="#2457C5"/><text x="256" y="330" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-weight="700" font-size="300" fill="#FAF8F4">ľ</text><circle cx="392" cy="392" r="44" fill="#F2B233"/></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs><clipPath id="r"><rect width="512" height="512" rx="112"/></clipPath><clipPath id="s"><path d="M 100 140 H 236 V 298 C 236 348 196 382 168 394 C 140 382 100 348 100 298 Z"/></clipPath></defs>
+  <g clip-path="url(#r)">
+    <rect width="512" height="512" fill="#FFFFFF"/>
+    <rect y="170.67" width="512" height="170.67" fill="#0B4EA2"/>
+    <rect y="341.33" width="512" height="170.67" fill="#EE1C25"/>
+    <path d="M 92 132 H 244 V 300 C 244 356 200 392 168 404 C 136 392 92 356 92 300 Z" fill="#FFFFFF"/>
+    <path d="M 100 140 H 236 V 298 C 236 348 196 382 168 394 C 140 382 100 348 100 298 Z" fill="#EE1C25"/>
+    <g clip-path="url(#s)">
+      <circle cx="132" cy="352" r="34" fill="#0B4EA2"/><circle cx="204" cy="352" r="34" fill="#0B4EA2"/><circle cx="168" cy="340" r="40" fill="#0B4EA2"/>
+    </g>
+    <path fill="#FFFFFF" d="M 158 172 H 178 V 206 H 206 V 224 H 178 V 246 H 214 V 264 H 178 V 336 H 158 V 264 H 122 V 246 H 158 V 224 H 130 V 206 H 158 Z"/>
+  </g>
+</svg>

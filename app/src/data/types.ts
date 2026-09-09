@@ -24,7 +24,8 @@ export type Sentence = {
   audio: string; audio_slow?: string; guide?: Guide; native: boolean; band: number; attr: string; lic: string
 }
 export type L2 = { en: string | null; ro: string | null }
-export type AlphabetLetter = { letter: string; name: string; ipa: string; anchor: L2; example: string; example_spell: string | null; note: L2; audio_name: string; audio_example: string | null }
+/** audio_sound = the letter read on its own (a vowel says itself, a consonant its letter name); audio_name = the spelling name. */
+export type AlphabetLetter = { letter: string; name: string; ipa: string; anchor: L2; example: string; example_spell: string | null; note: L2; audio_sound?: string; audio_name: string; audio_example: string | null }
 export type Alphabet = { letters: AlphabetLetter[]; diphthongs: { d: string; ipa: string; anchor: L2; example: string }[] }
 export type GrammarNote = {
   id: string; title: string; title_ro?: string | null; unit: string; tags: string[]; body: string; body_ro?: string | null; ro_analogy: string | null

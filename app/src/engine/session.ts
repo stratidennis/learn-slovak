@@ -52,7 +52,7 @@ export const maxStageFor = (kind: Item['ref']['kind'] | string, unitId: string) 
 const SPEAKABLE = new Set(['chunk', 'sentence', 'dialogue', 'cognate'])
 
 /** Build a ~12–18 step session: warm-up, new items (intro + first step, later a second step), due items, one match block, misses re-queued by the runner. */
-export function buildSession(items: Item[], states: Map<string, ItemState>, unitId: string, lang: Lang, opts: { newPerSession?: number; maxDue?: number; speaking?: boolean } = {}): Plan {
+export function buildSession(items: Item[], states: Map<string, ItemState>, unitId: string, lang: Lang, opts: { newPerSession?: number; maxDue?: number; speaking?: boolean; pool?: Item[] } = {}): Plan {
   const newPerSession = opts.newPerSession ?? (unitId.startsWith('0.') ? 4 : 5)
   const maxDue = opts.maxDue ?? 8
   const today = dayKey()
@@ -65,7 +65,7 @@ export function buildSession(items: Item[], states: Map<string, ItemState>, unit
   const mastered = items.filter(isMastered)
   const due = shuffle(items.filter(it => !isNew(it) && !isMastered(it))).sort((a, b) => (states.get(a.ref.id)!.lastAt) - (states.get(b.ref.id)!.lastAt)).slice(0, maxDue)
   const fresh = items.filter(isNew).slice(0, Math.max(0, newPerSession - Math.floor(due.filter(seenToday).length / 3)))
-  const pool = items.length >= 6 ? items : items
+  const pool = opts.pool && opts.pool.length > items.length ? opts.pool : items   // distractors from the whole unit when the session is one lesson
 
   const steps: Step[] = []
   // 1. warm-up: 2–3 mastered items, recognition (fluency strand). Pairs are their own drill.
@@ -97,6 +97,32 @@ export function buildSession(items: Item[], states: Map<string, ItemState>, unit
     speakable.forEach((it, k) => all.splice(Math.min(all.length, Math.max(2, Math.round(all.length * (k === 0 ? 0.4 : 0.8)))), 0, { type: 'speak', item: it }))
   }
   return { steps: all, newItems: fresh, dueItems: due }
+}
+
+/** Redo a finished lesson (D129): every item gets one step. Items at their top stage are asked one rung
+ *  below it (or a random recognition/production rung), so a redo is a real check rather than a replay of
+ *  intros; unfinished items are asked at their current stage. Same scoring as a normal session. */
+export function buildPractice(items: Item[], states: Map<string, ItemState>, unitId: string, lang: Lang, opts: { speaking?: boolean; pool?: Item[] } = {}): Plan {
+  const pool = opts.pool && opts.pool.length > items.length ? opts.pool : items
+  const stage = (it: Item) => states.get(it.ref.id)?.stage ?? 0
+  const maxOf = (it: Item) => maxStageFor(it.ref.kind, unitId)
+  const askAt = (it: Item) => {
+    const s = stage(it), top = maxOf(it)
+    if (it.ref.kind === 'pair') return 0
+    if (s <= 0) return 0
+    if (s >= top) return Math.max(1, top - 1 - Math.floor(Math.random() * Math.min(2, top - 1)))
+    return s
+  }
+  const steps: Step[] = []
+  for (const it of shuffle(items)) { const s = stepFor(it, askAt(it), pool, lang); if (s) steps.push(s) }
+  const all = interleave(steps)
+  const matchable = items.filter(it => ['chunk', 'sentence', 'cognate'].includes(it.ref.kind) && stage(it) >= 1)
+  if (matchable.length >= 4) all.splice(Math.max(1, Math.floor(all.length / 2)), 0, { type: 'match', items: shuffle(matchable).slice(0, Math.min(5, matchable.length)) })
+  if (opts.speaking !== false) {
+    const sp = shuffle(items.filter(it => SPEAKABLE.has(it.ref.kind) && stage(it) >= 2)).slice(0, 1)
+    for (const it of sp) all.splice(Math.min(all.length, Math.max(2, Math.round(all.length * 0.7))), 0, { type: 'speak', item: it })
+  }
+  return { steps: all, newItems: [], dueItems: items }
 }
 
 /** No same item twice in a row, no more than two identical step types in a row. */

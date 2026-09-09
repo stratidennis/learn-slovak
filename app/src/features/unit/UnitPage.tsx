@@ -2,7 +2,10 @@ import { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { loadGrammar, loadUnits } from '../../data/loader'
 import type { GrammarNote, Unit } from '../../data/types'
-import { useLang, useT } from '../../i18n'
+import type { ItemState } from '../../engine/types'
+import { getStates } from '../../engine/store'
+import { kindCounts, lessonProgress, lessonsFor, nextLesson, type LessonProgress } from '../../engine/lessons'
+import { fmt, useLang, useT } from '../../i18n'
 import { coverFor } from '../../lib/covers'
 
 function Md({ text }: { text: string }) {
@@ -36,29 +39,67 @@ export function GrammarNoteView({ note, onClose }: { note: GrammarNote; onClose:
   )
 }
 
+const STATUS_ICON: Record<LessonProgress['status'], string | null> = { new: null, started: null, done: '✓', mastered: '★' }
+
+/** A unit: its lesson road map (every lesson selectable, finished ones redoable — D129), chunks, grammar. */
 export function UnitPage() {
   const { id = '' } = useParams()
   const t = useT(); const lang = useLang()
   const [unit, setUnit] = useState<Unit | null>(null)
   const [notes, setNotes] = useState<GrammarNote[]>([])
   const [open, setOpen] = useState<GrammarNote | null>(null)
+  const [states, setStates] = useState<Map<string, ItemState>>(new Map())
   useEffect(() => {
     loadUnits().then(us => setUnit(us.find(u => u.id === id) ?? null))
     loadGrammar().then(setNotes)
+    getStates(id).then(setStates)
   }, [id])
   if (!unit) return <div className="page">{t.loading}</div>
   const unitNotes = unit.grammar_notes.map(n => notes.find(x => x.id === n)).filter(Boolean) as GrammarNote[]
   const canDo = lang === 'ro' && unit.can_do_ro?.length ? unit.can_do_ro : unit.can_do
   const title = lang === 'ro' ? unit.title_ro : unit.title
+  const defs = lessonsFor(unit)
+  const progress = defs.map(d => lessonProgress(d, states))
+  const next = nextLesson(defs, states)
+  const doneCount = progress.filter(p => p.status === 'done' || p.status === 'mastered').length
+  const statusLabel = { new: t.lesson_status_new, started: t.lesson_status_started, done: t.lesson_status_done, mastered: t.lesson_status_mastered }
+  const primaryTo = next ? `/unit/${unit.id}/lesson/${next.n}` : defs.length ? `/unit/${unit.id}/lesson/1` : `/unit/${unit.id}/lesson`
   return (
     <div className="page fade">
-      <div className="topbar"><Link to="/" className="back" aria-label={t.back}>←</Link><div><h1>{unit.id} {title}</h1></div></div>
+      <div className="topbar"><Link to="/" className="back" aria-label={t.back}>←</Link><div><h1>{unit.id} {title}</h1>{defs.length > 0 && <div className="small muted">{fmt(t.lesson_progress, { done: doneCount, total: defs.length })}</div>}</div></div>
       {coverFor(unit.id) && <img className="hero" src={coverFor(unit.id)!} alt="" />}
       <div className="stack">
         <div className="row">
           {unit.chunks.length > 0 && <Link to={`/unit/${unit.id}/chunks`} className="btn ghost">🗣 {t.chunks_btn} · {unit.chunks.length}</Link>}
-          <Link to={`/unit/${unit.id}/lesson`} className="btn primary">▶ {t.start_lesson}</Link>
+          <Link to={primaryTo} className="btn primary">{next ? `▶ ${next.n > 1 || progress[next.n - 1]?.status === 'started' ? t.continue_lesson : t.start_lesson}` : `↻ ${t.redo_lesson}`}</Link>
         </div>
+        {defs.length > 0 && (
+          <div className="card" style={{ padding: 0, overflow: 'hidden' }}>
+            <div style={{ padding: '16px 20px 6px' }}><h3>{t.roadmap_title}</h3><p className="small muted" style={{ margin: '4px 0 0' }}>{t.roadmap_hint}</p></div>
+            <ol className="road">
+              {defs.map((l, k) => {
+                const p = progress[k], isNext = next?.id === l.id
+                return (
+                  <li key={l.id}>
+                    <Link to={`/unit/${unit.id}/lesson/${l.n}`} className={`road-item ${p.status} ${isNext ? 'next' : ''}`}>
+                      <span className="node">{STATUS_ICON[p.status] ?? l.n}</span>
+                      <span className="t">
+                        <b>{t.lesson_word} {l.n}</b>
+                        <small>{kindCounts(l).map(([kind, c]) => `${c} ${t.kinds[kind] ?? kind}`).join(' · ')}</small>
+                        <span className="meter thin"><i style={{ width: `${Math.round(p.pct * 100)}%` }} /></span>
+                        <small className={p.status === 'mastered' ? 'gold' : ''}>{statusLabel[p.status]}</small>
+                      </span>
+                      <span className="act">
+                        {isNext ? <span className="btn primary sm">▶ {p.status === 'started' ? t.continue_lesson : t.start_lesson}</span>
+                          : p.status === 'new' ? <span className="muted">›</span> : <span className="btn ghost sm">↻ {t.redo_lesson}</span>}
+                      </span>
+                    </Link>
+                  </li>
+                )
+              })}
+            </ol>
+          </div>
+        )}
         <div className="card">
           <h3>{t.you_will}</h3>
           <ul style={{ margin: '8px 0 0', paddingLeft: 18 }}>{canDo.map((c, i) => <li key={i}>{c}</li>)}</ul>

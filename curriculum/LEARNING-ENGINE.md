@@ -64,11 +64,26 @@ Interleaving: never the same item twice in a row; never more than two steps of t
 a row. Every step has a feedback banner: correct/incorrect, the right answer, ▶ replay, and the
 respelling.
 
+### Lessons and redoing them (D129)
+
+A unit's items are dealt into fixed, numbered **lessons** of 8 (10 for letters, sound pairs and
+cognates), each mixing the unit's kinds. A lesson session introduces every new item in it (intro +
+stage-1 step, stage-2 step later), drills the ones already started at their stage, and adds the match
+and say-it blocks; distractors come from the whole unit. A lesson is *done* when each of its items has
+been introduced and answered once, *mastered* when all sit at their top stage. The unit page is the
+road map — any lesson can be opened, and a finished lesson reruns in **practice mode**: every item once,
+mastered items asked one or two rungs below their top, scored exactly like a normal session (so a
+forgotten item drops a stage and returns). Home shows "Up next" and one dot per lesson.
+
+**Practice hub** (`/practice`): flashcards (self-graded, no ladder effect) and speed match (60 s,
+boards of five) over everything from *done* lessons, filtered by type and unit — the fluency strand
+(Nation) outside the ladder, plus the FSRS dictation review.
+
 ## 4. Phase 0, redone
 
 | Unit | Items | Steps |
 |---|---|---|
-| 0.1 Alphabet | 46 letters | Intro (letter, name, sound, anchor, example word) → hear the name → pick the letter → see the letter → pick the anchor |
+| 0.1 Alphabet | 46 letters, 5 lessons | Intro (letter, *its sound then the example word*, anchor, spelling name) → hear the letter → pick it → see the letter → pick the anchor |
 | 0.2 Sounds | 64 minimal pairs | A/B listening only; contrast accuracy tracked; weakest contrast first |
 | 0.3 Words you already own | 84 cognates | Intro → which Romanian word is this related to? (4 choices) → hear it → pick the Slovak |
 | 0.4 Type it | the letters' example words | see it + respelling + hear it → type it (diacritics required, hints on) |

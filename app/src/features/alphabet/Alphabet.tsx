@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { loadAlphabet } from '../../data/loader'
 import type { Alphabet as A } from '../../data/types'
-import { playAudio } from '../../components/AudioButton'
+import { playAudio, playSequence } from '../../components/AudioButton'
 import { useLang, useT } from '../../i18n'
 
 /** Phase 0.1: every letter with its Slovak name (for spelling your name), sound, anchor, example. */
@@ -21,9 +21,9 @@ export function Alphabet() {
           <div key={l.letter} className="card">
             <div className="row between">
               <span className="L">{l.letter}</span>
-              <button className="audiobtn small" onClick={() => playAudio(`/${l.audio_name}`)} aria-label={`${t.letter_name} ${l.name}`}>🔊</button>
+              <button className="audiobtn small" onClick={() => void playSequence([`/${l.audio_sound ?? l.audio_name}`, ...(l.audio_example ? [`/${l.audio_example}`] : [])], 350)} aria-label={l.letter}>🔊</button>
             </div>
-            <div className="small muted">{t.letter_name}: <b>{l.name}</b> · <span className="mono">[{l.ipa}]</span></div>
+            <div className="small muted"><span className="mono">[{l.ipa}]</span> · {t.letter_spell_name}: <b>{l.name}</b></div>
             <div className="small" style={{ marginTop: 4 }}>{flag} {l.anchor[lang] ?? l.anchor.en}</div>
             {l.audio_example && (
               <button className="row" style={{ marginTop: 6, gap: 8 }} onClick={() => playAudio(`/${l.audio_example}`)}>

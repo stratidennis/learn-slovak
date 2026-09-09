@@ -31,7 +31,7 @@ export async function loadUnitItems(unit: Unit): Promise<Item[]> {
   if (kinds.has('letter') || kinds.has('word')) {
     const a = await loadAlphabet()
     for (const l of a.letters) {
-      const base = { audio: `/${l.audio_name}`, audioSlow: null, ipa: `[${l.ipa}]`, emoji: null, letter: l }
+      const base = { audio: `/${l.audio_sound ?? l.audio_name}`, audioSlow: null, ipa: `[${l.ipa}]`, emoji: null, letter: l }
       if (kinds.has('letter')) out.push({ ref: { kind: 'letter', id: `letter:${l.letter}` }, sk: l.letter, meaning: { ro: l.anchor.ro ?? '', en: l.anchor.en ?? '' },
         spell: l.name, note: { ro: l.note.ro, en: l.note.en }, ...base })
       if (kinds.has('word') && l.audio_example && l.example !== '—') out.push({ ref: { kind: 'word', id: `word:${l.example}` }, sk: l.example,
@@ -65,6 +65,12 @@ export async function loadUnitItems(unit: Unit): Promise<Item[]> {
   // keep the unit's declared order
   const order = new Map(refs.map((r, i) => [r.id, i]))
   return out.sort((a, b) => (order.get(a.ref.id) ?? 0) - (order.get(b.ref.id) ?? 0))
+}
+
+/** What a letter plays: the letter on its own, then the example word that contains it ("bé — brat", "á — káva"). */
+export function letterSeq(it: Item): string[] | undefined {
+  if (it.ref.kind !== 'letter' || !it.letter) return undefined
+  return [it.audio, it.letter.audio_example ? `/${it.letter.audio_example}` : null].filter((x): x is string => !!x)
 }
 
 export async function loadUnitById(id: string): Promise<Unit | undefined> {

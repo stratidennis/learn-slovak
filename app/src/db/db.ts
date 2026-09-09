@@ -17,7 +17,7 @@ export type LemmaRow = { lemma: string; status: 'learning' | 'known'; firstSeen:
 export type ChunkRow = { id: string; unitId: string; seen: number; lastAt: number }
 export type SettingRow = { key: string; value: unknown }
 export type ItemStateRow = { id: string; unitId: string; kind: string; stage: number; streak: number; seen: number; lastAt: number; stageAtDayStart: number; dayKey: string }
-export type SessionRow = { id?: number; unitId: string; at: number; steps: number; correct: number; advanced: number }
+export type SessionRow = { id?: number; unitId: string; lessonId?: string; mode?: 'lesson' | 'practice'; at: number; steps: number; correct: number; advanced: number }
 
 class SlovakDB extends Dexie {
   cards!: Table<CardRow, string>

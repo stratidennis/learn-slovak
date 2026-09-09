@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { db, exportAll, getSetting, importAll, setSetting } from '../../db/db'
 import { fmt, useT } from '../../i18n'
 import { LanguageToggle } from '../../components/LanguageToggle'
+import { setSfxEnabled, sfx } from '../../lib/sfx'
 
 export function Settings() {
   const t = useT()
@@ -10,13 +11,14 @@ export function Settings() {
   const [guide, setGuide] = useState<'off' | 'ro' | 'ipa' | 'both'>('ro')
   const [speaking, setSpeaking] = useState(true)
   const [speechCheck, setSpeechCheck] = useState(true)
+  const [sounds, setSounds] = useState(true)
   const [counts, setCounts] = useState({ cards: 0, reviews: 0, lemmas: 0 })
   const [msg, setMsg] = useState('')
   useEffect(() => {
     getSetting<'auto' | 'light' | 'dark'>('theme', 'auto').then(setTheme)
     getSetting('newPerSession', 8).then(setPerSession)
     getSetting<'off' | 'ro' | 'ipa' | 'both'>('pronunciation', 'ro').then(setGuide)
-    getSetting('speaking', true).then(setSpeaking); getSetting('speechCheck', true).then(setSpeechCheck)
+    getSetting('speaking', true).then(setSpeaking); getSetting('speechCheck', true).then(setSpeechCheck); getSetting('sounds', true).then(setSounds)
     ;(async () => setCounts({ cards: await db.cards.count(), reviews: await db.reviews.count(), lemmas: await db.lemmas.count() }))()
   }, [])
   const applyTheme = (th: typeof theme) => { setTheme(th); void setSetting('theme', th); document.documentElement.dataset.theme = th === 'auto' ? '' : th }
@@ -43,6 +45,9 @@ export function Settings() {
           <div className="row" style={{ marginTop: 10 }}>{(['ro', 'ipa', 'both', 'off'] as const).map(k =>
             <button key={k} className={`btn ${guide === k ? 'primary' : 'ghost'}`} style={{ minHeight: 40 }} onClick={() => { setGuide(k); void setSetting('pronunciation', k) }}>{guideLabel[k]}</button>)}</div>
           <p className="small muted" style={{ marginBottom: 0 }}>{fmt(t.pron_hint, { ex: 'PROsiim si CAAvu' })}</p></div>
+        <div className="card"><h3>{t.sounds_title}</h3>
+          <div className="row" style={{ marginTop: 10 }}>{([true, false] as const).map(v => <button key={String(v)} className={`btn ${sounds === v ? 'primary' : 'ghost'}`} style={{ minHeight: 40 }} onClick={() => { setSounds(v); setSfxEnabled(v); void setSetting('sounds', v); if (v) sfx.correct() }}>{v ? t.on : t.off}</button>)}</div>
+          <p className="small muted" style={{ marginBottom: 0 }}>{t.sounds_hint}</p></div>
         <div className="card"><h3>{t.speaking_title}</h3>
           <div className="row" style={{ marginTop: 10 }}>{([true, false] as const).map(v => <button key={String(v)} className={`btn ${speaking === v ? 'primary' : 'ghost'}`} style={{ minHeight: 40 }} onClick={() => { setSpeaking(v); void setSetting('speaking', v) }}>{v ? t.on : t.off}</button>)}</div>
           <p className="small muted">{t.speaking_hint}</p>

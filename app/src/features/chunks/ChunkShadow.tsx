@@ -7,6 +7,7 @@ import { RegisterChip, ReviewChip } from '../../components/RegisterChip'
 import { Pronunciation } from '../../components/Pronunciation'
 import { db } from '../../db/db'
 import { useLang, useT } from '../../i18n'
+import { sfx } from '../../lib/sfx'
 
 /** D1 chunk shadow: listen, repeat aloud, next. Variants show what natives say. One UI language. */
 export function ChunkShadow() {
@@ -20,6 +21,7 @@ export function ChunkShadow() {
   useEffect(() => { setShowVar(false) }, [i])
   if (!c) return <div className="page">{chunks.length ? <Done unit={id} /> : t.loading}</div>
   const next = async () => {
+    sfx.tap()
     const row = await db.chunks.get(c.id)
     await db.chunks.put({ id: c.id, unitId: id, seen: (row?.seen ?? 0) + 1, lastAt: Date.now() })
     setI(i + 1)
@@ -59,6 +61,7 @@ export function ChunkShadow() {
 }
 function Done({ unit }: { unit: string }) {
   const t = useT()
+  useEffect(() => { sfx.complete() }, [])
   return <div className="card center fade"><h2>{t.chunks_done}</h2><p className="muted">{t.chunks_done_sub}</p>
     <Link to={`/unit/${unit}/lesson`} className="btn primary">{t.listen_type_btn} →</Link></div>
 }
