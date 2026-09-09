@@ -2,7 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { getSetting, setSetting } from '../../db/db'
 import { applyFilter, loadLearnedPool, MATCH_KINDS, nextBoard, type Pool, type PoolFilter, type PoolItem } from '../../engine/pool'
-import { playAudio } from '../../components/AudioButton'
+import { playAudio, stopAudio } from '../../components/AudioButton'
 import { fmt, useLang, useT } from '../../i18n'
 import { sfx } from '../../lib/sfx'
 import { PoolPicker } from './PoolPicker'
@@ -28,6 +28,7 @@ export function SpeedMatch() {
   const [left_s, setLeftS] = useState(ROUND_S)
   const used = useRef<Set<string>>(new Set())
   const endAt = useRef(0); const lastTick = useRef(-1)
+  useEffect(() => () => stopAudio(), [])
   useEffect(() => {
     loadLearnedPool(MATCH_KINDS).then(setPool)
     getSetting<PoolFilter>('practiceFilter', EMPTY).then(setFilter)
@@ -37,6 +38,7 @@ export function SpeedMatch() {
   const changeFilter = (f: PoolFilter) => { setFilter(f); void setSetting('practiceFilter', f) }
 
   const deal = (items: PoolItem[]) => {
+    stopAudio()
     const b = nextBoard(items, used.current, lang)
     for (const it of b) used.current.add(it.ref.id)
     if (used.current.size >= items.length) used.current.clear()
@@ -77,7 +79,7 @@ export function SpeedMatch() {
       {pool.items.length === 0 ? <div className="card small">{t.practice_empty}</div> : (
         <div className="stack">
           <div className="card"><PoolPicker pool={pool} filter={filter} onChange={changeFilter} kinds={MATCH_KINDS} selectedCount={selected.length} /></div>
-          {selected.length < 5 && <div className="card small" style={{ background: 'var(--secondary-soft)' }}>{t.match_need}</div>}
+          {selected.length < 5 && <div className="card small tint">{t.match_need}</div>}
           {best > 0 && <p className="small muted center" style={{ margin: 0 }}>{t.match_best}: {fmt(t.match_pairs, { n: best })}</p>}
           <button className="btn primary block" onClick={start} disabled={selected.length < 5}>⚡ {t.match_go}</button>
         </div>

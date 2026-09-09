@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import { getSetting, setSetting } from '../../db/db'
 import { letterSeq } from '../../engine/items'
 import { applyFilter, buildDeck, CARD_KINDS, loadLearnedPool, type Pool, type PoolFilter, type PoolItem } from '../../engine/pool'
-import { AudioButton, playAudio, playSequence } from '../../components/AudioButton'
+import { AudioButton, playAudio, playSequence, stopAudio } from '../../components/AudioButton'
 import { Pic } from '../../components/Pic'
 import { Pronunciation } from '../../components/Pronunciation'
 import { fmt, useLang, useT } from '../../i18n'
@@ -29,6 +29,7 @@ export function Flashcards() {
   const [flipped, setFlipped] = useState(false)
   const [stats, setStats] = useState({ ok: 0, bad: 0 })
   const again = useRef<Set<string>>(new Set())
+  useEffect(() => () => stopAudio(), [])
   useEffect(() => {
     loadLearnedPool(CARD_KINDS).then(setPool)
     getSetting<PoolFilter>('practiceFilter', EMPTY).then(setFilter)
@@ -53,11 +54,13 @@ export function Flashcards() {
   const flip = () => { if (!card) return; sfx.pop(); setFlipped(f => !f) }
   const judge = (ok: boolean) => {
     if (!card) return
+    stopAudio()
     if (ok) sfx.correct(); else sfx.wrong()
     setStats(s => ({ ok: s.ok + (ok ? 1 : 0), bad: s.bad + (ok ? 0 : 1) }))
     let d = deck
     if (!ok && !again.current.has(card.item.ref.id)) { again.current.add(card.item.ref.id); d = [...deck, card]; setDeck(d) }
-    if (i + 1 >= d.length) { sfx.complete(); setStage('done') } else { setI(i + 1); setFlipped(false) }
+    setFlipped(false)                       // a new card always starts on its front
+    if (i + 1 >= d.length) { sfx.complete(); setStage('done') } else setI(i + 1)
   }
 
   if (!pool) return <div className="page">{t.loading}</div>
@@ -95,7 +98,7 @@ export function Flashcards() {
       {x && <div className="small muted" style={{ marginBottom: 8 }}>🗣️ {x.a.sk}</div>}
       {it.emoji && !x && <Pic emoji={it.emoji} size={56} />}
       <div className="sk big" style={{ fontSize: it.ref.kind === 'letter' ? '4rem' : it.sk.length > 40 ? '1.4rem' : '1.9rem' }}>{it.sk}</div>
-      {it.ref.kind === 'letter' ? <div className="small muted">{t.letter_spell_name}: <b>{it.spell}</b> · {it.letter?.example !== '—' && <span className="sk">{it.letter?.example}</span>}</div> : <Pronunciation ro={it.spell} ipa={it.ipa} />}
+      {it.ref.kind === 'letter' ? <div className="small muted">{t.letter_spell_name}: <b>{it.spell}</b>{it.letter?.example && it.letter.example !== '—' && <> · <span className="sk">{it.letter.example}</span></>}</div> : <Pronunciation ro={it.spell} ipa={it.ipa} />}
     </div>
   ) : (
     <div className="fc-body">
@@ -107,19 +110,17 @@ export function Flashcards() {
   return (
     <div className="page fade" key={`${i}-${card.item.ref.id}`}>
       <div className="topbar"><Link to="/practice" className="back" aria-label={t.back}>✕</Link><div className="progress"><i style={{ width: `${(i / Math.max(1, deck.length)) * 100}%` }} /></div><span className="muted small">{i + 1}/{deck.length}</span></div>
-      <button className={`fc ${flipped ? 'flipped' : ''}`} onClick={flip} aria-label={t.flip_hint}>
-        <div className="fc-inner">
-          <div className="fc-face">{face(card.front)}</div>
-          <div className="fc-face back">{face(card.front === 'sk' ? 'meaning' : 'sk')}</div>
-        </div>
+      {/* exactly one face is in the DOM: the shown side follows `flipped` and nothing else; keyed so the turn animation replays */}
+      <button className={`fc ${flipped ? 'back' : ''}`} onClick={flip} aria-label={t.flip_hint} key={`${i}-${flipped ? 'b' : 'f'}`}>
+        <div className="fc-face">{face(flipped ? (card.front === 'sk' ? 'meaning' : 'sk') : card.front)}</div>
       </button>
       <div className="row" style={{ justifyContent: 'center', marginTop: 12 }}>
         {showingSk && it.audio ? <AudioButton src={it.audio} seq={letterSeq(it)} slowSrc={it.audioSlow} /> : <span className="small muted">{t.flip_hint}</span>}
       </div>
       {flipped ? (
         <div className="row" style={{ gap: 10, marginTop: 16 }}>
-          <button className="btn ghost" style={{ flex: 1, borderColor: 'var(--error)', color: 'var(--error)' }} onClick={() => judge(false)}>✗ {t.didnt_know}</button>
-          <button className="btn primary" style={{ flex: 1, background: 'var(--success)' }} onClick={() => judge(true)}>✓ {t.knew_it}</button>
+          <button className="btn no" style={{ flex: 1 }} onClick={() => judge(false)}>✗ {t.didnt_know}</button>
+          <button className="btn yes" style={{ flex: 1 }} onClick={() => judge(true)}>✓ {t.knew_it}</button>
         </div>
       ) : <button className="btn ghost block" style={{ marginTop: 16 }} onClick={flip}>↩ {t.flip_hint}</button>}
     </div>

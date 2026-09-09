@@ -91,7 +91,10 @@ def _edge_job(spoken: str, name: str, mp3: str, slow: bool) -> None:
             asyncio.run(go())
             if os.path.getsize(tmp) < 1000:
                 raise RuntimeError("empty audio from Edge")
-            os.replace(tmp, mp3); return
+            os.replace(tmp, mp3)
+            from .trim_silence import trim_file             # Edge pads ~1 s of silence behind every clip (D131)
+            trim_file(mp3)
+            return
         except Exception:                          # the unofficial endpoint occasionally drops a request
             if os.path.exists(tmp): os.remove(tmp)
             if attempt == 3: raise

@@ -6,6 +6,12 @@ import { useT } from '../i18n'
 const player = typeof Audio !== 'undefined' ? new Audio() : null
 
 let gen = 0   // bumps on every play, so a sequence knows when something else took the player
+/** Silence the player and cancel any running sequence — called whenever the screen moves to a new step,
+ *  so a clip never carries over into the next question (D131). */
+export function stopAudio() {
+  gen++
+  if (player && !player.paused) { player.pause(); try { player.currentTime = 0 } catch { /* no source yet */ } }
+}
 export function playAudio(src: string, rate = 1): Promise<boolean> {
   if (!player) return Promise.resolve(false)
   gen++
@@ -14,13 +20,20 @@ export function playAudio(src: string, rate = 1): Promise<boolean> {
   return player.play().then(() => true).catch(() => false)
 }
 
-/** Play clips one after another (dialogue A then B). Stops if another play() takes over. */
-export async function playSequence(srcs: string[], gapMs = 400, rate = 1): Promise<boolean> {
+/** For tests and debugging: is anything playing? */
+export const audioState = () => ({ paused: player?.paused ?? true, src: player?.currentSrc || player?.getAttribute('src') || '', gen })
+
+/** Play clips one after another (letter then word, dialogue A then B). Stops if another play() or
+ *  stopAudio() takes over. The clips are trimmed at export (≈0.2 s of tail), so the gap stays short. */
+export async function playSequence(srcs: string[], gapMs = 120, rate = 1): Promise<boolean> {
   for (let i = 0; i < srcs.length; i++) {
     const ok = await playAudio(srcs[i], rate); if (!ok || !player) return false
     const my = gen
-    await new Promise<void>(res => { const done = () => { player.removeEventListener('ended', done); player.removeEventListener('pause', done); res() }
-      player.addEventListener('ended', done); player.addEventListener('pause', done); setTimeout(done, 15000) })
+    await new Promise<void>(res => {
+      const evs = ['ended', 'pause', 'emptied', 'abort', 'error'] as const
+      const done = () => { evs.forEach(e => player.removeEventListener(e, done)); res() }
+      evs.forEach(e => player.addEventListener(e, done)); setTimeout(done, 15000)
+    })
     if (gen !== my) return false
     if (i < srcs.length - 1) await new Promise(r => setTimeout(r, gapMs))
     if (gen !== my) return false
@@ -46,7 +59,7 @@ export function AudioButton({ src, seq, slowSrc, autoPlay, onPlayed, compact }: 
   const count = useRef(0)
   const play = async (mode: 'normal' | 'slow' | 'slower' = 'normal') => {
     setLast(mode)
-    const ok = seq && seq.length > 1 ? await playSequence(seq, 350, mode === 'normal' ? 1 : mode === 'slow' ? 0.75 : 0.55)
+    const ok = seq && seq.length > 1 ? await playSequence(seq, 120, mode === 'normal' ? 1 : mode === 'slow' ? 0.75 : 0.55)
       : mode === 'normal' ? await playAudio(src, 1)
       : mode === 'slow' ? (slowSrc ? await playAudio(slowSrc, 1) : await playAudio(src, 0.7))
       : (slowSrc ? await playAudio(slowSrc, 0.75) : await playAudio(src, 0.5))

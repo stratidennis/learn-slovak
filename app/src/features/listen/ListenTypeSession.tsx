@@ -5,7 +5,7 @@ import type { Sentence } from '../../data/types'
 import { db, getSetting, type CardRow } from '../../db/db'
 import { dueCards, newCard, ratingFor, review, updateLemmas } from '../../srs/scheduler'
 import { grade, type Grade } from '../../lib/grade'
-import { AudioButton } from '../../components/AudioButton'
+import { AudioButton, stopAudio } from '../../components/AudioButton'
 import { SlovakKeyboard } from '../../components/SlovakKeyboard'
 import { Diff } from '../../components/Diff'
 import { TappableSentence } from '../gloss/TappableSentence'
@@ -51,6 +51,7 @@ export function ListenTypeSession() {
   useEffect(() => { if (queue && queue.length && !queue[i]) sfx.complete() }, [queue, i])
   const strict = useMemo(() => !!item && item.card.fsrs.stability > 14, [item])
   useEffect(() => { setTyped(''); setResult(null); setGaveUp(false); setReplays(0); startedAt.current = Date.now(); setTimeout(() => inputRef.current?.focus(), 50) }, [i])
+  useEffect(() => () => stopAudio(), [])
 
   const submit = async (text = typed, reveal = false) => {
     if (!item || result) return
@@ -106,7 +107,7 @@ export function ListenTypeSession() {
         ) : (
           <div className="stack fade" style={{ marginTop: 16 }}>
             {gaveUp ? <p className="muted" style={{ margin: 0 }}>{t.revealed}</p> : <Diff grade={result} />}
-            <div style={{ padding: '12px 0', borderTop: '1px solid var(--line)' }}>
+            <div style={{ padding: '12px 0', borderTop: '1px solid var(--sep)' }}>
               <TappableSentence text={item.sentence.sk} />
               <Pronunciation ro={item.sentence.guide?.ro} ipa={item.sentence.guide?.ipa} />
               <p className="small muted" style={{ margin: '6px 0 0' }}>{t.tap_word}</p>
@@ -115,7 +116,7 @@ export function ListenTypeSession() {
               : <p className="small muted" style={{ margin: 0 }}>{t.no_translation}</p>}
             <p className="small" style={{ margin: 0, color: result.nBad || gaveUp ? 'var(--error)' : result.nWarn ? 'var(--warning-deep)' : 'var(--success-deep)' }}>{message}</p>
             <p className="small muted" style={{ margin: 0 }}>{item.sentence.attr} · {item.sentence.lic}</p>
-            <button className="btn primary block" onClick={() => setI(i + 1)} autoFocus>{t.next}</button>
+            <button className="btn primary block" onClick={() => { stopAudio(); setI(i + 1) }} autoFocus>{t.next}</button>
           </div>
         )}
       </div>

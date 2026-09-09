@@ -69,7 +69,7 @@ export function Home() {
               const total = m?.defs.length ?? 0, done = m?.done ?? 0
               const allMastered = total > 0 && m!.progress.every(x => x.status === 'mastered')
               return (
-                <Link key={u.id} to={`/unit/${u.id}`} className={`unit ${total && done >= total ? 'done' : ''} ${allMastered ? 'gold' : ''}`} style={{ color: 'inherit', borderTop: '1px solid var(--line)' }}>
+                <Link key={u.id} to={`/unit/${u.id}`} className={`unit ${total && done >= total ? 'done' : ''} ${allMastered ? 'gold' : ''}`} style={{ color: 'inherit' }}>
                   <div className="num">{allMastered ? '★' : u.id}</div>
                   <div className="t"><b>{lang === 'ro' ? u.title_ro : u.title}</b>
                     {total > 0 && <span className="row" style={{ gap: 8 }}><span className="dots">{m!.progress.map((x, k) => <i key={k} className={x.status} />)}</span><small>{fmt(t.lesson_progress, { done, total })}</small></span>}

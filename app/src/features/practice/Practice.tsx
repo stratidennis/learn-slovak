@@ -20,7 +20,7 @@ export function Practice() {
     <div className="page fade">
       <div className="topbar"><div><h1>{t.practice_title}</h1><div className="small muted">{t.practice_hint}</div></div></div>
       <div className="stack">
-        {empty && <div className="card small" style={{ background: 'var(--secondary-soft)' }}>{t.practice_empty}</div>}
+        {empty && <div className="card small tint">{t.practice_empty}</div>}
         <Link to="/review" className="card hub" style={{ color: 'inherit' }}>
           <span className="ico">🔁</span>
           <span className="t"><b>{t.review_card_title}{due > 0 && <span className="badge" style={{ marginLeft: 8 }}>{due}</span>}</b><small>{t.review_card_hint}</small></span>

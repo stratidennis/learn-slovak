@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { loadChunks } from '../../data/loader'
 import type { Chunk } from '../../data/types'
-import { AudioButton, playAudio } from '../../components/AudioButton'
+import { AudioButton, playAudio, stopAudio } from '../../components/AudioButton'
 import { RegisterChip, ReviewChip } from '../../components/RegisterChip'
 import { Pronunciation } from '../../components/Pronunciation'
 import { db } from '../../db/db'
@@ -19,9 +19,10 @@ export function ChunkShadow() {
   useEffect(() => { loadChunks(id).then(setChunks) }, [id])
   const c = chunks[i]
   useEffect(() => { setShowVar(false) }, [i])
+  useEffect(() => () => stopAudio(), [])
   if (!c) return <div className="page">{chunks.length ? <Done unit={id} /> : t.loading}</div>
   const next = async () => {
-    sfx.tap()
+    stopAudio(); sfx.tap()
     const row = await db.chunks.get(c.id)
     await db.chunks.put({ id: c.id, unitId: id, seen: (row?.seen ?? 0) + 1, lastAt: Date.now() })
     setI(i + 1)

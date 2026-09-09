@@ -58,9 +58,13 @@ def unit_voice(unit_id: str, other: bool = False) -> str:
     if other: key = "m" if key == "f" else "f"
     return VOICES[key]
 
+def _ok(rel: str | None) -> bool:
+    """A usable clip: present and not empty. An interrupted render once left a 0-byte file that shipped (D131)."""
+    return bool(rel) and os.path.isfile(os.path.join(CONTENT, rel)) and os.path.getsize(os.path.join(CONTENT, rel)) > 0
+
 def _existing(stem: str) -> str | None:
     for ext in (".mp3", ".ogg"):
-        if os.path.exists(os.path.join(CONTENT, "audio", stem + ext)):
+        if _ok(f"audio/{stem}{ext}"):
             return f"audio/{stem}{ext}"
     return None
 
@@ -230,13 +234,14 @@ def main():
         c["emoji"] = chunk_emoji.get(c["sk"]) or emoji_for([forms_index.get(w.lower().strip(".,!?…")) for w in c["sk"].split()] + [w.lower().strip(".,!?…") for w in c["sk"].split()])
         used_emoji.add(c["emoji"])
         stem = c["id"].replace(":", "-").replace(".", "_")
-        if not c.get("audio"):
+        if not c.get("audio") or not _ok(c["audio"]["file"]):
+            if c.get("audio"): os.path.exists(os.path.join(CONTENT, c["audio"]["file"])) and os.remove(os.path.join(CONTENT, c["audio"]["file"]))
             c["audio"] = tts_render(c["sk"], os.path.join(CONTENT, "audio", stem), voice=unit_voice(c["unit"])); chunks_changed = True
         if c.get("audio"):
             audio_refs.add(c["audio"]["file"]); c["audio_slow"] = slow_clip(c["audio"]["file"], c["sk"], unit_voice(c["unit"])); audio_refs.add(c["audio_slow"])
         for i, v in enumerate(c.get("variants", [])):
             v["guide"] = {"ro": respell_ro(v["sk"]), "ipa": ipa_of(v["sk"])}
-            if not v.get("audio"):
+            if not v.get("audio") or not _ok(v["audio"]["file"]):
                 v["audio"] = tts_render(v["sk"], os.path.join(CONTENT, "audio", f"{stem}-v{i+1}"), voice=unit_voice(c["unit"], other=True)); chunks_changed = True
             if v.get("audio"):
                 audio_refs.add(v["audio"]["file"]); v["audio_slow"] = slow_clip(v["audio"]["file"], v["sk"], unit_voice(c["unit"], other=True)); audio_refs.add(v["audio_slow"])
@@ -372,10 +377,10 @@ def main():
     copied = missing = 0
     for ref in sorted(audio_refs):
         src = os.path.join(CONTENT, ref)                # ref is "audio/<file>"
-        if os.path.exists(src):
+        if os.path.isfile(src) and os.path.getsize(src) > 0:
             shutil.copy2(src, os.path.join(AUDIO_OUT, os.path.basename(ref))); copied += 1
         else:
-            missing += 1
+            missing += 1; print(f"  MISSING clip: {ref}")
     audio_mb = sum(os.path.getsize(os.path.join(AUDIO_OUT, f)) for f in os.listdir(AUDIO_OUT)) / 1e6
 
     # ---- pictures: Noto emoji SVGs for every cue + unDraw unit covers -----------------------

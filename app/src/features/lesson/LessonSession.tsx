@@ -7,7 +7,7 @@ import { lessonItems, lessonProgress, lessonsFor, nextLesson, type LessonDef, ty
 import { advance, edb, getStates, newState, saveState } from '../../engine/store'
 import { db, getSetting } from '../../db/db'
 import { newCard } from '../../srs/scheduler'
-import { AudioButton } from '../../components/AudioButton'
+import { AudioButton, stopAudio } from '../../components/AudioButton'
 import { fmt, useLang, useT } from '../../i18n'
 import { DONE_COVER, WINNER_COVER } from '../../lib/covers'
 import { sfx } from '../../lib/sfx'
@@ -38,6 +38,7 @@ export function LessonSession() {
   const requeued = useRef<Set<string>>(new Set())
   const startStatus = useRef<LessonStatus>('new')
   const unitIdRef = useRef(id)
+  useEffect(() => () => stopAudio(), [])   // leaving the screen silences it
 
   useEffect(() => {
     (async () => {
@@ -106,6 +107,7 @@ export function LessonSession() {
     }
   }
   async function next() {
+    stopAudio()          // whatever the last step was still saying stops here
     setResult(null)
     if (i + 1 >= steps.length) {
       // what did this session finish? a lesson for the first time, a lesson mastered, the whole unit — or just a session

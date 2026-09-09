@@ -32,7 +32,7 @@ export default defineConfig({
         navigateFallback: '/index.html',
         runtimeCaching: [
           { urlPattern: /\/audio\/.*\.(ogg|wav|mp3)$/, handler: 'CacheFirst',
-            options: { cacheName: 'audio', expiration: { maxEntries: 4000, maxAgeSeconds: 60 * 60 * 24 * 365 } } },
+            options: { cacheName: 'audio-v2', expiration: { maxEntries: 4000, maxAgeSeconds: 60 * 60 * 24 * 365 } } },
           { urlPattern: /\/content\/.*\.json$/, handler: 'StaleWhileRevalidate',
             options: { cacheName: 'content', expiration: { maxEntries: 200 } } },
           { urlPattern: /^https:\/\/fonts\.(googleapis|gstatic)\.com\/.*/i, handler: 'CacheFirst',

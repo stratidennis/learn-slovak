@@ -61,7 +61,7 @@ function MarkSheet({ sheet, defs, progress, onClose, onChanged }: { sheet: Sheet
         <div className="stack" style={{ gap: 8 }}>
           {(status === 'new' || status === 'started') && <button className="btn primary block" disabled={busy} onClick={() => void run(() => markLessons(targets, 'done'), sfx.complete)}>✓ {sheet.kind === 'lesson' ? t.mark_done : t.mark_all_done}</button>}
           {status !== 'mastered' && <button className="btn ghost block" disabled={busy} onClick={() => void run(() => markLessons(targets, 'mastered'), sfx.fanfare)}>★ {sheet.kind === 'lesson' ? t.mark_mastered : t.mark_all_mastered}</button>}
-          {status !== 'new' && <button className="btn ghost block" disabled={busy} style={{ color: 'var(--error)', borderColor: 'var(--error)' }} onClick={reset}>↺ {sheet.kind === 'lesson' ? t.reset_progress : t.reset_unit}</button>}
+          {status !== 'new' && <button className="btn no block" disabled={busy} onClick={reset}>↺ {sheet.kind === 'lesson' ? t.reset_progress : t.reset_unit}</button>}
           <button className="btn ghost block" onClick={onClose}>{t.cancel}</button>
         </div>
       </div>
@@ -105,7 +105,7 @@ export function UnitPage() {
         </div>
         {defs.length > 0 && (
           <div className="card" style={{ padding: 0, overflow: 'hidden' }}>
-            <div className="row between" style={{ padding: '16px 20px 6px', alignItems: 'flex-start' }}><div><h3>{t.roadmap_title}</h3><p className="small muted" style={{ margin: '4px 0 0' }}>{t.roadmap_hint}</p></div>
+            <div className="row between nowrap" style={{ padding: '16px 20px 6px', alignItems: 'flex-start' }}><div><h3>{t.roadmap_title}</h3><p className="small muted" style={{ margin: '4px 0 0' }}>{t.roadmap_hint}</p></div>
               <button className="more" onClick={() => setSheet({ kind: 'unit' })} aria-label={t.unit_options}>⋯</button></div>
             <ol className="road">
               {defs.map((l, k) => {

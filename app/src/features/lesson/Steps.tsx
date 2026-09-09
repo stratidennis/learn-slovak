@@ -48,7 +48,7 @@ export function IntroStep({ step, onAnswer }: Props<Extract<Step, { type: 'intro
 export function DialogueIntroStep({ step, onAnswer }: Props<Extract<Step, { type: 'intro' }>>) {
   const t = useT(); const lang = useLang(); const it = step.item; const x = it.dialogue!
   const note = lang === 'ro' ? it.note.ro : it.note.en
-  const both = () => void playSequence([`/${x.a.audio}`, `/${x.b.audio}`])
+  const both = () => void playSequence([`/${x.a.audio}`, `/${x.b.audio}`], 250)   // a breath between the two speakers
   useEffect(() => { both() }, [x.id]) // eslint-disable-line react-hooks/exhaustive-deps
   const Line = ({ l, side }: { l: DialogueLine; side: 'a' | 'b' }) => (
     <div className={`bubble ${side}`}>
