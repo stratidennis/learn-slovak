@@ -71,7 +71,7 @@ cognates), each mixing the unit's kinds. A lesson session introduces every new i
 stage-1 step, stage-2 step later), drills the ones already started at their stage, and adds the match
 and say-it blocks; distractors come from the whole unit. A lesson is *done* when each of its items has
 been introduced and answered once, *mastered* when all sit at their top stage. The unit page is the
-road map — any lesson can be opened, and a finished lesson reruns in **practice mode**: every item once,
+road map — any lesson can be opened, marked done / mastered by hand (a second device, D130), or reset, and a finished lesson reruns in **practice mode**: every item once,
 mastered items asked one or two rungs below their top, scored exactly like a normal session (so a
 forgotten item drops a stage and returns). Home shows "Up next" and one dot per lesson.
 

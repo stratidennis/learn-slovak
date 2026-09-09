@@ -79,6 +79,11 @@ const en = {
   deck_done: 'Deck done', deck_summary: '{ok} known · {bad} came back', play_again: 'Again', what_answer: 'What do you answer?',
   match_score: 'Score', match_best: 'Best', match_timeup: "Time's up!", match_pairs: '{n} pairs', match_go: 'Go!',
   match_need: 'At least 5 items are needed — finish more lessons or widen the filter.', match_result: '{n} pairs in {s} s',
+  // manual marking (D130)
+  lesson_options: 'Lesson options', unit_options: 'Whole unit', manual_hint: 'Finished this on another device? Mark it here — nothing is ever lowered, only raised. Reset forgets it.',
+  mark_done: 'Mark as done', mark_mastered: 'Mark as mastered', reset_progress: 'Reset progress', cancel: 'Cancel',
+  mark_all_done: 'Mark every lesson as done', mark_all_mastered: 'Mark the whole unit as mastered', reset_unit: 'Reset the whole unit',
+  reset_confirm: 'Reset this lesson? Its items go back to new.', reset_unit_confirm: 'Reset the whole unit? All its items go back to new.', marked: 'Marked ✓',
 }
 const ro: typeof en = {
   app: 'Slovenčina',
@@ -148,6 +153,10 @@ const ro: typeof en = {
   deck_done: 'Set terminat', deck_summary: '{ok} știute · {bad} au revenit', play_again: 'Din nou', what_answer: 'Ce răspunzi?',
   match_score: 'Scor', match_best: 'Record', match_timeup: 'Timpul a expirat!', match_pairs: '{n} perechi', match_go: 'Start!',
   match_need: 'E nevoie de cel puțin 5 elemente — termină mai multe lecții sau lărgește filtrul.', match_result: '{n} perechi în {s} s',
+  lesson_options: 'Opțiuni lecție', unit_options: 'Toată unitatea', manual_hint: 'Ai terminat-o pe alt dispozitiv? Marcheaz-o aici — nimic nu se coboară, doar se ridică. Resetarea o uită.',
+  mark_done: 'Marchează ca terminată', mark_mastered: 'Marchează ca stăpânită', reset_progress: 'Resetează progresul', cancel: 'Anulează',
+  mark_all_done: 'Marchează toate lecțiile ca terminate', mark_all_mastered: 'Marchează toată unitatea ca stăpânită', reset_unit: 'Resetează toată unitatea',
+  reset_confirm: 'Resetezi lecția? Elementele ei revin la „nou”.', reset_unit_confirm: 'Resetezi toată unitatea? Toate elementele revin la „nou”.', marked: 'Marcat ✓',
 }
 export const STRINGS = { en, ro }
 export type Strings = typeof en

@@ -2,7 +2,7 @@ import { describe, expect, it, vi } from 'vitest'
 import type { ItemState } from './types'
 
 vi.mock('./store', () => ({ dayKey: (t = Date.now()) => new Date(t).toISOString().slice(0, 10) }))
-const { lessonsFor, lessonProgress, nextLesson, lessonSize, kindCounts } = await import('./lessons')
+const { lessonsFor, lessonProgress, nextLesson, lessonSize, kindCounts, markStates } = await import('./lessons')
 
 const refs = (kind: string, n: number) => Array.from({ length: n }, (_, i) => ({ kind, id: `${kind}:${i}` }))
 const unit = { id: '1.1', items: [...refs('chunk', 15), ...refs('dialogue', 7), ...refs('sentence', 24)] }   // the real 1.1 shape
@@ -52,5 +52,27 @@ describe('lessonProgress / nextLesson', () => {
     expect(nextLesson(ls, new Map())?.n).toBe(1)
     const all = new Map(ls.flatMap(l => l.refs.map(r => st(r.id, r.kind, 1))))
     expect(nextLesson(ls, all)).toBeNull()
+  })
+})
+
+describe('markStates (manual marking, D130)', () => {
+  const ls = lessonsFor(unit); const l = ls[0]
+  it('done lifts every item to stage 1 and touches nothing already there', () => {
+    const states = new Map([st(l.refs[0].id, l.refs[0].kind, 3)])
+    const out = markStates(l, states, 'done', Date.UTC(2026, 8, 9))
+    expect(out.length).toBe(l.refs.length - 1)
+    expect(out.every(s => s.stage === 1 && s.seen === 1 && s.dayKey === '2026-09-09')).toBe(true)
+    const after = new Map([...states, ...out.map(s => [s.id, s] as const)])
+    expect(lessonProgress(l, after).status).toBe('done')
+  })
+  it('mastered sets each item to its own top stage (chunks 6, dialogues 4 outside phase 0)', () => {
+    const out = markStates(l, new Map(), 'mastered')
+    expect(out.find(s => s.kind === 'chunk')?.stage).toBe(6)
+    expect(out.find(s => s.kind === 'dialogue')?.stage).toBe(4)
+    expect(lessonProgress(l, new Map(out.map(s => [s.id, s]))).status).toBe('mastered')
+  })
+  it('never lowers: marking done on a mastered lesson changes nothing', () => {
+    const top = new Map(l.refs.map(r => st(r.id, r.kind, 9)))
+    expect(markStates(l, top, 'done')).toEqual([])
   })
 })

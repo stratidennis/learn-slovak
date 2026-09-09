@@ -133,3 +133,8 @@ h1{font-size:1.75rem} h2{font-size:1.375rem} h3{font-size:1.125rem}
 .timerbar{height:10px;background:var(--surface-sunk);border-radius:999px;overflow:hidden}
 .timerbar i{display:block;height:100%;background:var(--primary);border-radius:999px;transition:width 100ms linear}
 .timerbar.hot i{background:var(--accent)}
+/* D130: manual marking */
+.road-row{display:flex;align-items:stretch;border-top:1px solid var(--line)} .road-row .road-item{flex:1;min-width:0;border-top:0}
+.more{width:40px;flex:none;display:grid;place-items:center;color:var(--ink-muted);font-size:1.3rem;font-weight:700;border-left:1px solid var(--line)}
+.more:active{background:var(--primary-soft)}
+.row .more{width:36px;height:36px;border:1px solid var(--line);border-radius:999px;font-size:1.1rem}

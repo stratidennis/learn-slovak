@@ -3,10 +3,11 @@ import { Link, useParams } from 'react-router-dom'
 import { loadGrammar, loadUnits } from '../../data/loader'
 import type { GrammarNote, Unit } from '../../data/types'
 import type { ItemState } from '../../engine/types'
-import { getStates } from '../../engine/store'
-import { kindCounts, lessonProgress, lessonsFor, nextLesson, type LessonProgress } from '../../engine/lessons'
+import { getStates, markLessons, resetLessons } from '../../engine/store'
+import { kindCounts, lessonProgress, lessonsFor, nextLesson, type LessonDef, type LessonProgress } from '../../engine/lessons'
 import { fmt, useLang, useT } from '../../i18n'
 import { coverFor } from '../../lib/covers'
+import { sfx } from '../../lib/sfx'
 
 function Md({ text }: { text: string }) {
   // enough markdown for the notes: paragraphs, **bold**, *italic*
@@ -41,6 +42,33 @@ export function GrammarNoteView({ note, onClose }: { note: GrammarNote; onClose:
 
 const STATUS_ICON: Record<LessonProgress['status'], string | null> = { new: null, started: null, done: '✓', mastered: '★' }
 
+type Sheet = { kind: 'lesson'; lesson: LessonDef; progress: LessonProgress } | { kind: 'unit' }
+/** Manual marking (D130): finished a lesson on another device? Raise it here; reset forgets it. */
+function MarkSheet({ sheet, defs, progress, onClose, onChanged }: { sheet: Sheet; defs: LessonDef[]; progress: LessonProgress[]; onClose: () => void; onChanged: () => void }) {
+  const t = useT()
+  const [busy, setBusy] = useState(false)
+  const targets = sheet.kind === 'lesson' ? [sheet.lesson] : defs
+  const status = sheet.kind === 'lesson' ? sheet.progress.status : progress.every(p => p.status === 'mastered') ? 'mastered' : progress.every(p => p.status === 'done' || p.status === 'mastered') ? 'done' : progress.some(p => p.status !== 'new') ? 'started' : 'new'
+  const run = async (f: () => Promise<unknown>, sound: () => void) => { if (busy) return; setBusy(true); await f(); sound(); onChanged(); onClose() }
+  const reset = () => { if (!window.confirm(sheet.kind === 'lesson' ? t.reset_confirm : t.reset_unit_confirm)) return; void run(() => resetLessons(targets), sfx.tap) }
+  const title = sheet.kind === 'lesson' ? `${t.lesson_word} ${sheet.lesson.n}` : t.unit_options
+  return (
+    <>
+      <div className="scrim" onClick={onClose} />
+      <div className="popover fade" role="dialog">
+        <div className="row between"><h3>{title}</h3><button className="btn ghost" onClick={onClose} aria-label={t.close}>✕</button></div>
+        <p className="small muted" style={{ margin: '8px 0 12px' }}>{t.manual_hint}</p>
+        <div className="stack" style={{ gap: 8 }}>
+          {(status === 'new' || status === 'started') && <button className="btn primary block" disabled={busy} onClick={() => void run(() => markLessons(targets, 'done'), sfx.complete)}>✓ {sheet.kind === 'lesson' ? t.mark_done : t.mark_all_done}</button>}
+          {status !== 'mastered' && <button className="btn ghost block" disabled={busy} onClick={() => void run(() => markLessons(targets, 'mastered'), sfx.fanfare)}>★ {sheet.kind === 'lesson' ? t.mark_mastered : t.mark_all_mastered}</button>}
+          {status !== 'new' && <button className="btn ghost block" disabled={busy} style={{ color: 'var(--error)', borderColor: 'var(--error)' }} onClick={reset}>↺ {sheet.kind === 'lesson' ? t.reset_progress : t.reset_unit}</button>}
+          <button className="btn ghost block" onClick={onClose}>{t.cancel}</button>
+        </div>
+      </div>
+    </>
+  )
+}
+
 /** A unit: its lesson road map (every lesson selectable, finished ones redoable — D129), chunks, grammar. */
 export function UnitPage() {
   const { id = '' } = useParams()
@@ -49,11 +77,13 @@ export function UnitPage() {
   const [notes, setNotes] = useState<GrammarNote[]>([])
   const [open, setOpen] = useState<GrammarNote | null>(null)
   const [states, setStates] = useState<Map<string, ItemState>>(new Map())
+  const [sheet, setSheet] = useState<Sheet | null>(null)
   useEffect(() => {
     loadUnits().then(us => setUnit(us.find(u => u.id === id) ?? null))
     loadGrammar().then(setNotes)
     getStates(id).then(setStates)
   }, [id])
+  const refresh = () => { getStates(id).then(setStates) }
   if (!unit) return <div className="page">{t.loading}</div>
   const unitNotes = unit.grammar_notes.map(n => notes.find(x => x.id === n)).filter(Boolean) as GrammarNote[]
   const canDo = lang === 'ro' && unit.can_do_ro?.length ? unit.can_do_ro : unit.can_do
@@ -75,12 +105,13 @@ export function UnitPage() {
         </div>
         {defs.length > 0 && (
           <div className="card" style={{ padding: 0, overflow: 'hidden' }}>
-            <div style={{ padding: '16px 20px 6px' }}><h3>{t.roadmap_title}</h3><p className="small muted" style={{ margin: '4px 0 0' }}>{t.roadmap_hint}</p></div>
+            <div className="row between" style={{ padding: '16px 20px 6px', alignItems: 'flex-start' }}><div><h3>{t.roadmap_title}</h3><p className="small muted" style={{ margin: '4px 0 0' }}>{t.roadmap_hint}</p></div>
+              <button className="more" onClick={() => setSheet({ kind: 'unit' })} aria-label={t.unit_options}>⋯</button></div>
             <ol className="road">
               {defs.map((l, k) => {
                 const p = progress[k], isNext = next?.id === l.id
                 return (
-                  <li key={l.id}>
+                  <li key={l.id} className="road-row">
                     <Link to={`/unit/${unit.id}/lesson/${l.n}`} className={`road-item ${p.status} ${isNext ? 'next' : ''}`}>
                       <span className="node">{STATUS_ICON[p.status] ?? l.n}</span>
                       <span className="t">
@@ -94,6 +125,7 @@ export function UnitPage() {
                           : p.status === 'new' ? <span className="muted">›</span> : <span className="btn ghost sm">↻ {t.redo_lesson}</span>}
                       </span>
                     </Link>
+                    <button className="more" onClick={() => setSheet({ kind: 'lesson', lesson: l, progress: p })} aria-label={t.lesson_options}>⋯</button>
                   </li>
                 )
               })}
@@ -119,6 +151,7 @@ export function UnitPage() {
         )}
       </div>
       {open && <GrammarNoteView note={open} onClose={() => setOpen(null)} />}
+      {sheet && <MarkSheet sheet={sheet} defs={defs} progress={progress} onClose={() => setSheet(null)} onChanged={refresh} />}
     </div>
   )
 }

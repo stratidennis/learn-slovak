@@ -59,6 +59,25 @@ export function nextLesson(defs: LessonDef[], states: Map<string, ItemState>): L
   return defs.find(l => { const s = lessonProgress(l, states).status; return s === 'new' || s === 'started' }) ?? null
 }
 
+/** Manual marking (for a second device): the item states a "mark as done / mastered" writes. `done` lifts
+ *  every item to at least stage 1 (introduced and answered once); `mastered` sets each to its top stage.
+ *  Nothing is ever lowered. Returns only the states that change. */
+export function markStates(l: LessonDef, states: Map<string, ItemState>, level: 'done' | 'mastered', now = Date.now()): ItemState[] {
+  const today = new Date(now).toISOString().slice(0, 10)
+  const out: ItemState[] = []
+  for (const r of l.refs) {
+    const top = maxStageFor(r.kind, l.unitId)
+    const target = level === 'done' ? Math.min(1, top) : top
+    const cur = states.get(r.id)
+    if (cur && cur.stage >= target) continue
+    const st: ItemState = cur ? { ...cur } : { id: r.id, unitId: l.unitId, kind: r.kind, stage: 0, streak: 0, seen: 0, lastAt: 0, stageAtDayStart: 0, dayKey: '' }
+    st.stage = target; st.seen = Math.max(st.seen, 1); st.lastAt = now; st.dayKey = today; st.stageAtDayStart = target
+    if (level === 'mastered') st.streak = Math.max(st.streak, 3)
+    out.push(st)
+  }
+  return out
+}
+
 /** Resolve a lesson's refs against loaded items, in lesson order. */
 export function lessonItems(l: LessonDef, items: Item[]): Item[] {
   const by = new Map(items.map(it => [it.ref.id, it]))
