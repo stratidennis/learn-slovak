@@ -80,7 +80,7 @@ const en = {
   reset_confirm: 'Reset this lesson? Its items go back to new.', reset_unit_confirm: 'Reset the whole unit? All its items go back to new.', marked: 'Marked ✓',
   // words in context (D132)
   word_in_phrase: 'in a phrase', step_word_cloze: 'The word in a phrase — fill the gap', step_word_tiles: 'Put the phrase in the right order',
-  step_dlgcloze: 'Fill in the conversation', dlgcloze_hint: 'tap a gap to take a word back',
+  step_dlgcloze: 'Fill in the conversation', dlgcloze_hint: 'tap a gap to take a word back', build_label: 'Build',
 }
 const ro: typeof en = {
   app: 'Slovenčina',
@@ -150,7 +150,7 @@ const ro: typeof en = {
   mark_all_done: 'Marchează toate lecțiile ca terminate', mark_all_mastered: 'Marchează toată unitatea ca stăpânită', reset_unit: 'Resetează toată unitatea',
   reset_confirm: 'Resetezi lecția? Elementele ei revin la „nou”.', reset_unit_confirm: 'Resetezi toată unitatea? Toate elementele revin la „nou”.', marked: 'Marcat ✓',
   word_in_phrase: 'într-o expresie', step_word_cloze: 'Cuvântul într-o expresie — completează', step_word_tiles: 'Pune expresia în ordinea corectă',
-  step_dlgcloze: 'Completează conversația', dlgcloze_hint: 'atinge un gol ca să iei cuvântul înapoi',
+  step_dlgcloze: 'Completează conversația', dlgcloze_hint: 'atinge un gol ca să iei cuvântul înapoi', build_label: 'Versiune',
 }
 export const STRINGS = { en, ro }
 export type Strings = typeof en

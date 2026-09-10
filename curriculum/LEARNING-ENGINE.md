@@ -38,8 +38,11 @@ has a stage stored on the device.
 | — | **Word in a phrase** *or* **gapped conversation** | the word's phrase with the word gapped (3 options), or a two-line exchange with 2–3 words missing and one shared word bank — the engine mixes the two (D135) | picks / fills every gap | word (stage 4), cognate (stage 3) |
 | — | **Word in a conversation** | line A, then word tiles for the reply that contains the word | assembles in order | word (stage 5) |
 
-Rules: correct → +1 stage; wrong → −1 (never below 1) and the item returns at the end of the
-session; an item advances at most 2 stages per day; stages ≥ 4 require a previous day's success.
+Rules: correct → +1 stage; wrong → −1 (never below 1) and the item returns at the end of the session.
+There is **no daily ceiling** (D136): with a 5–6 rung ladder it made a lesson take three days and made a
+same-day redo advance nothing, so pacing comes from the session structure — an item gets one or two
+steps per session — and from the review layer. A redo carries an item onwards: answer its rung and the
+next rung joins the same session.
 Minimal pairs use a single step type (A/B listening) and "mastered" = 3 correct in a row per pair.
 Letters: hear the name → pick the letter; see the letter → pick its sound anchor; then mastered.
 Dialogues master at stage 3 in Phase 0 and 4 elsewhere (no dictation of a reply).

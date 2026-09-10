@@ -41,6 +41,7 @@ export default defineConfig({
       },
     }),
   ],
+  define: { __BUILD__: JSON.stringify(new Date().toISOString().slice(0, 16).replace('T', ' ')) },
   server: { port: 5173 },
   build: { target: 'es2020', sourcemap: false },
 })

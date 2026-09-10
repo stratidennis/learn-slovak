@@ -35,6 +35,7 @@ export function LessonSession() {
   const items = useRef<Item[]>([])          // the items of this lesson
   const unitItems = useRef<Item[]>([])      // the whole unit, for distractors
   const requeued = useRef<Set<string>>(new Set())
+  const carried = useRef<Map<string, number>>(new Map())   // extra rungs granted in this session, per item
   const startStatus = useRef<LessonStatus>('new')
   const unitIdRef = useRef(id)
   useEffect(() => () => stopAudio(), [])   // leaving the screen silences it
@@ -61,7 +62,7 @@ export function LessonSession() {
       const plan = practice
         ? buildPractice(items.current, states.current, id, lang, { pool: its })
         : buildSession(items.current, states.current, id, lang, { pool: its, newPerSession: def ? items.current.length : undefined, maxDue: def ? items.current.length : undefined })
-      setSteps(plan.steps); setI(0); setStats({ correct: 0, wrong: 0, advanced: 0 }); requeued.current.clear()
+      setSteps(plan.steps); setI(0); setStats({ correct: 0, wrong: 0, advanced: 0 }); requeued.current.clear(); carried.current.clear()
       setPhase(plan.steps.length ? 'running' : 'done')
     })()
   }, [id, n, lang]) // eslint-disable-line react-hooks/exhaustive-deps
@@ -93,6 +94,17 @@ export function LessonSession() {
     }
     setStats(s => ({ correct: s.correct + (r.correct ? 1 : 0), wrong: s.wrong + (r.correct ? 0 : 1), advanced: s.advanced + advanced }))
     if (isIntro) { await next(); return }
+    // a redo carries an item onwards: answer its rung correctly and the next rung joins this session,
+    // so redoing a lesson until everything is right actually finishes it (D136). Two extra rungs at most.
+    if (r.correct && mode === 'practice' && step.type !== 'match') {
+      const it = step.item
+      const st = states.current.get(it.ref.id)
+      const extra = carried.current.get(it.ref.id) ?? 0
+      if (st && st.stage < maxStageFor(it.ref.kind, unitIdRef.current) && extra < 2) {
+        const nextRung = stepFor(it, st.stage, unitItems.current, lang)
+        if (nextRung) { carried.current.set(it.ref.id, extra + 1); setSteps(s => [...s, nextRung]) }
+      }
+    }
     // a miss comes back at the end, one stage down (once per item per session)
     if (!r.correct && step.type !== 'match') {
       const it = step.item

@@ -55,6 +55,7 @@ export function Settings() {
             <label className="btn ghost">{t.import}<input type="file" accept="application/json" hidden onChange={e => doImport(e.target.files?.[0])} /></label></div>
           {msg && <p className="small" style={{ marginBottom: 0 }}>{msg}</p>}</div>
         <div className="card small muted"><h3 style={{ color: 'var(--ink)' }}>{t.sources}</h3>
+          <p>{t.build_label}: <span className="mono">{__BUILD__}</span></p>
           <p>{t.sources_text}</p>
           <p style={{ marginBottom: 0 }}>{t.personal_use}</p></div>
       </div>

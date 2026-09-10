@@ -1,8 +1,11 @@
 import { describe, expect, it, vi } from 'vitest'
-import type { Item, ItemState } from './types'
+import type { Item, ItemState, Step } from './types'
 
-vi.mock('./store', () => ({ dayKey: (t = Date.now()) => new Date(t).toISOString().slice(0, 10) }))
-const { buildSession, buildPractice, maxStageFor, stepFor, roundRobin } = await import('./session')
+vi.mock('../db/db', () => ({ db: { items: {}, cards: {} } }))
+vi.mock('../srs/scheduler', () => ({ newCard: () => ({}) }))
+const { buildSession, buildPractice, introVersion, maxStageFor, stepFor, roundRobin } = await import('./session')
+const { advance, dayKey } = await import('./store')
+const { lessonProgress } = await import('./lessons')
 const { phraseItem, convoItem } = await import('./items')
 const { dlgClozeFor } = await import('./distractors')
 
@@ -223,5 +226,51 @@ describe('dlgClozeFor', () => {
   })
   it('returns nothing when the item has no conversation at all', () => {
     expect(dlgClozeFor(stlp, pool)).toBeNull()
+  })
+})
+
+describe('a lesson can actually be finished (D136)', () => {
+  const cognate = (n: number): Item => ({
+    ref: { kind: 'cognate', id: `cog:c${n}` }, sk: `slovo${n}`, meaning: { ro: `ro${n}`, en: `en${n}` },
+    audio: `/audio/c${n}.mp3`, audioSlow: null, spell: `slovo${n}`, ipa: null, emoji: null, note: { ro: null, en: null },
+    phrase: { sk: `Toto je slovo${n} dnes.`, ro: `ro frază ${n}`, en: `en phrase ${n}`, audio: `audio/c${n}-p.mp3`, audio_slow: null, blank: 2, src: 'authored' },
+  })
+  const lesson = Array.from({ length: 6 }, (_, i) => cognate(i))
+  const def = { id: '0.3/1', unitId: '0.3', n: 1, refs: lesson.map(it => it.ref) }
+
+  /** One session, answering every step correctly, exactly as the runner does. */
+  const play = (plan: { steps: Step[] }, states: Map<string, ItemState>) => {
+    for (const s of plan.steps) {
+      const affected = s.type === 'match' ? s.items : [s.item]
+      for (const it of affected) {
+        const st = states.get(it.ref.id) ?? { id: it.ref.id, unitId: '0.3', kind: it.ref.kind, stage: 0, streak: 0, seen: 0, lastAt: 0, stageAtDayStart: 0, dayKey: '' }
+        if (s.type === 'intro') { st.stage = Math.max(st.stage, 1); st.intro = introVersion(it.ref.kind); st.seen++ }
+        else advance(st, true, maxStageFor(it.ref.kind, '0.3'))
+        states.set(it.ref.id, st)
+      }
+    }
+  }
+
+  it('reaches fully mastered within a few passes, all on the same day', () => {
+    const states = new Map<string, ItemState>()
+    play(buildSession(lesson, states, '0.3', 'ro', { newPerSession: lesson.length, maxDue: lesson.length }), states)
+    expect(lessonProgress(def, states).status).toBe('done')     // green after the first pass
+    let passes = 1
+    while (lessonProgress(def, states).status !== 'mastered' && passes < 8) {
+      play(buildPractice(lesson, states, '0.3', 'ro'), states)
+      passes++
+    }
+    expect(lessonProgress(def, states).status).toBe('mastered')
+    expect(passes).toBeLessThanOrEqual(4)                        // a first pass plus a couple of redos
+    expect([...states.values()].every(s => s.dayKey === dayKey())).toBe(true)
+  })
+  it('a redo moves every item on: the old 2-a-day ceiling froze it silently', () => {
+    const states = new Map<string, ItemState>()
+    play(buildSession(lesson, states, '0.3', 'ro', { newPerSession: lesson.length, maxDue: lesson.length }), states)
+    const before = [...states.values()].map(s => s.stage)
+    play(buildPractice(lesson, states, '0.3', 'ro'), states)
+    const after = [...states.values()].map(s => s.stage)
+    expect(after.some((v, i) => v > before[i])).toBe(true)
+    expect(after.every((v, i) => v >= before[i])).toBe(true)
   })
 })
