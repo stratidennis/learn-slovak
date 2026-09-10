@@ -178,3 +178,12 @@ h1{font-size:1.75rem} h2{font-size:1.375rem} h3{font-size:1.125rem}
 .audio-ctl .btn{min-height:44px;width:100%;padding:10px 12px}
 .audio-ctl .replay{grid-column:1 / -1}
 .audio-ctl .tap-hint{grid-column:1 / -1;text-align:center}
+
+/* D135: gaps in a conversation — the slot is a button, the underline is the only line */
+.blank.slot{min-width:74px;font-family:var(--font-display);font-size:1rem;line-height:1.6;border-radius:6px 6px 0 0}
+.blank.slot.on{background:var(--primary-soft)}
+.blank.slot.okk{border-color:var(--success);background:var(--success-soft);color:var(--success-deep)}
+.blank.slot.badd{border-color:var(--error);background:var(--error-soft);color:var(--error)}
+/* gaps read better left to right, so the reply bubble does not right-align while it has holes in it */
+.dlg-gap .bubble{width:100%;max-width:100%}
+.dlg-gap .bubble.b{justify-content:flex-start;text-align:left}

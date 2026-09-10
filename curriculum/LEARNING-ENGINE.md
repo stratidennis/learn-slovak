@@ -35,7 +35,7 @@ has a stage stored on the device.
 | 4 | **Cloze / Type a word** | sentence with one blank (3 choices), or one missing word to type | picks / types (diacritics lenient) | chunk, sentence |
 | 5 | **Listen & type** | audio | types the whole thing (lenient → strict as it matures) | chunk, sentence |
 | 6 | **Mastered** | — | hands over to the FSRS sentence card for long-term review | all |
-| — | **Word in a phrase** | the word's phrase with the word gapped, 3 options | picks | word (stage 4) |
+| — | **Word in a phrase** *or* **gapped conversation** | the word's phrase with the word gapped (3 options), or a two-line exchange with 2–3 words missing and one shared word bank — the engine mixes the two (D135) | picks / fills every gap | word (stage 4), cognate (stage 3) |
 | — | **Word in a conversation** | line A, then word tiles for the reply that contains the word | assembles in order | word (stage 5) |
 
 Rules: correct → +1 stage; wrong → −1 (never below 1) and the item returns at the end of the

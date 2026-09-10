@@ -4,6 +4,7 @@ import type { Item, ItemState } from './types'
 vi.mock('./store', () => ({ dayKey: (t = Date.now()) => new Date(t).toISOString().slice(0, 10) }))
 const { buildSession, buildPractice, maxStageFor, stepFor, roundRobin } = await import('./session')
 const { phraseItem, convoItem } = await import('./items')
+const { dlgClozeFor } = await import('./distractors')
 
 const word = (w: string, ro: string, phrase?: [string, number], convo?: [string, string, number]): Item => ({
   ref: { kind: 'word', id: `word:${w}` }, sk: w, meaning: { ro, en: ro }, audio: `/audio/${w}.mp3`, audioSlow: null,
@@ -20,11 +21,14 @@ const pool = [voda, stlp, bare, word('mäso', 'carne', ['Nejem mäso.', 1]), wor
 describe('the word ladder: alone → in a phrase → in a conversation', () => {
   it('runs six rungs and only then counts as mastered', () => {
     expect(maxStageFor('word', '0.4')).toBe(6)
-    const kinds = [0, 1, 2, 3, 4, 5].map(st => stepFor(voda, st, pool, 'ro')?.type)
-    expect(kinds).toEqual(['intro', 'meaning', 'form', 'typeword', 'cloze', 'tiles'])
+    const kinds = [0, 1, 2, 3, 5].map(st => stepFor(voda, st, pool, 'ro')?.type)
+    expect(kinds).toEqual(['intro', 'meaning', 'form', 'typeword', 'tiles'])
+    // the gap rung is mixed on purpose: one word from the phrase, or several from a conversation (D135)
+    expect(['cloze', 'dlgcloze']).toContain(stepFor(voda, 4, pool, 'ro')?.type)
     expect(stepFor(voda, 6, pool, 'ro')).toBeNull()
   })
   it('gaps the word itself inside its phrase, and offers other words as the wrong answers', () => {
+    // no conversation on this one, so the gap rung is always the single-phrase variant
     const s = stepFor(word('mäso', 'carne', ['Nejem mäso.', 1]), 4, pool, 'ro')
     if (s?.type !== 'cloze') throw new Error('expected a cloze')
     expect(s.item.ref.id).toBe('word:mäso')          // mastery lands on the word, not the phrase
@@ -150,7 +154,8 @@ describe('cognates are used, not just recognised (D134)', () => {
 
   it('runs five rungs: meaning, by ear, the word in a phrase, then the phrase assembled', () => {
     expect(maxStageFor('cognate', '0.3')).toBe(5)
-    expect([0, 1, 2, 3, 4].map(st => stepFor(pohar, st, cogPool, 'ro')?.type)).toEqual(['intro', 'meaning', 'form', 'cloze', 'tiles'])
+    expect([0, 1, 2, 4].map(st => stepFor(pohar, st, cogPool, 'ro')?.type)).toEqual(['intro', 'meaning', 'form', 'tiles'])
+    expect(['cloze', 'dlgcloze']).toContain(stepFor(pohar, 3, cogPool, 'ro')?.type)
     expect(stepFor(pohar, 5, cogPool, 'ro')).toBeNull()
   })
   it('gaps the cognate inside its phrase and keeps mastery on the cognate', () => {
@@ -174,5 +179,49 @@ describe('cognates are used, not just recognised (D134)', () => {
     const bare = cog('cog:x', 'xxx', 'yyy')
     expect(stepFor(bare, 3, cogPool, 'ro')).toMatchObject({ type: 'form', audioOnly: false })
     expect(stepFor(bare, 4, cogPool, 'ro')).toBeNull()
+  })
+})
+
+describe('the gap rung mixes one phrase with a whole conversation (D135)', () => {
+  const withConvo = word('voda', 'apă', ['Vodu, prosím.', 0], ['Čo si dáte na pitie?', 'Vodu, prosím.', 0])
+  it('serves both variants over many sessions, never the same one always', () => {
+    const seen = new Set(Array.from({ length: 60 }, () => stepFor(withConvo, 4, pool, 'ro')?.type))
+    expect(seen).toEqual(new Set(['cloze', 'dlgcloze']))
+  })
+  it('falls back to the single phrase when the item has no conversation', () => {
+    const seen = new Set(Array.from({ length: 30 }, () => stepFor(stlp, 4, pool, 'ro')?.type))
+    expect(seen).toEqual(new Set(['cloze']))
+  })
+})
+
+describe('dlgClozeFor', () => {
+  const dlg = (a: string, b: string): Item => ({
+    ...pool[0], ref: { kind: 'dialogue', id: 'dlg:x' }, sk: b,
+    dialogue: { id: 'dlg:x', unit: '1.1', note: null, note_ro: null,
+      a: { sk: a, ro: 'ro a', en: 'en a', audio: 'audio/a.mp3' }, b: { sk: b, ro: 'ro b', en: 'en b', audio: 'audio/b.mp3' } },
+  })
+  it('takes two or three words out, never the first of a line, and banks them with two distractors', () => {
+    for (let k = 0; k < 30; k++) {
+      const dc = dlgClozeFor(dlg('Dobrý deň, čo si dáte?', 'Prosím si kávu s mliekom.'), pool, 'káva')
+      if (!dc) throw new Error('expected a gapped conversation')
+      const gaps = dc.lines.reduce((n, l) => n + l.blanks.length, 0)
+      expect(gaps).toBeGreaterThanOrEqual(2); expect(gaps).toBeLessThanOrEqual(3)
+      expect(dc.answers.length).toBe(gaps)
+      for (const l of dc.lines) for (const i of l.blanks) expect(i).toBeGreaterThan(0)
+      expect(dc.bank.length).toBe(gaps + 2)
+      for (const a of dc.answers) expect(dc.bank).toContain(a)
+      // every answer is really the word that was removed
+      const removed = dc.lines.flatMap(l => l.blanks.map(i => l.words[i]))
+      expect(removed).toEqual(dc.answers)
+    }
+  })
+  it('keeps both speakers and their audio', () => {
+    const dc = dlgClozeFor(dlg('Ako sa máš dnes?', 'Mám sa veľmi dobre.'), pool)
+    expect(dc?.lines.map(l => l.who)).toEqual(['a', 'b'])
+    expect(dc?.lines[0].audio).toBe('/audio/a.mp3')
+    expect(dc?.lines[1].meaning).toBe('ro b')
+  })
+  it('returns nothing when the item has no conversation at all', () => {
+    expect(dlgClozeFor(stlp, pool)).toBeNull()
   })
 })

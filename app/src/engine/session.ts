@@ -1,11 +1,31 @@
 import type { Item, ItemState, Step } from './types'
-import { blankIndexFor, clozeOptions, pickDistractors, shuffle, tilesFor } from './distractors'
+import { blankIndexFor, clozeOptions, dlgClozeFor, pickDistractors, shuffle, tilesFor } from './distractors'
 import { convoItem, phraseItem } from './items'
 import { dayKey } from './store'
 
 export type Plan = { steps: Step[]; newItems: Item[]; dueItems: Item[] }
 type Lang = 'ro' | 'en'
 const words = (it: Item) => it.sk.replace(/[„“"…]/g, '').split(/\s+/).filter(Boolean).length
+
+/** The gap rung, mixed on purpose (D135): sometimes one word missing from the item's phrase, sometimes
+ *  two or three missing from a whole short conversation. Both are worth doing, so the learner gets both
+ *  rather than the same card every time. Falls back to the phrase when there is no conversation. */
+function gapStep(item: Item, pool: Item[]): Step | null {
+  const wantDialogue = Math.random() < 0.5
+  if (wantDialogue) {
+    const cv = convoItem(item)
+    const dc = cv && dlgClozeFor(cv, pool, item.sk)
+    if (cv && dc) return { type: 'dlgcloze', item: cv, ...dc }
+  }
+  const ph = phraseItem(item)
+  if (!ph) {
+    const cv = convoItem(item)
+    const dc = cv && dlgClozeFor(cv, pool, item.sk)
+    return cv && dc ? { type: 'dlgcloze', item: cv, ...dc } : null
+  }
+  const b = item.phrase?.blank ?? blankIndexFor(ph)
+  return { type: 'cloze', item: ph, blankIndex: b, options: clozeOptions(ph, b, pool) }
+}
 
 /** The step an item gets at its current stage (curriculum/LEARNING-ENGINE.md §2). */
 export function stepFor(item: Item, stage: number, pool: Item[], lang: Lang): Step | null {
@@ -26,12 +46,7 @@ export function stepFor(item: Item, stage: number, pool: Item[], lang: Lang): St
     if (stage === 1) return { type: 'meaning', item, options: opts() }
     if (stage === 2) return { type: 'form', item, options: opts(), audioOnly: true }
     if (stage === 3) return { type: 'typeword', item, blankIndex: 0 }
-    if (stage === 4) {
-      const ph = phraseItem(item)
-      if (!ph) return { type: 'typeword', item, blankIndex: 0 }
-      const b = item.phrase?.blank ?? blankIndexFor(ph)
-      return { type: 'cloze', item: ph, blankIndex: b, options: clozeOptions(ph, b, pool) }
-    }
+    if (stage === 4) return gapStep(item, pool) ?? { type: 'typeword', item, blankIndex: 0 }
     if (stage === 5) {
       const target = convoItem(item) ?? phraseItem(item)
       if (!target) return null
@@ -46,12 +61,7 @@ export function stepFor(item: Item, stage: number, pool: Item[], lang: Lang): St
     if (stage <= 0) return { type: 'intro', item }
     if (stage === 1) return { type: 'meaning', item, options: opts() }
     if (stage === 2) return { type: 'form', item, options: opts(), audioOnly: true }
-    if (stage === 3) {
-      const ph = phraseItem(item)
-      if (!ph) return { type: 'form', item, options: opts(), audioOnly: false }
-      const b = item.phrase?.blank ?? blankIndexFor(ph)
-      return { type: 'cloze', item: ph, blankIndex: b, options: clozeOptions(ph, b, pool) }
-    }
+    if (stage === 3) return gapStep(item, pool) ?? { type: 'form', item, options: opts(), audioOnly: false }
     if (stage === 4) {
       const ph = phraseItem(item)
       return ph ? { type: 'tiles', item: ph, tiles: tilesFor(ph, pool) } : null
@@ -64,7 +74,10 @@ export function stepFor(item: Item, stage: number, pool: Item[], lang: Lang): St
     if (stage <= 0) return { type: 'intro', item }
     if (stage === 1) return { type: 'reply', item, options: opts(), audioOnly: false }
     if (stage === 2) return { type: 'reply', item, options: opts(), audioOnly: true }
-    if (stage === 3) return words(item) >= 2 ? { type: 'tiles', item, tiles: tilesFor(item, pool) } : { type: 'reply', item, options: opts(), audioOnly: true }
+    if (stage === 3) {
+      if (Math.random() < 0.5) { const dc = dlgClozeFor(item, pool); if (dc) return { type: 'dlgcloze', item, ...dc } }
+      return words(item) >= 2 ? { type: 'tiles', item, tiles: tilesFor(item, pool) } : { type: 'reply', item, options: opts(), audioOnly: true }
+    }
     return null
   }
   // chunk / sentence: the full ladder

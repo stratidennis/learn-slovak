@@ -1,5 +1,5 @@
-import type { Item } from './types'
-import { tokenize } from '../lib/normalize'
+import type { DlgClozeLine, Item } from './types'
+import { stripDiacritics, tokenize } from '../lib/normalize'
 
 const shuffle = <T,>(a: T[]): T[] => { const b = [...a]; for (let i = b.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [b[i], b[j]] = [b[j], b[i]] } return b }
 export { shuffle }
@@ -57,4 +57,55 @@ export function clozeOptions(item: Item, blankIndex: number, pool: Item[]): stri
     if (opts.size >= 2) break
   }
   return shuffle([answer, ...opts])
+}
+
+/** A gapped conversation (D135): 2–3 words taken out across the two lines, one shared word bank.
+ *  More interesting than a single gap because the learner has to hold the whole exchange in mind.
+ *  The item's own word is always one of the gaps when it appears; the first word of a line never is,
+ *  so the opening stays readable. Distractors come from other items in the pool. */
+export function dlgClozeFor(item: Item, pool: Item[], target?: string): { lines: DlgClozeLine[]; bank: string[]; answers: string[] } | null {
+  const x = item.dialogue
+  if (!x) return null
+  const clean = (w: string) => w.replace(/[.,!?„“"…]/g, '')
+  const norm = (w: string) => stripDiacritics(clean(w).toLowerCase())
+  const wordsOf = (sk: string) => sk.replace(/[„“"…]/g, '').split(/\s+/).filter(Boolean)
+  const tgt = target ? norm(target) : null
+
+  const lines: DlgClozeLine[] = (['a', 'b'] as const).map(who => {
+    const line = who === 'a' ? x.a : x.b
+    return { who, sk: line.sk, words: wordsOf(line.sk), blanks: [], audio: line.audio ? `/${line.audio}` : null, meaning: line.ro || line.en || '' }
+  })
+  // how many gaps a line may carry: short lines one, longer lines two
+  const room = (n: number) => (n <= 2 ? 1 : n <= 4 ? 1 : 2)
+  let total = 0
+  for (const line of lines) {
+    const cand = line.words.map((_w, i) => i).filter(i => i > 0 && clean(line.words[i]).length >= 3)
+    if (!cand.length) continue
+    // the item's own word first, then the longest remaining words
+    const own = tgt ? cand.filter(i => norm(line.words[i]).startsWith(tgt.slice(0, Math.max(3, tgt.length - 2)))) : []
+    const rest = shuffle(cand.filter(i => !own.includes(i))).sort((a, b) => clean(line.words[b]).length - clean(line.words[a]).length)
+    for (const i of [...own, ...rest].slice(0, room(line.words.length))) {
+      if (total >= 3) break
+      line.blanks.push(i); total++
+    }
+    line.blanks.sort((a, b) => a - b)
+  }
+  if (total < 2) {
+    // one gap only: take a second from the longest line so it is always a multi-gap exercise
+    const best = [...lines].sort((a, b) => b.words.length - a.words.length)[0]
+    const more = best.words.map((_w, i) => i).filter(i => i > 0 && !best.blanks.includes(i) && clean(best.words[i]).length >= 2)
+    if (more.length) { best.blanks.push(more[0]); best.blanks.sort((a, b) => a - b); total++ }
+  }
+  if (total < 2) return null
+  const answers = lines.flatMap(l => l.blanks.map(i => l.words[i]))
+  const have = new Set(answers.map(norm))
+  const extra: string[] = []
+  for (const it of shuffle(pool)) {
+    if (extra.length >= 2) break
+    for (const w of wordsOf(it.sk)) {
+      const c = clean(w)
+      if (c.length >= 3 && !have.has(norm(w)) && extra.length < 2) { have.add(norm(w)); extra.push(c) }
+    }
+  }
+  return { lines, bank: shuffle([...answers, ...extra]), answers }
 }

@@ -29,7 +29,7 @@ export type Item = {
   convo?: WordConvo
 }
 
-export type StepType = 'intro' | 'meaning' | 'form' | 'match' | 'tiles' | 'cloze' | 'typeword' | 'listentype' | 'pairab' | 'letterpick' | 'anchor' | 'reply'
+export type StepType = 'intro' | 'meaning' | 'form' | 'match' | 'tiles' | 'cloze' | 'dlgcloze' | 'typeword' | 'listentype' | 'pairab' | 'letterpick' | 'anchor' | 'reply'
 
 export type Step =
   | { type: 'intro'; item: Item }
@@ -38,12 +38,17 @@ export type Step =
   | { type: 'match'; items: Item[] }                              // 4–5 pairs
   | { type: 'tiles'; item: Item; tiles: string[] }                // assemble item.sk
   | { type: 'cloze'; item: Item; blankIndex: number; options: string[] }
+  | { type: 'dlgcloze'; item: Item; lines: DlgClozeLine[]; bank: string[]; answers: string[] }   // a short conversation with 2–3 gaps
   | { type: 'typeword'; item: Item; blankIndex: number }          // type the missing word (or the whole word for single-word items)
   | { type: 'listentype'; item: Item }
   | { type: 'pairab'; item: Item; playB: boolean }                // which of the two did you hear?
   | { type: 'letterpick'; item: Item; options: Item[] }           // hear the letter name → pick the letter
   | { type: 'anchor'; item: Item; options: Item[] }               // see the letter → pick its sound anchor
   | { type: 'reply'; item: Item; options: Item[]; audioOnly: boolean } // hear/see line A → pick the reply (B) from 4
+
+/** One line of a gapped conversation. `blanks` are indices into `words`; the k-th blank in reading
+ *  order across all lines takes `answers[k]`. */
+export type DlgClozeLine = { who: 'a' | 'b'; sk: string; words: string[]; blanks: number[]; audio: string | null; meaning: string }
 
 export type StepResult = { correct: boolean; tier?: 'exact' | 'diacritics' | 'wrong'; typed?: string }
 

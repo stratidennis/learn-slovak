@@ -193,7 +193,7 @@ export function ClozeStep({ step, onAnswer, locked }: Props<Extract<Step, { type
   return (
     <div className="stack fade">
       <p className="muted small" style={{ margin: 0 }}>{it.phrase ? t.step_word_cloze : t.step_cloze}</p>
-      <div className="card"><div className="sk big" style={{ fontSize: '1.75rem' }}>{words.map((w, i) => i === step.blankIndex ? <span key={i} className="blank">{picked ?? '____'}</span> : <span key={i}>{w} </span>)}</div>
+      <div className="card"><div className="sk big" style={{ fontSize: '1.75rem' }}>{words.map((w, i) => i === step.blankIndex ? <span key={i} className="blank">{picked ?? '\u00a0'}</span> : <span key={i}>{w} </span>)}</div>
         <div className="muted" style={{ marginTop: 8 }}>{meaningOf(it, lang)}</div>
         {it.audio && <div style={{ marginTop: 8 }}><AudioButton src={it.audio} slowSrc={it.audioSlow} compact /></div>}</div>
       <div className="row" style={{ gap: 8 }}>{step.options.map(o => <button key={o} className={`tile ${picked === o ? (o === answer ? 'okk' : 'badd') : ''}`} disabled={!!picked || locked} onClick={() => { setPicked(o); onAnswer({ correct: o === answer }) }}>{o}</button>)}</div>
@@ -215,7 +215,7 @@ export function TypeWordStep({ step, onAnswer, locked }: Props<Extract<Step, { t
       <p className="muted small" style={{ margin: 0 }}>{single ? t.step_typeword_single : t.step_typeword}</p>
       <div className="card">
         {single ? <><div style={{ fontSize: '1.25rem' }}>{meaningOf(it, lang)}</div>{it.spell && <div className="guide-ro">{it.spell}</div>}</>
-          : <><div className="sk big" style={{ fontSize: '1.6rem' }}>{words.map((w, i) => i === step.blankIndex ? <span key={i} className="blank">____</span> : <span key={i}>{w} </span>)}</div><div className="muted" style={{ marginTop: 6 }}>{meaningOf(it, lang)}</div></>}
+          : <><div className="sk big" style={{ fontSize: '1.6rem' }}>{words.map((w, i) => i === step.blankIndex ? <span key={i} className="blank">{'\u00a0'}</span> : <span key={i}>{w} </span>)}</div><div className="muted" style={{ marginTop: 6 }}>{meaningOf(it, lang)}</div></>}
         {it.audio && <div style={{ marginTop: 8 }}><AudioButton src={it.audio} slowSrc={it.audioSlow} autoPlay compact /></div>}
       </div>
       <input ref={ref} className="input" value={typed} onChange={e => setTyped(e.target.value)} autoCapitalize="off" autoCorrect="off" spellCheck={false} onKeyDown={e => { if (e.key === 'Enter') submit() }} placeholder="…" disabled={locked} />
@@ -261,6 +261,62 @@ export function PairABStep({ step, onAnswer, locked }: Props<Extract<Step, { typ
         })}
       </div>
       {picked && <p className="small muted center" style={{ margin: 0 }}>{lang === 'ro' ? it.meaning.ro : it.meaning.en}</p>}
+    </div>
+  )
+}
+
+/* ------------------------------------------------- gapped conversation (D135) */
+/** A short exchange with two or three words missing and one shared word bank. Tap a word to drop it in
+ *  the next gap, tap a filled gap to take it back. Graded on all gaps at once, punctuation ignored. */
+export function DlgClozeStep({ step, onAnswer, locked }: Props<Extract<Step, { type: 'dlgcloze' }>>) {
+  const t = useT()
+  const [filled, setFilled] = useState<(string | null)[]>(() => step.answers.map(() => null))
+  const [checked, setChecked] = useState(false)
+  const norm = (s: string) => stripDiacritics(s.toLowerCase().replace(/[.,!?„“"…]/g, '')).trim()
+  const used = filled.filter((x): x is string => !!x)
+  const bank = step.bank.filter(w => used.filter(u => u === w).length < step.bank.filter(b => b === w).length)
+  const nextGap = filled.findIndex(x => x === null)
+  const put = (w: string) => {
+    if (locked || checked || nextGap < 0) return
+    sfx.tap(); setFilled(f => f.map((x, i) => (i === nextGap ? w : x)))
+  }
+  const take = (k: number) => { if (locked || checked) return; sfx.tap(); setFilled(f => f.map((x, i) => (i === k ? null : x))) }
+  const okAt = (k: number) => !!filled[k] && norm(filled[k]!) === norm(step.answers[k])
+  const check = () => {
+    if (locked || checked || nextGap >= 0) return
+    setChecked(true)
+    onAnswer({ correct: step.answers.every((_, k) => okAt(k)) })
+  }
+  let gap = -1                                    // running index of the gap in reading order
+  return (
+    <div className="stack fade">
+      <p className="muted small" style={{ margin: 0 }}>{t.step_dlgcloze}</p>
+      <div className="dlg dlg-gap">
+        {step.lines.map((l, li) => {
+          const cells = l.words.map((w, i) => {
+            if (!l.blanks.includes(i)) return <span key={i}>{w} </span>
+            gap += 1
+            const k = gap
+            const cls = `blank slot ${filled[k] ? 'on' : ''} ${checked ? (okAt(k) ? 'okk' : 'badd') : ''}`
+            return <button key={i} className={cls} onClick={() => take(k)} disabled={locked || checked}>{filled[k] ?? '\u00a0'}</button>
+          })
+          return (
+            <div key={li} className={`bubble ${l.who}`}>
+              {l.who === 'a' && <div className="who">🗣️</div>}
+              <div style={{ flex: 1 }}>
+                <div className="sk" style={{ lineHeight: 2 }}>{cells}</div>
+                <div className="small muted">{l.meaning}</div>
+              </div>
+              {l.audio && <button className="audiobtn small" onClick={() => void playAudio(l.audio!)} aria-label={t.replay}>▶</button>}
+            </div>
+          )
+        })}
+      </div>
+      <div className="row" style={{ gap: 8, justifyContent: 'center' }}>
+        {bank.map((w, i) => <button key={`${w}-${i}`} className="tile" onClick={() => put(w)} disabled={locked || checked || nextGap < 0}>{w}</button>)}
+        {!bank.length && <span className="small muted">{t.dlgcloze_hint}</span>}
+      </div>
+      <button className="btn primary block" onClick={check} disabled={locked || checked || nextGap >= 0}>{t.check}</button>
     </div>
   )
 }

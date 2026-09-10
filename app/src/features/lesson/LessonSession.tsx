@@ -11,7 +11,7 @@ import { AudioButton, stopAudio } from '../../components/AudioButton'
 import { fmt, useLang, useT } from '../../i18n'
 import { DONE_COVER, WINNER_COVER } from '../../lib/covers'
 import { sfx } from '../../lib/sfx'
-import { ChoiceStep, ClozeStep, DialogueIntroStep, IntroStep, ListenTypeStep, MatchStep, PairABStep, ReplyStep, TilesStep, TypeWordStep } from './Steps'
+import { ChoiceStep, ClozeStep, DialogueIntroStep, DlgClozeStep, IntroStep, ListenTypeStep, MatchStep, PairABStep, ReplyStep, TilesStep, TypeWordStep } from './Steps'
 
 type Phase = 'loading' | 'running' | 'done'
 type Mode = 'lesson' | 'practice'
@@ -163,6 +163,7 @@ export function LessonSession() {
       {step.type === 'match' && <MatchStep step={step} onAnswer={onAnswer} locked={!!result} />}
       {step.type === 'tiles' && <TilesStep step={step} onAnswer={onAnswer} locked={!!result} />}
       {step.type === 'cloze' && <ClozeStep step={step} onAnswer={onAnswer} locked={!!result} />}
+      {step.type === 'dlgcloze' && <DlgClozeStep step={step} onAnswer={onAnswer} locked={!!result} />}
       {step.type === 'typeword' && <TypeWordStep step={step} onAnswer={onAnswer} locked={!!result} />}
       {step.type === 'listentype' && <ListenTypeStep step={step} onAnswer={onAnswer} locked={!!result} />}
       {step.type === 'pairab' && <PairABStep step={step} onAnswer={onAnswer} locked={!!result} />}
