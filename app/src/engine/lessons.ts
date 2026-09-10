@@ -12,11 +12,14 @@ export type LessonDef = { id: string; unitId: string; n: number; refs: ItemRef[]
 export type LessonStatus = 'new' | 'started' | 'done' | 'mastered'
 export type LessonProgress = { total: number; seen: number; mastered: number; pct: number; status: LessonStatus }
 
-const RECOGNITION_ONLY = new Set(['letter', 'pair', 'cognate'])
-/** Recognition-only kinds (letters, sound pairs, cognates) take 10 per lesson; everything else 8. */
+// Items per lesson by kind: recognition-only kinds go fast, a word now runs a six-rung ladder (alone →
+// in a phrase → in a conversation) so five per lesson is already a full sitting — fewer words, more
+// lessons, every exercise type in each of them (D132). A mixed unit takes the smallest of its kinds.
+const PER_LESSON: Record<string, number> = { letter: 10, pair: 10, cognate: 10, word: 5 }
+const DEFAULT_PER_LESSON = 8
 export function lessonSize(kinds: Iterable<string>): number {
-  for (const k of kinds) if (!RECOGNITION_ONLY.has(k)) return 8
-  return 10
+  const sizes = [...kinds].map(k => PER_LESSON[k] ?? DEFAULT_PER_LESSON)
+  return sizes.length ? Math.min(...sizes) : DEFAULT_PER_LESSON
 }
 
 /** Cut the unit's refs into N lessons; each kind is spread evenly so every lesson mixes chunks,

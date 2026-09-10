@@ -1,0 +1,522 @@
+{
+  "_comment": "D132: context for the word items of unit 0.4 (the alphabet's example words). A word is learned alone, then inside a phrase, then inside a two-line conversation whose reply you assemble word by word. `phrase` overrides whatever the corpus offers — used where the corpus sentence is wrong for a beginner (\"Stál nehybne ako soľný stĺp\") or where there is none at all (džem, kolégium, móda, vŕba). `convo` is a hand-authored exchange for words no existing dialogue covers; A asks, B answers with the word. Everything here is a draft by this project (review_status needs_review) — real spoken A1 Slovak, not textbook. Words with neither an authored nor an existing conversation fall back to assembling the phrase itself. `glosses` gives the word's own meaning where the band 1-2 lexicon has no entry (the phrase's translation is NOT the word's meaning).",
+  "_review_status": "needs_review",
+  "phrases": {
+    "auto": {
+      "sk": "Kde máš auto?",
+      "ro": "Unde ai mașina?",
+      "en": "Where's your car?"
+    },
+    "cena": {
+      "sk": "Aká je cena?",
+      "ro": "Care e prețul?",
+      "en": "What's the price?"
+    },
+    "dom": {
+      "sk": "Náš dom je tam.",
+      "ro": "Casa noastră e acolo.",
+      "en": "Our house is over there."
+    },
+    "džem": {
+      "sk": "Chlieb s džemom.",
+      "ro": "Pâine cu gem.",
+      "en": "Bread with jam."
+    },
+    "gitara": {
+      "sk": "Hrám na gitare.",
+      "ro": "Cânt la chitară.",
+      "en": "I play the guitar."
+    },
+    "kolégium": {
+      "sk": "Kolégium je v piatok.",
+      "ro": "Ședința e vineri.",
+      "en": "The meeting is on Friday."
+    },
+    "les": {
+      "sk": "Ideme do lesa.",
+      "ro": "Mergem în pădure.",
+      "en": "We're going to the forest."
+    },
+    "mäso": {
+      "sk": "Nejem mäso.",
+      "ro": "Nu mănânc carne.",
+      "en": "I don't eat meat."
+    },
+    "medzi": {
+      "sk": "Je to medzi nami.",
+      "ro": "E între noi.",
+      "en": "It's between us."
+    },
+    "móda": {
+      "sk": "To je nová móda.",
+      "ro": "Asta e moda nouă.",
+      "en": "That's the new fashion."
+    },
+    "okno": {
+      "sk": "Otvor okno, prosím.",
+      "ro": "Deschide fereastra, te rog.",
+      "en": "Open the window, please."
+    },
+    "ruka": {
+      "sk": "Bolí ma ruka.",
+      "ro": "Mă doare mâna.",
+      "en": "My hand hurts."
+    },
+    "stĺp": {
+      "sk": "Auto stojí pri stĺpe.",
+      "ro": "Mașina e lângă stâlp.",
+      "en": "The car is by the pole."
+    },
+    "syn": {
+      "sk": "Mám syna a dcéru.",
+      "ro": "Am un fiu și o fiică.",
+      "en": "I have a son and a daughter."
+    },
+    "škola": {
+      "sk": "Deti sú v škole.",
+      "ro": "Copiii sunt la școală.",
+      "en": "The children are at school."
+    },
+    "taxi": {
+      "sk": "Zavolám taxi.",
+      "ro": "Chem un taxi.",
+      "en": "I'll call a taxi."
+    },
+    "ulica": {
+      "sk": "Bývam na tejto ulici.",
+      "ro": "Locuiesc pe strada asta.",
+      "en": "I live on this street."
+    },
+    "ústa": {
+      "sk": "Otvorte ústa, prosím.",
+      "ro": "Deschideți gura, vă rog.",
+      "en": "Open your mouth, please."
+    },
+    "voda": {
+      "sk": "Vodu, prosím.",
+      "ro": "Apă, vă rog.",
+      "en": "Water, please."
+    },
+    "vŕba": {
+      "sk": "Pri vode rastie vŕba.",
+      "ro": "Lângă apă crește o salcie.",
+      "en": "A willow grows by the water."
+    },
+    "byt": {
+      "sk": "Mám malý byt.",
+      "ro": "Am un apartament mic.",
+      "en": "I have a small flat."
+    },
+    "zima": {
+      "sk": "Je mi zima.",
+      "ro": "Mi-e frig.",
+      "en": "I'm cold."
+    },
+    "ľudia": {
+      "sk": "Tu je veľa ľudí.",
+      "ro": "Aici sunt mulți oameni.",
+      "en": "There are a lot of people here."
+    },
+    "čaj": {
+      "sk": "Dáš si čaj?",
+      "ro": "Vrei un ceai?",
+      "en": "Would you like tea?"
+    },
+    "firma": {
+      "sk": "Kde je tvoja firma?",
+      "ro": "Unde e firma ta?",
+      "en": "Where is your company?"
+    },
+    "chlieb": {
+      "sk": "Je ten chlieb čerstvý?",
+      "ro": "Pâinea aia e proaspătă?",
+      "en": "Is that bread fresh?"
+    },
+    "izba": {
+      "sk": "Izba je veľká.",
+      "ro": "Camera e mare.",
+      "en": "The room is big."
+    },
+    "ťažký": {
+      "sk": "Nie je to ťažké.",
+      "ro": "Nu e greu.",
+      "en": "It isn't hard."
+    },
+    "ja": {
+      "sk": "To som ja.",
+      "ro": "Ăsta sunt eu.",
+      "en": "That's me."
+    },
+    "mama": {
+      "sk": "To je moja mama.",
+      "ro": "Ea e mama mea.",
+      "en": "That's my mum."
+    },
+    "ďakujem": {
+      "sk": "Ďakujem za pomoc.",
+      "ro": "Mulțumesc pentru ajutor.",
+      "en": "Thanks for the help."
+    },
+    "prosím": {
+      "sk": "Ešte raz, prosím.",
+      "ro": "Încă o dată, te rog.",
+      "en": "Once more, please."
+    }
+  },
+  "convos": {
+    "mäso": {
+      "a": {
+        "sk": "Dáte si mäso?",
+        "ro": "Serviți carne?",
+        "en": "Will you have meat?"
+      },
+      "b": {
+        "sk": "Nie, ďakujem, nejem mäso.",
+        "ro": "Nu, mulțumesc, nu mănânc carne.",
+        "en": "No thanks, I don't eat meat."
+      }
+    },
+    "cena": {
+      "a": {
+        "sk": "Je to drahé?",
+        "ro": "E scump?",
+        "en": "Is it expensive?"
+      },
+      "b": {
+        "sk": "Nie, cena je dobrá.",
+        "ro": "Nu, prețul e bun.",
+        "en": "No, the price is good."
+      }
+    },
+    "čaj": {
+      "a": {
+        "sk": "Dáš si kávu alebo čaj?",
+        "ro": "Vrei cafea sau ceai?",
+        "en": "Coffee or tea?"
+      },
+      "b": {
+        "sk": "Prosím si čaj.",
+        "ro": "Un ceai, te rog.",
+        "en": "Tea, please."
+      }
+    },
+    "chlieb": {
+      "a": {
+        "sk": "Čo si dáte?",
+        "ro": "Ce doriți?",
+        "en": "What would you like?"
+      },
+      "b": {
+        "sk": "Chlieb a mlieko, prosím.",
+        "ro": "Pâine și lapte, vă rog.",
+        "en": "Bread and milk, please."
+      }
+    },
+    "izba": {
+      "a": {
+        "sk": "Máte voľnú izbu?",
+        "ro": "Aveți o cameră liberă?",
+        "en": "Do you have a free room?"
+      },
+      "b": {
+        "sk": "Áno, izba je voľná.",
+        "ro": "Da, camera e liberă.",
+        "en": "Yes, the room is free."
+      }
+    },
+    "okno": {
+      "a": {
+        "sk": "Je tu teplo.",
+        "ro": "E cald aici.",
+        "en": "It's warm in here."
+      },
+      "b": {
+        "sk": "Otvorím okno.",
+        "ro": "Deschid fereastra.",
+        "en": "I'll open the window."
+      }
+    },
+    "ruka": {
+      "a": {
+        "sk": "Čo ti je?",
+        "ro": "Ce ai?",
+        "en": "What's wrong?"
+      },
+      "b": {
+        "sk": "Bolí ma ruka.",
+        "ro": "Mă doare mâna.",
+        "en": "My hand hurts."
+      }
+    },
+    "syn": {
+      "a": {
+        "sk": "Máte deti?",
+        "ro": "Aveți copii?",
+        "en": "Do you have children?"
+      },
+      "b": {
+        "sk": "Áno, mám syna.",
+        "ro": "Da, am un fiu.",
+        "en": "Yes, I have a son."
+      }
+    },
+    "škola": {
+      "a": {
+        "sk": "Kde sú deti?",
+        "ro": "Unde sunt copiii?",
+        "en": "Where are the children?"
+      },
+      "b": {
+        "sk": "Deti sú v škole.",
+        "ro": "Copiii sunt la școală.",
+        "en": "The children are at school."
+      }
+    },
+    "ulica": {
+      "a": {
+        "sk": "Kde bývaš?",
+        "ro": "Unde locuiești?",
+        "en": "Where do you live?"
+      },
+      "b": {
+        "sk": "Bývam na tejto ulici.",
+        "ro": "Locuiesc pe strada asta.",
+        "en": "I live on this street."
+      }
+    },
+    "voda": {
+      "a": {
+        "sk": "Čo si dáte na pitie?",
+        "ro": "Ce doriți de băut?",
+        "en": "What would you like to drink?"
+      },
+      "b": {
+        "sk": "Vodu, prosím.",
+        "ro": "Apă, vă rog.",
+        "en": "Water, please."
+      }
+    },
+    "taxi": {
+      "a": {
+        "sk": "Ideš pešo?",
+        "ro": "Merges pe jos?",
+        "en": "Are you walking?"
+      },
+      "b": {
+        "sk": "Nie, zavolám taxi.",
+        "ro": "Nu, chem un taxi.",
+        "en": "No, I'll call a taxi."
+      }
+    },
+    "byt": {
+      "a": {
+        "sk": "Máš dom?",
+        "ro": "Ai casă?",
+        "en": "Do you have a house?"
+      },
+      "b": {
+        "sk": "Nie, mám malý byt.",
+        "ro": "Nu, am un apartament mic.",
+        "en": "No, I have a small flat."
+      }
+    },
+    "zima": {
+      "a": {
+        "sk": "Ako sa cítiš?",
+        "ro": "Cum te simți?",
+        "en": "How do you feel?"
+      },
+      "b": {
+        "sk": "Je mi zima.",
+        "ro": "Mi-e frig.",
+        "en": "I'm cold."
+      }
+    },
+    "les": {
+      "a": {
+        "sk": "Čo robíte v nedeľu?",
+        "ro": "Ce faceți duminică?",
+        "en": "What are you doing on Sunday?"
+      },
+      "b": {
+        "sk": "Ideme do lesa.",
+        "ro": "Mergem în pădure.",
+        "en": "We're going to the forest."
+      }
+    },
+    "gitara": {
+      "a": {
+        "sk": "Hráš na niečo?",
+        "ro": "Cânți la ceva?",
+        "en": "Do you play anything?"
+      },
+      "b": {
+        "sk": "Áno, hrám na gitare.",
+        "ro": "Da, cânt la chitară.",
+        "en": "Yes, I play the guitar."
+      }
+    },
+    "ústa": {
+      "a": {
+        "sk": "Čo mám urobiť?",
+        "ro": "Ce să fac?",
+        "en": "What should I do?"
+      },
+      "b": {
+        "sk": "Otvorte ústa, prosím.",
+        "ro": "Deschideți gura, vă rog.",
+        "en": "Open your mouth, please."
+      }
+    },
+    "ľudia": {
+      "a": {
+        "sk": "Je tam veľa ľudí?",
+        "ro": "Sunt mulți oameni acolo?",
+        "en": "Are there many people there?"
+      },
+      "b": {
+        "sk": "Áno, tu je veľa ľudí.",
+        "ro": "Da, aici sunt mulți oameni.",
+        "en": "Yes, there are a lot of people here."
+      }
+    },
+    "firma": {
+      "a": {
+        "sk": "Kde pracuješ?",
+        "ro": "Unde lucrezi?",
+        "en": "Where do you work?"
+      },
+      "b": {
+        "sk": "Pracujem vo veľkej firme.",
+        "ro": "Lucrez la o firmă mare.",
+        "en": "I work at a big company."
+      }
+    },
+    "ťažký": {
+      "a": {
+        "sk": "Je to ťažké?",
+        "ro": "E greu?",
+        "en": "Is it hard?"
+      },
+      "b": {
+        "sk": "Nie, nie je to ťažké.",
+        "ro": "Nu, nu e greu.",
+        "en": "No, it isn't hard."
+      }
+    },
+    "pivo": {
+      "a": {
+        "sk": "Čo si dáte?",
+        "ro": "Ce doriți?",
+        "en": "What would you like?"
+      },
+      "b": {
+        "sk": "Jedno pivo, prosím.",
+        "ro": "O bere, vă rog.",
+        "en": "One beer, please."
+      }
+    },
+    "medzi": {
+      "a": {
+        "sk": "Kde je banka?",
+        "ro": "Unde e banca?",
+        "en": "Where is the bank?"
+      },
+      "b": {
+        "sk": "Je medzi školou a poštou.",
+        "ro": "E între școală și poștă.",
+        "en": "It's between the school and the post office."
+      }
+    },
+    "jeden": {
+      "a": {
+        "sk": "Koľko ich chcete?",
+        "ro": "Câte doriți?",
+        "en": "How many would you like?"
+      },
+      "b": {
+        "sk": "Jedno, prosím.",
+        "ro": "Una, vă rog.",
+        "en": "One, please."
+      }
+    },
+    "brat": {
+      "a": {
+        "sk": "Máš brata?",
+        "ro": "Ai un frate?",
+        "en": "Do you have a brother?"
+      },
+      "b": {
+        "sk": "Áno, mám brata a sestru.",
+        "ro": "Da, am un frate și o soră.",
+        "en": "Yes, I have a brother and a sister."
+      }
+    },
+    "mama": {
+      "a": {
+        "sk": "Kto je to?",
+        "ro": "Cine e?",
+        "en": "Who is that?"
+      },
+      "b": {
+        "sk": "To je moja mama.",
+        "ro": "Ea e mama mea.",
+        "en": "That's my mum."
+      }
+    }
+  },
+  "glosses": {
+    "chlieb": {
+      "ro": "pâine",
+      "en": "bread"
+    },
+    "džem": {
+      "ro": "gem",
+      "en": "jam"
+    },
+    "gitara": {
+      "ro": "chitară",
+      "en": "guitar"
+    },
+    "kolégium": {
+      "ro": "colegiu, ședință",
+      "en": "collegium, board meeting"
+    },
+    "mäso": {
+      "ro": "carne",
+      "en": "meat"
+    },
+    "móda": {
+      "ro": "modă",
+      "en": "fashion"
+    },
+    "prosím": {
+      "ro": "te rog / poftim",
+      "en": "please / here you are"
+    },
+    "stĺp": {
+      "ro": "stâlp",
+      "en": "pole, post"
+    },
+    "taxi": {
+      "ro": "taxi",
+      "en": "taxi"
+    },
+    "vŕba": {
+      "ro": "salcie",
+      "en": "willow"
+    },
+    "zima": {
+      "ro": "frig, iarnă",
+      "en": "cold, winter"
+    },
+    "čaj": {
+      "ro": "ceai",
+      "en": "tea"
+    },
+    "ďakujem": {
+      "ro": "mulțumesc",
+      "en": "thank you"
+    }
+  }
+}

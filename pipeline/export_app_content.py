@@ -367,6 +367,36 @@ def main():
     sizes["units.json"] = dump("units.json", [{**{k: u.get(k) for k in ("id","title","title_ro","sas_area","can_do","can_do_ro","grammar_notes",
         "exercise_sequence","roleplay","creative","domain_pack","milestone","phase","chunks")}, "items": unit_items(u)} for u in units])
 
+    # ---- words in context: a phrase and a conversation per word item (D132) ----------------
+    # unit 0.4's items are the alphabet's example words; alone they teach nothing, so each carries a
+    # phrase that contains it and (where one exists) a two-line exchange whose reply contains it.
+    from .word_context import build as build_words
+    def voice_line(text: str, stem: str, other: bool = False, slow: bool = False) -> str | None:
+        st = stem + ("-slow" if slow else "")
+        have = _existing(st)
+        if have:
+            return have
+        rec = tts_render(text, os.path.join(CONTENT, "audio", st), voice=unit_voice("0.4", other=other), slow=slow)
+        return rec["file"] if rec else None
+    word_list = [ex for (_l, _n, _i, _a, ex, _no) in ALPHABET if ex and ex != "\u2014"]
+    lex_gloss = {r["lemma"]: ((r["gloss_ro"] or [None])[0], (r["gloss_en"] or [None])[0]) for r in lex}
+    word_recs = build_words(word_list, chunks, dialogues, sents, forms_index, voice_line,
+                            gloss_of=lambda w: lex_gloss.get(w, (None, None)))
+    for r in word_recs:
+        ph, cv = r.get("phrase"), r.get("convo")
+        if ph:
+            ph["guide"] = {"ro": respell_ro(ph["sk"]), "ipa": ipa_of(ph["sk"])}
+            for k in ("audio", "audio_slow"):
+                if ph.get(k): audio_refs.add(ph[k])
+        if cv:
+            for side in ("a", "b"):
+                cv[side]["guide"] = {"ro": respell_ro(cv[side]["sk"]), "ipa": ipa_of(cv[side]["sk"])}
+                for k in ("audio", "audio_slow"):
+                    if cv[side].get(k): audio_refs.add(cv[side][k])
+    sizes["words.json"] = dump("words.json", word_recs)
+    n_ph = sum(1 for r in word_recs if r.get("phrase")); n_cv = sum(1 for r in word_recs if r.get("convo"))
+    print(f"  words: {len(word_recs)} word items, {n_ph} with a phrase, {n_cv} with a conversation")
+
     n_flushed = tts_flush()                     # wait for queued Edge renders before copying
     if n_flushed: print(f"  rendered {n_flushed} clips with {TTS_VOICE.split(':')[0]} (concurrent)")
 

@@ -1,4 +1,4 @@
-import type { Chunk, Dialogue, Sentence, AlphabetLetter, MinimalPair } from '../data/types'
+import type { Chunk, Dialogue, Sentence, AlphabetLetter, MinimalPair, WordConvo, WordPhrase } from '../data/types'
 
 export type ItemKind = 'chunk' | 'sentence' | 'letter' | 'pair' | 'cognate' | 'word' | 'dialogue'
 export type ItemRef = { kind: ItemKind; id: string }
@@ -24,6 +24,9 @@ export type Item = {
   sentence?: Sentence
   cognate?: Cognate
   dialogue?: Dialogue      // for kind 'dialogue': sk/meaning/audio describe line B (the reply); A is in here
+  // for kind 'word' (D132): the same word inside a phrase, and inside a conversation
+  phrase?: WordPhrase
+  convo?: WordConvo
 }
 
 export type StepType = 'intro' | 'meaning' | 'form' | 'match' | 'tiles' | 'cloze' | 'typeword' | 'listentype' | 'pairab' | 'letterpick' | 'anchor' | 'reply' | 'speak'

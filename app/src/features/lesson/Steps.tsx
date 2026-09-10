@@ -34,6 +34,12 @@ export function IntroStep({ step, onAnswer }: Props<Extract<Step, { type: 'intro
             <span className="small muted">{t.letter_in_word}:</span><span className="sk" style={{ fontSize: '1.3rem' }}>{it.letter.example}</span><span className="guide-ro small">{it.letter.example_spell}</span><span className="muted">▶</span>
           </button>)}
         {it.ref.kind === 'letter' && <div className="small muted" style={{ marginTop: 4 }}>{t.letter_spell_name}: <b>{it.spell}</b></div>}
+        {it.ref.kind === 'word' && it.phrase && (
+          <button className="stack" style={{ gap: 2, marginTop: 10, width: '100%', justifyItems: 'center' }} onClick={() => it.phrase!.audio && void playAudio(`/${it.phrase!.audio}`)}>
+            <span className="small muted">{t.word_in_phrase}</span>
+            <span className="row" style={{ gap: 8, justifyContent: 'center' }}><span className="sk" style={{ fontSize: '1.2rem' }}>{it.phrase.sk}</span><span className="muted">▶</span></span>
+            <span className="small muted">{lang === 'ro' ? it.phrase.ro : it.phrase.en}</span>
+          </button>)}
         <div className="row" style={{ justifyContent: 'center', marginTop: 14 }}>{it.audio && <AudioButton src={it.audio} seq={letterSeq(it)} slowSrc={it.audioSlow} autoPlay />}</div>
         {it.register && <div style={{ marginTop: 8 }}><RegisterChip register={it.register} /></div>}
         {note && <p className="small" style={{ background: 'var(--primary-soft)', padding: '10px 12px', borderRadius: 12, marginTop: 14, textAlign: 'left' }}>{note}</p>}
@@ -169,7 +175,7 @@ export function TilesStep({ step, onAnswer, locked }: Props<Extract<Step, { type
   const check = () => onAnswer({ correct: chosen.map(c => norm(c.w)).join(' ') === target.join(' ') })
   return (
     <div className="stack fade">
-      <p className="muted small" style={{ margin: 0 }}>{x ? t.step_tiles_reply : t.step_tiles}</p>
+      <p className="muted small" style={{ margin: 0 }}>{x ? t.step_tiles_reply : it.ref.kind === 'word' ? t.step_word_tiles : t.step_tiles}</p>
       {x ? <div className="dlg"><div className="bubble a"><div className="who">🗣️</div><div><div className="sk">{x.a.sk}</div><div className="small muted">{lineMeaning(x.a, lang)}</div></div><AudioButton src={`/${x.a.audio}`} compact autoPlay /></div>
         <div className="bubble b"><span className="small muted">{meaningOf(it, lang)}</span></div></div>
         : <div className="card"><div style={{ fontSize: '1.25rem', display: 'flex', alignItems: 'center', gap: 10 }}>{it.emoji && <Pic emoji={it.emoji} size={36} />}<span>{meaningOf(it, lang)}</span></div>
@@ -189,7 +195,7 @@ export function ClozeStep({ step, onAnswer, locked }: Props<Extract<Step, { type
   const [picked, setPicked] = useState<string | null>(null)
   return (
     <div className="stack fade">
-      <p className="muted small" style={{ margin: 0 }}>{t.step_cloze}</p>
+      <p className="muted small" style={{ margin: 0 }}>{it.ref.kind === 'word' ? t.step_word_cloze : t.step_cloze}</p>
       <div className="card"><div className="sk big" style={{ fontSize: '1.75rem' }}>{words.map((w, i) => i === step.blankIndex ? <span key={i} className="blank">{picked ?? '____'}</span> : <span key={i}>{w} </span>)}</div>
         <div className="muted" style={{ marginTop: 8 }}>{meaningOf(it, lang)}</div>
         {it.audio && <div style={{ marginTop: 8 }}><AudioButton src={it.audio} slowSrc={it.audioSlow} compact /></div>}</div>

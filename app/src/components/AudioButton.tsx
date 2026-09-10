@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { useT } from '../i18n'
+import { resumeSfx } from '../lib/sfx'
 
 // One shared element: iOS unlocks audio per element on the first user gesture, and a single
 // element means every later programmatic play() inherits that permission.
@@ -11,13 +12,14 @@ let gen = 0   // bumps on every play, so a sequence knows when something else to
 export function stopAudio() {
   gen++
   if (player && !player.paused) { player.pause(); try { player.currentTime = 0 } catch { /* no source yet */ } }
+  resumeSfx()          // the clip released the audio session; take it back before the next verdict sound
 }
 export function playAudio(src: string, rate = 1): Promise<boolean> {
   if (!player) return Promise.resolve(false)
   gen++
   player.pause(); player.src = src; player.playbackRate = rate; player.currentTime = 0
   ;(player as HTMLAudioElement & { preservesPitch?: boolean }).preservesPitch = true
-  return player.play().then(() => true).catch(() => false)
+  return player.play().then(() => { resumeSfx(); return true }).catch(() => false)
 }
 
 /** For tests and debugging: is anything playing? */

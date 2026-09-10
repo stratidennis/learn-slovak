@@ -1,4 +1,4 @@
-import { loadAlphabet, loadChunks, loadDialogues, loadMinimalPairs, loadSentences, loadUnits } from '../data/loader'
+import { loadAlphabet, loadChunks, loadDialogues, loadMinimalPairs, loadSentences, loadUnits, loadWords } from '../data/loader'
 import type { Chunk, Dialogue, Sentence, Unit } from '../data/types'
 import type { Cognate, Item, ItemRef } from './types'
 
@@ -30,12 +30,20 @@ export async function loadUnitItems(unit: Unit): Promise<Item[]> {
   const out: Item[] = []
   if (kinds.has('letter') || kinds.has('word')) {
     const a = await loadAlphabet()
+    const wordCtx = kinds.has('word') ? await loadWords() : new Map()
     for (const l of a.letters) {
       const base = { audio: `/${l.audio_sound ?? l.audio_name}`, audioSlow: null, ipa: `[${l.ipa}]`, emoji: null, letter: l }
       if (kinds.has('letter')) out.push({ ref: { kind: 'letter', id: `letter:${l.letter}` }, sk: l.letter, meaning: { ro: l.anchor.ro ?? '', en: l.anchor.en ?? '' },
         spell: l.name, note: { ro: l.note.ro, en: l.note.en }, ...base })
-      if (kinds.has('word') && l.audio_example && l.example !== '—') out.push({ ref: { kind: 'word', id: `word:${l.example}` }, sk: l.example,
-        meaning: { ro: `${l.anchor.ro ?? ''}`, en: `${l.anchor.en ?? ''}` }, spell: l.example_spell, note: { ro: null, en: null }, ...base, audio: `/${l.audio_example}` })
+      if (kinds.has('word') && l.audio_example && l.example !== '—') {
+        // the word means what the word means — not the letter's sound anchor and not the phrase's
+        // translation ("auto" is "car", not "Where's your car?"; D132)
+        const wc = wordCtx.get(l.example)
+        const ro = wc?.gloss?.ro ?? l.anchor.ro ?? '', en = wc?.gloss?.en ?? l.anchor.en ?? ''
+        out.push({ ref: { kind: 'word', id: `word:${l.example}` }, sk: l.example, meaning: { ro, en },
+          spell: l.example_spell, note: { ro: null, en: null }, ...base, audio: `/${l.audio_example}`,
+          phrase: wc?.phrase, convo: wc?.convo })
+      }
     }
   }
   if (kinds.has('pair')) {
@@ -62,15 +70,35 @@ export async function loadUnitItems(unit: Unit): Promise<Item[]> {
     const want = new Set(refs.filter(r => r.kind === 'sentence').map(r => r.id))
     for (const s of await loadSentences(unit.id)) if (want.has(s.id)) out.push(sentenceItem(s))
   }
-  // keep the unit's declared order
+  // keep the unit's declared order; two letters can share an example word (k and á → káva), so one item per id
   const order = new Map(refs.map((r, i) => [r.id, i]))
-  return out.sort((a, b) => (order.get(a.ref.id) ?? 0) - (order.get(b.ref.id) ?? 0))
+  const seen = new Set<string>()
+  return out.filter(it => !seen.has(it.ref.id) && seen.add(it.ref.id))
+    .sort((a, b) => (order.get(a.ref.id) ?? 0) - (order.get(b.ref.id) ?? 0))
 }
 
 /** What a letter plays: the letter on its own, then the example word that contains it ("bé — brat", "á — káva"). */
 export function letterSeq(it: Item): string[] | undefined {
   if (it.ref.kind !== 'letter' || !it.letter) return undefined
   return [it.audio, it.letter.audio_example ? `/${it.letter.audio_example}` : null].filter((x): x is string => !!x)
+}
+
+/** The same word item, but the exercise now targets its phrase (stage 4) — mastery still lands on the word. */
+export function phraseItem(it: Item): Item | null {
+  const p = it.phrase
+  if (!p) return null
+  return { ...it, sk: p.sk, meaning: { ro: p.ro ?? p.en ?? '', en: p.en ?? p.ro ?? '' },
+    audio: p.audio ? `/${p.audio}` : it.audio, audioSlow: p.audio_slow ? `/${p.audio_slow}` : null,
+    spell: p.guide?.ro ?? null, ipa: p.guide?.ipa ?? null, dialogue: undefined }
+}
+/** The word inside a two-line exchange (stage 5): assemble the reply. Shows as a dialogue. */
+export function convoItem(it: Item): Item | null {
+  const c = it.convo
+  if (!c) return null
+  return { ...it, sk: c.b.sk, meaning: { ro: c.b.ro, en: c.b.en },
+    audio: `/${c.b.audio}`, audioSlow: c.b.audio_slow ? `/${c.b.audio_slow}` : null,
+    spell: c.b.guide?.ro ?? null, ipa: c.b.guide?.ipa ?? null,
+    dialogue: { id: `wordconvo:${it.ref.id}`, unit: '0.4', a: c.a, b: c.b, note: null, note_ro: null } }
 }
 
 export async function loadUnitById(id: string): Promise<Unit | undefined> {

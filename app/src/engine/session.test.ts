@@ -47,13 +47,22 @@ describe('dialogue ladder', () => {
 })
 
 describe('buildSession with dialogues and speaking', () => {
-  it('introduces the new dialogues and queues a reply step right after each intro', () => {
+  it('presents the new dialogues, then drills them — never the same item twice in a row (D132)', () => {
     const plan = buildSession(all, states, '0.5', 'ro', { speaking: true })
     expect(plan.newItems.map(i => i.ref.kind)).toEqual(['dialogue', 'dialogue', 'dialogue', 'dialogue'])
-    plan.steps.forEach((s, i) => {
-      if (s.type === 'intro' && s.item.ref.kind === 'dialogue') expect(plan.steps[i + 1]).toMatchObject({ type: 'reply', audioOnly: false, item: { ref: { id: s.item.ref.id } } })
-    })
-    expect(plan.steps.filter(s => s.type === 'reply' && s.audioOnly).length).toBe(4)   // the second appearance, by ear
+    // every new item still gets its intro, its seen-reply and its by-ear reply
+    for (const it of plan.newItems) {
+      const mine = plan.steps.filter(s => 'item' in s && s.item.ref.id === it.ref.id)
+      expect(mine.some(s => s.type === 'intro')).toBe(true)
+      expect(mine.some(s => s.type === 'reply' && !s.audioOnly)).toBe(true)
+      expect(mine.some(s => s.type === 'reply' && s.audioOnly)).toBe(true)
+      // the intro comes before any practice on that item
+      const first = plan.steps.findIndex(s => 'item' in s && s.item.ref.id === it.ref.id)
+      expect(plan.steps[first].type).toBe('intro')
+    }
+    expect(plan.steps.filter(s => s.type === 'reply' && s.audioOnly).length).toBe(4)
+    const ids = plan.steps.map(s => ('item' in s ? s.item.ref.id : 'match'))
+    for (let i = 1; i < ids.length; i++) expect(ids[i]).not.toBe(ids[i - 1])
   })
   it('adds up to two say-it steps on recognised items only, never on new ones or pairs', () => {
     const plan = buildSession(all, states, '0.5', 'ro', { speaking: true })

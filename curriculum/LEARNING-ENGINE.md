@@ -35,6 +35,8 @@ has a stage stored on the device.
 | 4 | **Cloze / Type a word** | sentence with one blank (3 choices), or one missing word to type | picks / types (diacritics lenient) | chunk, sentence |
 | 5 | **Listen & type** | audio | types the whole thing (lenient → strict as it matures) | chunk, sentence |
 | 6 | **Mastered** | — | hands over to the FSRS sentence card for long-term review | all |
+| — | **Word in a phrase** | the word's phrase with the word gapped, 3 options | picks | word (stage 4) |
+| — | **Word in a conversation** | line A, then word tiles for the reply that contains the word | assembles in order | word (stage 5) |
 | — | **Say it** *(off-ladder)* | the model clip + a mic button; after the take: model vs. you, optional per-word hint from the speech recogniser | records, listens to both, self-checks (or accepts the ≥ 60 % hint) | chunk, sentence, dialogue, cognate at stage ≥ 2 |
 
 Rules: correct → +1 stage; wrong → −1 (never below 1) and the item returns at the end of the
@@ -61,7 +63,9 @@ not a test (and it can be switched off in Settings, with or without the recognis
    offered (not forced) if a step touched its pattern.
 
 Interleaving: never the same item twice in a row; never more than two steps of the same type in
-a row. Every step has a feedback banner: correct/incorrect, the right answer, ▶ replay, and the
+a row. New items are dealt into balanced clusters of at most three — the cluster is *presented*
+(intros together), then its practice steps are round-robined, so a word is never given two or three
+cards back to back (D132). Every step has a feedback banner: correct/incorrect, the right answer, ▶ replay, and the
 respelling.
 
 ### Lessons and redoing them (D129)
@@ -86,7 +90,7 @@ boards of five) over everything from *done* lessons, filtered by type and unit �
 | 0.1 Alphabet | 46 letters, 5 lessons | Intro (letter, *its sound then the example word*, anchor, spelling name) → hear the letter → pick it → see the letter → pick the anchor |
 | 0.2 Sounds | 64 minimal pairs | A/B listening only; contrast accuracy tracked; weakest contrast first |
 | 0.3 Words you already own | 84 cognates | Intro → which Romanian word is this related to? (4 choices) → hear it → pick the Slovak |
-| 0.4 Type it | the letters' example words | see it + respelling + hear it → type it (diacritics required, hints on) |
+| 0.4 Words | the letters' example words, 5 per lesson | a word alone (intro with its phrase → pick the meaning → hear it and pick it → type it), then **the word gapped inside a phrase**, then **assembling the reply of a two-line conversation** from word tiles (D132) |
 | 0.5 First twenty chunks | 20 chunks from 1.1–1.2 + 6 two-line dialogues | full ladder to stage 3 only (no typing yet); dialogues: hear A → pick the reply, by ear, then tiles |
 
 Nothing in Phase 0 asks the learner to produce a sentence. Typing appears in 0.4 on *single*

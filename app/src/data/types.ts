@@ -37,5 +37,10 @@ export type MinimalPair = {
   audio: { a: AudioRef; b?: AudioRef } | null
 }
 export type DialogueLine = { sk: string; ro: string; en: string; audio: string; audio_slow?: string; guide?: Guide }
+/** D132: a word item's context — the phrase that contains it and a conversation whose reply contains it.
+ *  `blank` is the index of the token that *is* the word, so it can be gapped or assembled. */
+export type WordPhrase = { sk: string; ro: string | null; en: string | null; audio: string | null; audio_slow?: string | null; guide?: Guide; blank: number | null; src: 'authored' | 'chunk' | 'tatoeba'; attr?: string | null; lic?: string | null }
+export type WordConvo = { a: DialogueLine; b: DialogueLine; blank: number | null; src: 'authored' | 'dialogue' }
+export type WordContext = { w: string; gloss?: L2; phrase?: WordPhrase; convo?: WordConvo }
 /** A two-line exchange: A is the other person (other voice), B the coherent reply (unit voice). */
 export type Dialogue = { id: string; unit: string; a: DialogueLine; b: DialogueLine; note: string | null; note_ro: string | null }

@@ -1,4 +1,4 @@
-import type { Alphabet, Chunk, Dialogue, GrammarNote, Lexeme, MinimalPair, Sentence, Unit } from './types'
+import type { Alphabet, Chunk, Dialogue, GrammarNote, Lexeme, MinimalPair, Sentence, Unit, WordContext } from './types'
 
 const cache = new Map<string, Promise<unknown>>()
 function load<T>(path: string): Promise<T> {
@@ -26,3 +26,4 @@ export function loadLexemes(): Promise<Map<string, Lexeme>> {
 }
 export const loadFormsIndex = () => load<Record<string, string>>('forms_index.json')
 export const loadAlphabet = () => load<Alphabet[]>('alphabet.json').then(a => a[0])
+export const loadWords = () => load<WordContext[]>('words.json').then(rows => new Map(rows.map(r => [r.w, r]))).catch(() => new Map<string, WordContext>())
