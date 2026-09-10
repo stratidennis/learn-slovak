@@ -1,5 +1,5 @@
 {
-  "_comment": "D132: context for the word items of unit 0.4 (the alphabet's example words). A word is learned alone, then inside a phrase, then inside a two-line conversation whose reply you assemble word by word. `phrase` overrides whatever the corpus offers — used where the corpus sentence is wrong for a beginner (\"Stál nehybne ako soľný stĺp\") or where there is none at all (džem, kolégium, móda, vŕba). `convo` is a hand-authored exchange for words no existing dialogue covers; A asks, B answers with the word. Everything here is a draft by this project (review_status needs_review) — real spoken A1 Slovak, not textbook. Words with neither an authored nor an existing conversation fall back to assembling the phrase itself. `glosses` gives the word's own meaning where the band 1-2 lexicon has no entry (the phrase's translation is NOT the word's meaning).",
+  "_comment": "D132: context for the word items of unit 0.4 (the alphabet's example words). A word is learned alone, then inside a phrase, then inside a two-line conversation whose reply you assemble word by word. `phrase` overrides whatever the corpus offers — used where the corpus sentence is wrong for a beginner (\"Stál nehybne ako soľný stĺp\") or where there is none at all (džem, kolégium, móda, vŕba). `convo` is a hand-authored exchange for words no existing dialogue covers; A asks, B answers with the word. Everything here is a draft by this project (review_status needs_review) — real spoken A1 Slovak, not textbook. Words with neither an authored nor an existing conversation fall back to assembling the phrase itself. `glosses` gives the word's own meaning where the band 1-2 lexicon has no entry (the phrase's translation is NOT the word's meaning). D134 adds a phrase for every cognate of unit 0.3 (the corpus had a usable RO-glossed short sentence for only 7 of the 84).",
   "_review_status": "needs_review",
   "phrases": {
     "auto": {
@@ -161,6 +161,396 @@
       "sk": "Ešte raz, prosím.",
       "ro": "Încă o dată, te rog.",
       "en": "Once more, please."
+    },
+    "priateľ": {
+      "sk": "To je môj priateľ.",
+      "ro": "El e prietenul meu.",
+      "en": "That's my friend."
+    },
+    "ľúbiť": {
+      "sk": "Ľúbim ťa.",
+      "ro": "Te iubesc.",
+      "en": "I love you."
+    },
+    "drahý": {
+      "sk": "To je drahé.",
+      "ro": "E scump.",
+      "en": "That's expensive."
+    },
+    "bohatý": {
+      "sk": "Je veľmi bohatý.",
+      "ro": "E foarte bogat.",
+      "en": "He's very rich."
+    },
+    "slabý": {
+      "sk": "Káva je slabá.",
+      "ro": "Cafeaua e slabă.",
+      "en": "The coffee is weak."
+    },
+    "svätý": {
+      "sk": "Svätý Mikuláš.",
+      "ro": "Sfântul Nicolae.",
+      "en": "Saint Nicholas."
+    },
+    "platiť": {
+      "sk": "Chcem platiť.",
+      "ro": "Vreau să plătesc.",
+      "en": "I want to pay."
+    },
+    "treba": {
+      "sk": "Treba ísť.",
+      "ro": "Trebuie să mergem.",
+      "en": "We need to go."
+    },
+    "vek": {
+      "sk": "Vek nie je dôležitý.",
+      "ro": "Vârsta nu e importantă.",
+      "en": "Age isn't important."
+    },
+    "duch": {
+      "sk": "Svätý Duch.",
+      "ro": "Sfântul Duh.",
+      "en": "The Holy Spirit."
+    },
+    "nádej": {
+      "sk": "Mám nádej.",
+      "ro": "Am speranță.",
+      "en": "I have hope."
+    },
+    "pivnica": {
+      "sk": "Víno je v pivnici.",
+      "ro": "Vinul e în pivniță.",
+      "en": "The wine is in the cellar."
+    },
+    "lopata": {
+      "sk": "Kde je lopata?",
+      "ro": "Unde e lopata?",
+      "en": "Where's the shovel?"
+    },
+    "kosa": {
+      "sk": "Kosa je ostrá.",
+      "ro": "Coasa e ascuțită.",
+      "en": "The scythe is sharp."
+    },
+    "pluh": {
+      "sk": "Pluh je na poli.",
+      "ro": "Plugul e pe câmp.",
+      "en": "The plough is in the field."
+    },
+    "pohár": {
+      "sk": "Pohár vody, prosím.",
+      "ro": "Un pahar cu apă, vă rog.",
+      "en": "A glass of water, please."
+    },
+    "prah": {
+      "sk": "Stojí na prahu.",
+      "ro": "Stă în prag.",
+      "en": "He's standing in the doorway."
+    },
+    "prach": {
+      "sk": "Je tu veľa prachu.",
+      "ro": "E mult praf aici.",
+      "en": "There's a lot of dust here."
+    },
+    "perina": {
+      "sk": "Perina je teplá.",
+      "ro": "Plapuma e caldă.",
+      "en": "The duvet is warm."
+    },
+    "sklo": {
+      "sk": "Pozor, sklo!",
+      "ro": "Atenție, sticlă!",
+      "en": "Careful, glass!"
+    },
+    "kôš": {
+      "sk": "Daj to do koša.",
+      "ro": "Pune-l în coș.",
+      "en": "Put it in the bin."
+    },
+    "kliešte": {
+      "sk": "Potrebujem kliešte.",
+      "ro": "Am nevoie de clește.",
+      "en": "I need pliers."
+    },
+    "závora": {
+      "sk": "Závora je dole.",
+      "ro": "Bariera e jos.",
+      "en": "The barrier is down."
+    },
+    "veselý": {
+      "sk": "Veselé Vianoce!",
+      "ro": "Crăciun fericit!",
+      "en": "Merry Christmas!"
+    },
+    "ohrada": {
+      "sk": "Ovce sú v ohrade.",
+      "ro": "Oile sunt în țarc.",
+      "en": "The sheep are in the pen."
+    },
+    "záhrada": {
+      "sk": "Máme malú záhradu.",
+      "ro": "Avem o grădină mică.",
+      "en": "We have a small garden."
+    },
+    "sadiť": {
+      "sk": "Sadíme kvety.",
+      "ro": "Plantăm flori.",
+      "en": "We're planting flowers."
+    },
+    "dar": {
+      "sk": "To je dar.",
+      "ro": "E un dar.",
+      "en": "It's a gift."
+    },
+    "darovať": {
+      "sk": "Chcem ti to darovať.",
+      "ro": "Vreau să ți-l dăruiesc.",
+      "en": "I want to give it to you."
+    },
+    "oddych": {
+      "sk": "Potrebujem oddych.",
+      "ro": "Am nevoie de odihnă.",
+      "en": "I need a rest."
+    },
+    "česť": {
+      "sk": "Je to česť.",
+      "ro": "E o onoare.",
+      "en": "It's an honour."
+    },
+    "topiť": {
+      "sk": "Sneh sa topí.",
+      "ro": "Zăpada se topește.",
+      "en": "The snow is melting."
+    },
+    "lepiť": {
+      "sk": "Lepím papier.",
+      "ro": "Lipesc hârtia.",
+      "en": "I'm gluing the paper."
+    },
+    "koža": {
+      "sk": "Je to pravá koža.",
+      "ro": "E piele adevărată.",
+      "en": "It's real leather."
+    },
+    "jaz": {
+      "sk": "Voda ide cez jaz.",
+      "ro": "Apa trece peste stăvilar.",
+      "en": "The water goes over the weir."
+    },
+    "sto": {
+      "sk": "Sto eur, prosím.",
+      "ro": "O sută de euro, vă rog.",
+      "en": "One hundred euros, please."
+    },
+    "boľavý": {
+      "sk": "Mám boľavé hrdlo.",
+      "ro": "Am gâtul inflamat.",
+      "en": "I have a sore throat."
+    },
+    "raniť": {
+      "sk": "Nechcem ťa raniť.",
+      "ro": "Nu vreau să te rănesc.",
+      "en": "I don't want to hurt you."
+    },
+    "vina": {
+      "sk": "Je to moja vina.",
+      "ro": "E vina mea.",
+      "en": "It's my fault."
+    },
+    "raj": {
+      "sk": "Je to ako v raji.",
+      "ro": "E ca în rai.",
+      "en": "It's like paradise."
+    },
+    "milosť": {
+      "sk": "Božia milosť.",
+      "ro": "Harul lui Dumnezeu.",
+      "en": "God's grace."
+    },
+    "obyčaj": {
+      "sk": "Je to náš obyčaj.",
+      "ro": "E obiceiul nostru.",
+      "en": "It's our custom."
+    },
+    "prijať": {
+      "sk": "Musím to prijať.",
+      "ro": "Trebuie să accept.",
+      "en": "I have to accept it."
+    },
+    "hranica": {
+      "sk": "Sme na hranici.",
+      "ro": "Suntem la graniță.",
+      "en": "We're at the border."
+    },
+    "štvrť": {
+      "sk": "Bývam v tejto štvrti.",
+      "ro": "Locuiesc în cartierul ăsta.",
+      "en": "I live in this district."
+    },
+    "vrstva": {
+      "sk": "Ešte jedna vrstva.",
+      "ro": "Încă un strat.",
+      "en": "One more layer."
+    },
+    "labuť": {
+      "sk": "Na vode je labuť.",
+      "ro": "Pe apă e o lebădă.",
+      "en": "There's a swan on the water."
+    },
+    "hus": {
+      "sk": "Hus je veľká.",
+      "ro": "Gâsca e mare.",
+      "en": "The goose is big."
+    },
+    "mrkva": {
+      "sk": "Kilo mrkvy, prosím.",
+      "ro": "Un kil de morcovi, vă rog.",
+      "en": "A kilo of carrots, please."
+    },
+    "chren": {
+      "sk": "Chren je silný.",
+      "ro": "Hreanul e tare.",
+      "en": "The horseradish is strong."
+    },
+    "smotana": {
+      "sk": "Kávu so smotanou.",
+      "ro": "Cafea cu smântână.",
+      "en": "Coffee with cream."
+    },
+    "koláč": {
+      "sk": "Dáš si koláč?",
+      "ro": "Vrei prăjitură?",
+      "en": "Would you like some cake?"
+    },
+    "slanina": {
+      "sk": "Chlieb so slaninou.",
+      "ro": "Pâine cu slănină.",
+      "en": "Bread with bacon."
+    },
+    "hríb": {
+      "sk": "Ideme na hríby.",
+      "ro": "Mergem după ciuperci.",
+      "en": "We're going mushroom picking."
+    },
+    "ovos": {
+      "sk": "Kôň žerie ovos.",
+      "ro": "Calul mănâncă ovăz.",
+      "en": "The horse eats oats."
+    },
+    "višňa": {
+      "sk": "Višne sú kyslé.",
+      "ro": "Vișinele sunt acre.",
+      "en": "Sour cherries are sour."
+    },
+    "ocot": {
+      "sk": "Potrebujem ocot.",
+      "ro": "Am nevoie de oțet.",
+      "en": "I need vinegar."
+    },
+    "vrabec": {
+      "sk": "Na okne je vrabec.",
+      "ro": "Pe fereastră e o vrabie.",
+      "en": "There's a sparrow on the window."
+    },
+    "rak": {
+      "sk": "Rak je vo vode.",
+      "ro": "Racul e în apă.",
+      "en": "The crayfish is in the water."
+    },
+    "šťuka": {
+      "sk": "Chytil som šťuku.",
+      "ro": "Am prins o știucă.",
+      "en": "I caught a pike."
+    },
+    "baba": {
+      "sk": "Baba pečie koláče.",
+      "ro": "Bunica coace prăjituri.",
+      "en": "Granny is baking cakes."
+    },
+    "gazda": {
+      "sk": "Gazda je na dvore.",
+      "ro": "Gospodarul e în curte.",
+      "en": "The farmer is in the yard."
+    },
+    "kožuch": {
+      "sk": "Kožuch je teplý.",
+      "ro": "Cojocul e cald.",
+      "en": "The fur coat is warm."
+    },
+    "čižma": {
+      "sk": "Kde mám čižmy?",
+      "ro": "Unde am cizmele?",
+      "en": "Where are my boots?"
+    },
+    "krčma": {
+      "sk": "Ideme do krčmy.",
+      "ro": "Mergem la crâșmă.",
+      "en": "We're going to the pub."
+    },
+    "zore": {
+      "sk": "Vstal pred zorami.",
+      "ro": "S-a trezit înainte de zori.",
+      "en": "He got up before dawn."
+    },
+    "služba": {
+      "sk": "Som v službe.",
+      "ro": "Sunt în tură.",
+      "en": "I'm on duty."
+    },
+    "sláva": {
+      "sk": "Sláva Bohu.",
+      "ro": "Slavă lui Dumnezeu.",
+      "en": "Glory to God."
+    },
+    "blahoslavený": {
+      "sk": "Blahoslavení tichí.",
+      "ro": "Fericiți cei blânzi.",
+      "en": "Blessed are the meek."
+    },
+    "pokánie": {
+      "sk": "Robím pokánie.",
+      "ro": "Fac penitență.",
+      "en": "I'm doing penance."
+    },
+    "mučeník": {
+      "sk": "Bol to mučeník.",
+      "ro": "A fost un martir.",
+      "en": "He was a martyr."
+    },
+    "spoveď": {
+      "sk": "Idem na spoveď.",
+      "ro": "Merg la spovedanie.",
+      "en": "I'm going to confession."
+    },
+    "zbaviť (sa)": {
+      "sk": "Chcem sa toho zbaviť.",
+      "ro": "Vreau să scap de asta.",
+      "en": "I want to get rid of it."
+    },
+    "zbor": {
+      "sk": "Spieva v zbore.",
+      "ro": "Cântă în cor.",
+      "en": "He sings in the choir."
+    },
+    "prázdny": {
+      "sk": "Pohár je prázdny.",
+      "ro": "Paharul e gol.",
+      "en": "The glass is empty."
+    },
+    "triezvy": {
+      "sk": "Som triezvy.",
+      "ro": "Sunt treaz.",
+      "en": "I'm sober."
+    },
+    "gombík": {
+      "sk": "Chýba mi gombík.",
+      "ro": "Îmi lipsește un nasture.",
+      "en": "I'm missing a button."
+    },
+    "servus": {
+      "sk": "Servus, ako sa máš?",
+      "ro": "Servus, ce faci?",
+      "en": "Hi, how are you?"
     }
   },
   "convos": {

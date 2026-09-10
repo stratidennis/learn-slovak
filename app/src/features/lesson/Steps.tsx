@@ -33,7 +33,7 @@ export function IntroStep({ step, onAnswer }: Props<Extract<Step, { type: 'intro
             <span className="small muted">{t.letter_in_word}:</span><span className="sk" style={{ fontSize: '1.3rem' }}>{it.letter.example}</span><span className="guide-ro small">{it.letter.example_spell}</span><span className="muted">▶</span>
           </button>)}
         {it.ref.kind === 'letter' && <div className="small muted" style={{ marginTop: 4 }}>{t.letter_spell_name}: <b>{it.spell}</b></div>}
-        {it.ref.kind === 'word' && it.phrase && (
+        {it.phrase && (          /* a word or a cognate is taught inside a phrase, never bare (D134) */
           <button className="stack" style={{ gap: 2, marginTop: 10, width: '100%', justifyItems: 'center' }} onClick={() => it.phrase!.audio && void playAudio(`/${it.phrase!.audio}`)}>
             <span className="small muted">{t.word_in_phrase}</span>
             <span className="row" style={{ gap: 8, justifyContent: 'center' }}><span className="sk" style={{ fontSize: '1.2rem' }}>{it.phrase.sk}</span><span className="muted">▶</span></span>
@@ -119,7 +119,6 @@ export function ChoiceStep({ step, onAnswer, locked }: Props<Extract<Step, { typ
       <div className="card center">
         {(step.type === 'form' && step.audioOnly) || step.type === 'letterpick' ? <div className="row" style={{ justifyContent: 'center' }}><AudioButton src={it.audio!} seq={letterSeq(it)} slowSrc={it.audioSlow} autoPlay /></div>
           : <>
-            {it.emoji && step.type === 'meaning' && <Pic emoji={it.emoji} size={64} />}
             <div className="sk big" style={{ fontSize: step.type === 'anchor' ? '4rem' : '2rem' }}>{showSk || step.type === 'anchor' ? it.sk : meaningOf(it, lang)}</div>
             {showSk && it.audio && <div className="row" style={{ justifyContent: 'center', marginTop: 10 }}><AudioButton src={it.audio} slowSrc={it.audioSlow} autoPlay compact /></div>}
           </>}
@@ -129,7 +128,6 @@ export function ChoiceStep({ step, onAnswer, locked }: Props<Extract<Step, { typ
           const isAns = o.ref.id === it.ref.id, isPick = picked === o.ref.id
           const cls = picked ? (isAns ? 'choice ok' : isPick ? 'choice bad' : 'choice') : 'choice'
           return <button key={o.ref.id} className={cls} onClick={() => choose(o)} disabled={!!picked}>
-            {step.type === 'form' && o.emoji ? <Pic emoji={o.emoji} size={26} /> : null}
             <span className={step.type === 'meaning' || step.type === 'anchor' ? '' : 'sk'} style={step.type === 'letterpick' ? { fontSize: '2rem' } : {}}>{label(o)}</span>
           </button>
         })}
@@ -174,10 +172,10 @@ export function TilesStep({ step, onAnswer, locked }: Props<Extract<Step, { type
   const check = () => onAnswer({ correct: chosen.map(c => norm(c.w)).join(' ') === target.join(' ') })
   return (
     <div className="stack fade">
-      <p className="muted small" style={{ margin: 0 }}>{x ? t.step_tiles_reply : it.ref.kind === 'word' ? t.step_word_tiles : t.step_tiles}</p>
+      <p className="muted small" style={{ margin: 0 }}>{x ? t.step_tiles_reply : it.phrase ? t.step_word_tiles : t.step_tiles}</p>
       {x ? <div className="dlg"><div className="bubble a"><div className="who">🗣️</div><div><div className="sk">{x.a.sk}</div><div className="small muted">{lineMeaning(x.a, lang)}</div></div><AudioButton src={`/${x.a.audio}`} compact autoPlay /></div>
         <div className="bubble b"><span className="small muted">{meaningOf(it, lang)}</span></div></div>
-        : <div className="card"><div style={{ fontSize: '1.25rem', display: 'flex', alignItems: 'center', gap: 10 }}>{it.emoji && <Pic emoji={it.emoji} size={36} />}<span>{meaningOf(it, lang)}</span></div>
+        : <div className="card"><div style={{ fontSize: '1.25rem' }}><span>{meaningOf(it, lang)}</span></div>
           {it.audio && <div style={{ marginTop: 8 }}><AudioButton src={it.audio} slowSrc={it.audioSlow} compact /></div>}</div>}
       <div className="tilebox">{chosen.length === 0 ? <span className="muted small">{t.tiles_hint}</span> : chosen.map((c, k) => <button key={c.i} className="tile on" onClick={() => { if (locked) return; sfx.tap(); setChosen(chosen.filter((_, j) => j !== k)); setBank([...bank, c].sort((a, b) => a.i - b.i)) }}>{c.w}</button>)}</div>
       <div className="row" style={{ gap: 8 }}>{bank.map(b => <button key={b.i} className="tile" onClick={() => { if (locked) return; sfx.tap(); setBank(bank.filter(x => x.i !== b.i)); setChosen([...chosen, b]) }}>{b.w}</button>)}</div>
@@ -194,7 +192,7 @@ export function ClozeStep({ step, onAnswer, locked }: Props<Extract<Step, { type
   const [picked, setPicked] = useState<string | null>(null)
   return (
     <div className="stack fade">
-      <p className="muted small" style={{ margin: 0 }}>{it.ref.kind === 'word' ? t.step_word_cloze : t.step_cloze}</p>
+      <p className="muted small" style={{ margin: 0 }}>{it.phrase ? t.step_word_cloze : t.step_cloze}</p>
       <div className="card"><div className="sk big" style={{ fontSize: '1.75rem' }}>{words.map((w, i) => i === step.blankIndex ? <span key={i} className="blank">{picked ?? '____'}</span> : <span key={i}>{w} </span>)}</div>
         <div className="muted" style={{ marginTop: 8 }}>{meaningOf(it, lang)}</div>
         {it.audio && <div style={{ marginTop: 8 }}><AudioButton src={it.audio} slowSrc={it.audioSlow} compact /></div>}</div>
@@ -216,7 +214,7 @@ export function TypeWordStep({ step, onAnswer, locked }: Props<Extract<Step, { t
     <div className="stack fade">
       <p className="muted small" style={{ margin: 0 }}>{single ? t.step_typeword_single : t.step_typeword}</p>
       <div className="card">
-        {single ? <>{it.emoji && <Pic emoji={it.emoji} size={56} />}<div style={{ fontSize: '1.25rem' }}>{meaningOf(it, lang)}</div>{it.spell && <div className="guide-ro">{it.spell}</div>}</>
+        {single ? <><div style={{ fontSize: '1.25rem' }}>{meaningOf(it, lang)}</div>{it.spell && <div className="guide-ro">{it.spell}</div>}</>
           : <><div className="sk big" style={{ fontSize: '1.6rem' }}>{words.map((w, i) => i === step.blankIndex ? <span key={i} className="blank">____</span> : <span key={i}>{w} </span>)}</div><div className="muted" style={{ marginTop: 6 }}>{meaningOf(it, lang)}</div></>}
         {it.audio && <div style={{ marginTop: 8 }}><AudioButton src={it.audio} slowSrc={it.audioSlow} autoPlay compact /></div>}
       </div>

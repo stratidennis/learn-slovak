@@ -119,23 +119,24 @@ def build(words: list[str], chunks: list[dict], dialogues: list[dict], sentences
     authored = _load()
     out = []
     for w in words:
-        slug = "".join(f"u{ord(c):04x}" if not ("a" <= c <= "z" or c.isdigit()) else c for c in w.lower())
+        key = w.split("(")[0].strip()          # cognate lemmas can carry a parenthetical: "zbaviť (sa)"
+        slug = "".join(f"u{ord(c):04x}" if not ("a" <= c <= "z" or c.isdigit()) else c for c in key.lower())
         rec: dict = {"w": w}
         # the word's own meaning: authored where the lexicon has no entry, else its first clean sense.
         # NOT the phrase's translation — "auto" means "car", not "Where's your car?" (D132).
-        g = authored.get("glosses", {}).get(w)
+        g = authored.get("glosses", {}).get(w) or authored.get("glosses", {}).get(key)
         lex_ro, lex_en = gloss_of(w)
         rec["gloss"] = {"ro": (g or {}).get("ro") or short_gloss(lex_ro), "en": (g or {}).get("en") or short_gloss(lex_en)}
-        ph = pick_phrase(w, authored, chunks, sentences, forms)
+        ph = pick_phrase(w, authored, chunks, sentences, forms) or (pick_phrase(key, authored, chunks, sentences, forms) if key != w else None)
         if ph:
-            ph["blank"] = (word_index_loose if ph["src"] == "authored" else word_index)(ph["sk"], w, forms)
+            ph["blank"] = (word_index_loose if ph["src"] == "authored" else word_index)(ph["sk"], key, forms)
             if not ph.get("audio"):
                 ph["audio"] = voice_line(ph["sk"], f"word-{slug}-phrase")
             ph["audio_slow"] = ph.get("audio_slow") or voice_line(ph["sk"], f"word-{slug}-phrase", slow=True)
             rec["phrase"] = ph
         cv = pick_convo(w, authored, dialogues, forms)
         if cv:
-            cv["blank"] = (word_index_loose if cv["src"] == "authored" else word_index)(cv["b"]["sk"], w, forms)
+            cv["blank"] = (word_index_loose if cv["src"] == "authored" else word_index)(cv["b"]["sk"], key, forms)
             if not cv["a"].get("audio"):
                 cv["a"]["audio"] = voice_line(cv["a"]["sk"], f"word-{slug}-convo-a", other=True)
             if not cv["b"].get("audio"):

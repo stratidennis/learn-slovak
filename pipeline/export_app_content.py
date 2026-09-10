@@ -378,7 +378,9 @@ def main():
             return have
         rec = tts_render(text, os.path.join(CONTENT, "audio", st), voice=unit_voice("0.4", other=other), slow=slow)
         return rec["file"] if rec else None
-    word_list = [ex for (_l, _n, _i, _a, ex, _no) in ALPHABET if ex and ex != "\u2014"]
+    # unit 0.4's words *and* unit 0.3's cognates both need a phrase they live in (D132, D134)
+    cog_list = [c["sk"] for c in json.load(open(os.path.join(OUT, "cognates.json"), encoding="utf-8"))]
+    word_list = list(dict.fromkeys([ex for (_l, _n, _i, _a, ex, _no) in ALPHABET if ex and ex != "\u2014"] + cog_list))
     lex_gloss = {r["lemma"]: ((r["gloss_ro"] or [None])[0], (r["gloss_en"] or [None])[0]) for r in lex}
     word_recs = build_words(word_list, chunks, dialogues, sents, forms_index, voice_line,
                             gloss_of=lambda w: lex_gloss.get(w, (None, None)))
@@ -395,7 +397,8 @@ def main():
                     if cv[side].get(k): audio_refs.add(cv[side][k])
     sizes["words.json"] = dump("words.json", word_recs)
     n_ph = sum(1 for r in word_recs if r.get("phrase")); n_cv = sum(1 for r in word_recs if r.get("convo"))
-    print(f"  words: {len(word_recs)} word items, {n_ph} with a phrase, {n_cv} with a conversation")
+    n_cog_ph = sum(1 for r in word_recs if r["w"] in set(cog_list) and r.get("phrase"))
+    print(f"  words: {len(word_recs)} entries ({len(cog_list)} cognates), {n_ph} with a phrase, {n_cv} with a conversation, cognate phrases {n_cog_ph}/{len(cog_list)}")
 
     n_flushed = tts_flush()                     # wait for queued Edge renders before copying
     if n_flushed: print(f"  rendered {n_flushed} clips with {TTS_VOICE.split(':')[0]} (concurrent)")

@@ -40,9 +40,22 @@ export function stepFor(item: Item, stage: number, pool: Item[], lang: Lang): St
     return null
   }
   if (k === 'cognate') {
+    // recognise it, hear it, then use it: the same word gapped inside a phrase, then that phrase
+    // assembled word by word. A cognate you can only pick out of four is not a word you can use (D134).
+    const opts = () => shuffle([item, ...pickDistractors(item, pool, 3, lang)])
     if (stage <= 0) return { type: 'intro', item }
-    if (stage === 1) return { type: 'meaning', item, options: shuffle([item, ...pickDistractors(item, pool, 3, lang)]) }
-    if (stage === 2) return { type: 'form', item, options: shuffle([item, ...pickDistractors(item, pool, 3, lang)]), audioOnly: true }
+    if (stage === 1) return { type: 'meaning', item, options: opts() }
+    if (stage === 2) return { type: 'form', item, options: opts(), audioOnly: true }
+    if (stage === 3) {
+      const ph = phraseItem(item)
+      if (!ph) return { type: 'form', item, options: opts(), audioOnly: false }
+      const b = item.phrase?.blank ?? blankIndexFor(ph)
+      return { type: 'cloze', item: ph, blankIndex: b, options: clozeOptions(ph, b, pool) }
+    }
+    if (stage === 4) {
+      const ph = phraseItem(item)
+      return ph ? { type: 'tiles', item: ph, tiles: tilesFor(ph, pool) } : null
+    }
     return null
   }
   if (k === 'dialogue') {
@@ -67,13 +80,13 @@ export function stepFor(item: Item, stage: number, pool: Item[], lang: Lang): St
   }
 }
 export const maxStageFor = (kind: Item['ref']['kind'] | string, unitId: string) =>
-  kind === 'pair' ? 1 : kind === 'letter' ? 3 : kind === 'cognate' ? 3 : kind === 'word' ? 6 : kind === 'dialogue' ? (unitId.startsWith('0.') ? 3 : 4) : unitId.startsWith('0.') ? 4 : 6
+  kind === 'pair' ? 1 : kind === 'letter' ? 3 : kind === 'cognate' ? 5 : kind === 'word' ? 6 : kind === 'dialogue' ? (unitId.startsWith('0.') ? 3 : 4) : unitId.startsWith('0.') ? 4 : 6
 
 /** Which version of an item's intro card the learner must have seen. Bumped when the card itself changes
  *  materially: D132 gave every word its own gloss and a phrase, so a word introduced under the old card
- *  (which showed the *letter's* sound anchor as the meaning) has not really been taught (D133). A state
- *  with no `intro` field predates the field and counts as version 1. */
-const INTRO_VERSION: Record<string, number> = { word: 2 }
+ *  (which showed the *letter's* sound anchor as the meaning) has not really been taught (D133); D134 does
+ *  the same for the cognates of 0.3. A state with no `intro` field predates the field and counts as 1. */
+const INTRO_VERSION: Record<string, number> = { word: 2, cognate: 2 }
 export const introVersion = (kind: string) => INTRO_VERSION[kind] ?? 1
 export const needsIntro = (st: ItemState | undefined, kind: string) => (st?.intro ?? 1) < introVersion(kind)
 
@@ -143,12 +156,13 @@ export function buildPractice(items: Item[], states: Map<string, ItemState>, uni
   }
   // an item that still needs teaching is presented first and asked afterwards, in the same session:
   // roundRobin emits every queue's first step before any second step, so the presentations come first
+  const shaky = (it: Item) => { const st = states.get(it.ref.id); return !st || st.stage <= 1 || st.streak === 0 }
   const queues = shuffle(items).map(it => {
-    if (!needsIntro(states.get(it.ref.id), it.ref.kind)) {
+    if (!needsIntro(states.get(it.ref.id), it.ref.kind) && !shaky(it)) {
       const s = stepFor(it, askAt(it), pool, lang)
       return s ? [s] : []
     }
-    return [stepFor(it, 0, pool, lang), stepFor(it, Math.max(1, stage(it)), pool, lang)].filter((x): x is Step => !!x)
+    return [stepFor(it, 0, pool, lang), stepFor(it, Math.max(1, askAt(it)), pool, lang)].filter((x): x is Step => !!x)
   })
   const all = interleave(roundRobin(queues))
   const matchable = items.filter(it => ['chunk', 'sentence', 'cognate'].includes(it.ref.kind) && stage(it) >= 1 && !needsIntro(states.get(it.ref.id), it.ref.kind))

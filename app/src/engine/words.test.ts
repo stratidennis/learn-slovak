@@ -137,3 +137,42 @@ describe('redo mode teaches then asks (D133)', () => {
     for (let i = 1; i < ids.length; i++) expect(ids[i]).not.toBe(ids[i - 1])
   })
 })
+
+describe('cognates are used, not just recognised (D134)', () => {
+  const cog = (id: string, sk: string, ro: string, phrase?: [string, number]): Item => ({
+    ref: { kind: 'cognate', id }, sk, meaning: { ro, en: ro }, audio: `/audio/${id}.mp3`, audioSlow: null,
+    spell: sk, ipa: null, emoji: null, note: { ro: null, en: null },
+    phrase: phrase ? { sk: phrase[0], ro: `RO ${phrase[0]}`, en: `EN ${phrase[0]}`, audio: `audio/${id}-p.mp3`, audio_slow: null, blank: phrase[1], src: 'authored' } : undefined,
+  })
+  const pohar = cog('cog:pohár', 'pohár', 'pahar', ['Pohár vody, prosím.', 0])
+  const cogPool = [pohar, cog('cog:koláč', 'koláč', 'prăjitură', ['Dáš si koláč?', 2]),
+    cog('cog:hus', 'hus', 'gâscă', ['Hus je veľká.', 0]), cog('cog:sto', 'sto', 'sută', ['Sto eur, prosím.', 0])]
+
+  it('runs five rungs: meaning, by ear, the word in a phrase, then the phrase assembled', () => {
+    expect(maxStageFor('cognate', '0.3')).toBe(5)
+    expect([0, 1, 2, 3, 4].map(st => stepFor(pohar, st, cogPool, 'ro')?.type)).toEqual(['intro', 'meaning', 'form', 'cloze', 'tiles'])
+    expect(stepFor(pohar, 5, cogPool, 'ro')).toBeNull()
+  })
+  it('gaps the cognate inside its phrase and keeps mastery on the cognate', () => {
+    const s = stepFor(pohar, 3, cogPool, 'ro')
+    if (s?.type !== 'cloze') throw new Error('expected a cloze')
+    expect(s.item.ref.id).toBe('cog:pohár')
+    expect(s.item.sk).toBe('Pohár vody, prosím.')
+    expect(s.blankIndex).toBe(0)
+    expect(s.options.map(o => o.toLowerCase())).toContain('pohár')
+  })
+  it('re-presents every cognate once, because its card changed', () => {
+    const legacy = new Map(cogPool.map(it => [it.ref.id,
+      { id: it.ref.id, unitId: '0.3', kind: 'cognate' as const, stage: 3, streak: 2, seen: 4, lastAt: 1, stageAtDayStart: 3, dayKey: '2000-01-01' }]))
+    const plan = buildSession(cogPool, legacy, '0.3', 'ro', { newPerSession: 0 })
+    for (const it of cogPool) {
+      const mine = plan.steps.filter(s => 'item' in s && s.item.ref.id === it.ref.id)
+      expect(mine[0]?.type, it.sk).toBe('intro')
+    }
+  })
+  it('falls back to a text-only step when a cognate has no phrase', () => {
+    const bare = cog('cog:x', 'xxx', 'yyy')
+    expect(stepFor(bare, 3, cogPool, 'ro')).toMatchObject({ type: 'form', audioOnly: false })
+    expect(stepFor(bare, 4, cogPool, 'ro')).toBeNull()
+  })
+})

@@ -17,7 +17,7 @@ right in practice.
 | Prompt → pause → answer → confirmation; graduated intervals; small core vocabulary | Pimsleur | Every step confirms with the correct answer spoken; items return within the session (minutes) and via FSRS (days); 5 new items per session |
 | Spacing and interleaving over massing | Cepeda et al.; Bjork | Items advance ≤ 2 stages per day; steps interleave items and types; wrong items return at the end of the session |
 | Ear before eye for new phonemic contrasts | Wyner; minimal-pair literature | Phase 0 is letters + A/B listening; contrasts with < 85% accuracy come back daily |
-| Dual coding: a picture with a word aids recall | Paivio; Duolingo's picture cards | Concrete nouns carry an emoji cue in intro and meaning-choice steps (`data/emoji.json`) |
+| Dual coding: a picture with a word aids recall | Paivio; Duolingo's picture cards | Concrete nouns carry an emoji cue on the **intro card only** — beside a multiple-choice option it hands over the answer (D134) |
 | Short sessions, visible progress, no punishment | Duolingo's design; motivation research | 10–15 minute sessions, progress bar, summary; wrong answers cost nothing but a repeat |
 | Grammar learned weakly from pattern-only apps | 2023 Duolingo study (Wikipedia, *Duolingo*) | Just-in-time notes remain; the "fix the ending" and case-sorter exercises come in Phase 2 |
 
@@ -94,7 +94,7 @@ boards of five) over everything from *done* lessons, filtered by type and unit �
 |---|---|---|
 | 0.1 Alphabet | 46 letters, 5 lessons | Intro (letter, *its sound then the example word*, anchor, spelling name) → hear the letter → pick it → see the letter → pick the anchor |
 | 0.2 Sounds | 64 minimal pairs | A/B listening only; contrast accuracy tracked; weakest contrast first |
-| 0.3 Words you already own | 84 cognates | Intro → which Romanian word is this related to? (4 choices) → hear it → pick the Slovak |
+| 0.3 Words you already own | 84 cognates, 6 per lesson | Intro (the cognate, its meaning and **the phrase it lives in**) → which Romanian word is it related to? → hear it → pick the Slovak → **the cognate gapped inside its phrase** → **that phrase assembled word by word** (D134) |
 | 0.4 Words | the letters' example words, 5 per lesson | a word alone (intro with its phrase → pick the meaning → hear it and pick it → type it), then **the word gapped inside a phrase**, then **assembling the reply of a two-line conversation** from word tiles (D132) |
 | 0.5 First twenty chunks | 20 chunks from 1.1–1.2 + 6 two-line dialogues | full ladder to stage 3 only (no typing yet); dialogues: hear A → pick the reply, by ear, then tiles |
 

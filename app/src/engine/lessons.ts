@@ -12,10 +12,11 @@ export type LessonDef = { id: string; unitId: string; n: number; refs: ItemRef[]
 export type LessonStatus = 'new' | 'started' | 'done' | 'mastered'
 export type LessonProgress = { total: number; seen: number; mastered: number; pct: number; status: LessonStatus }
 
-// Items per lesson by kind: recognition-only kinds go fast, a word now runs a six-rung ladder (alone →
-// in a phrase → in a conversation) so five per lesson is already a full sitting — fewer words, more
-// lessons, every exercise type in each of them (D132). A mixed unit takes the smallest of its kinds.
-const PER_LESSON: Record<string, number> = { letter: 10, pair: 10, cognate: 10, word: 5 }
+// Items per lesson by kind: letters and sound pairs go fast; a word runs a six-rung ladder (alone → in a
+// phrase → in a conversation) and a cognate a five-rung one (D134), so five or six per lesson is already
+// a full sitting — fewer words, more lessons, every exercise type in each. A mixed unit takes the
+// smallest of its kinds.
+const PER_LESSON: Record<string, number> = { letter: 10, pair: 10, cognate: 6, word: 5 }
 const DEFAULT_PER_LESSON = 8
 export function lessonSize(kinds: Iterable<string>): number {
   const sizes = [...kinds].map(k => PER_LESSON[k] ?? DEFAULT_PER_LESSON)

@@ -4,7 +4,6 @@ import { getSetting, setSetting } from '../../db/db'
 import { letterSeq } from '../../engine/items'
 import { applyFilter, buildDeck, CARD_KINDS, loadLearnedPool, type Pool, type PoolFilter, type PoolItem } from '../../engine/pool'
 import { AudioButton, playAudio, playSequence, stopAudio } from '../../components/AudioButton'
-import { Pic } from '../../components/Pic'
 import { Pronunciation } from '../../components/Pronunciation'
 import { fmt, useLang, useT } from '../../i18n'
 import { sfx } from '../../lib/sfx'
@@ -96,14 +95,12 @@ export function Flashcards() {
   const face = (side: 'sk' | 'meaning') => side === 'sk' ? (
     <div className="fc-body">
       {x && <div className="small muted" style={{ marginBottom: 8 }}>🗣️ {x.a.sk}</div>}
-      {it.emoji && !x && <Pic emoji={it.emoji} size={56} />}
       <div className="sk big" style={{ fontSize: it.ref.kind === 'letter' ? '4rem' : it.sk.length > 40 ? '1.4rem' : '1.9rem' }}>{it.sk}</div>
       {it.ref.kind === 'letter' ? <div className="small muted">{t.letter_spell_name}: <b>{it.spell}</b>{it.letter?.example && it.letter.example !== '—' && <> · <span className="sk">{it.letter.example}</span></>}</div> : <Pronunciation ro={it.spell} ipa={it.ipa} />}
     </div>
   ) : (
     <div className="fc-body">
       {x && <div className="small muted" style={{ marginBottom: 8 }}>🗣️ {lang === 'ro' ? x.a.ro : x.a.en} — <i>{t.what_answer}</i></div>}
-      {it.emoji && !x && <Pic emoji={it.emoji} size={56} />}
       <div style={{ fontSize: meaning.length > 40 ? '1.2rem' : '1.5rem' }}>{meaning}</div>
     </div>
   )

@@ -53,8 +53,10 @@ export async function loadUnitItems(unit: Unit): Promise<Item[]> {
         ipa: `${p.ipa_a} / ${p.ipa_b}`, emoji: null, note: { ro: null, en: null }, pair: p })
   }
   if (kinds.has('cognate')) {
+    const wordCtx = await loadWords()          // a cognate is learned inside a phrase too (D134)
     for (const c of await loadCognates()) out.push({ ref: { kind: 'cognate', id: c.id }, sk: c.sk, meaning: { ro: c.ro, en: c.en }, audio: `/${c.audio}`, audioSlow: null,
-      spell: c.spell, ipa: null, emoji: c.emoji, note: { ro: c.shift ? 'sensul s-a schimbat față de română — folosește-l doar ca ancoră' : c.note || null, en: c.shift ? 'meaning shifted from Romanian — memory hook only' : c.note || null }, cognate: c })
+      spell: c.spell, ipa: null, emoji: c.emoji, note: { ro: c.shift ? 'sensul s-a schimbat față de română — folosește-l doar ca ancoră' : c.note || null, en: c.shift ? 'meaning shifted from Romanian — memory hook only' : c.note || null },
+      cognate: c, phrase: wordCtx.get(c.sk)?.phrase })
   }
   if (kinds.has('chunk')) {
     const unitsNeeded = new Set(refs.filter(r => r.kind === 'chunk').map(r => r.id.split(':')[1]))

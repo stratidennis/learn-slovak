@@ -26,10 +26,11 @@ describe('lessonsFor', () => {
     const chunkOrder = a.flatMap(l => l.refs.filter(r => r.kind === 'chunk').map(r => r.id))
     expect(chunkOrder).toEqual(refs('chunk', 15).map(r => r.id))
   })
-  it('gives recognition-only units ten per lesson: 46 letters → 5 lessons', () => {
+  it('sizes a lesson by kind: 46 letters → 5 lessons, 84 cognates → 14, words 5 at a time', () => {
     expect(lessonSize(['letter'])).toBe(10); expect(lessonSize(['chunk', 'dialogue'])).toBe(8)
+    expect(lessonSize(['cognate'])).toBe(6); expect(lessonSize(['word'])).toBe(5)
     expect(lessonsFor({ id: '0.1', items: refs('letter', 46) }).length).toBe(5)
-    expect(lessonsFor({ id: '0.3', items: refs('cognate', 84) }).length).toBe(9)
+    expect(lessonsFor({ id: '0.3', items: refs('cognate', 84) }).length).toBe(14)
   })
   it('handles a unit with no items', () => { expect(lessonsFor({ id: 'x', items: [] })).toEqual([]) })
   it('counts kinds for the subtitle', () => { expect(kindCounts(lessonsFor(unit)[0])).toEqual([['chunk', 3], ['dialogue', 1], ['sentence', 4]]) })
