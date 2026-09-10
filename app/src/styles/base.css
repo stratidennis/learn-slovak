@@ -176,3 +176,9 @@ h1{font-size:1.75rem} h2{font-size:1.375rem} h3{font-size:1.125rem}
 .fade{animation:fade var(--motion-base) var(--ease)} @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 @media (min-width:900px){.page{padding-top:32px} body{padding-bottom:24px} .nav{position:sticky;top:0;bottom:auto;border-top:0;border-bottom:1px solid var(--glass-line);justify-content:center;gap:24px}}
+
+/* D132: the audio control — Replay alone on top, as wide as Slow + Slower below it */
+.audio-ctl{display:grid;grid-template-columns:1fr 1fr;gap:8px;width:100%;max-width:300px;margin:0 auto}
+.audio-ctl .btn{min-height:44px;width:100%;padding:10px 12px}
+.audio-ctl .replay{grid-column:1 / -1}
+.audio-ctl .tap-hint{grid-column:1 / -1;text-align:center}

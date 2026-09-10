@@ -70,12 +70,13 @@ export function AudioButton({ src, seq, slowSrc, autoPlay, onPlayed, compact }: 
   }
   useEffect(() => { count.current = 0; if (autoPlay) void play('normal') }, [src, seq?.join('|')]) // eslint-disable-line react-hooks/exhaustive-deps
   if (compact) return <button className="audiobtn small" onClick={() => play('normal')} aria-label="Prehrať">▶</button>
+  // Replay on its own row, spanning exactly Slow + Slower, the whole block centred (D132)
   return (
-    <div className="row" style={{ gap: 8 }}>
-      <button className="btn primary" style={{ minHeight: 44 }} onClick={() => play('normal')} aria-label={t.replay}>▶ {t.replay}</button>
-      <button className={`btn ghost ${last === 'slow' ? 'on' : ''}`} style={{ minHeight: 44 }} onClick={() => play('slow')}>🐢 {t.slow}</button>
-      <button className={`btn ghost ${last === 'slower' ? 'on' : ''}`} style={{ minHeight: 44 }} onClick={() => play('slower')}>🐌 {t.slower}</button>
-      {blocked && <span className="small muted">{t.tap_to_play}</span>}
+    <div className="audio-ctl">
+      <button className="btn primary replay" onClick={() => play('normal')} aria-label={t.replay}>▶ {t.replay}</button>
+      <button className={`btn ghost ${last === 'slow' ? 'on' : ''}`} onClick={() => play('slow')}>🐢 {t.slow}</button>
+      <button className={`btn ghost ${last === 'slower' ? 'on' : ''}`} onClick={() => play('slower')}>🐌 {t.slower}</button>
+      {blocked && <span className="small muted tap-hint">{t.tap_to_play}</span>}
     </div>
   )
 }
