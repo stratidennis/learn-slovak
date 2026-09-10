@@ -37,15 +37,22 @@ has a stage stored on the device.
 | 6 | **Mastered** | — | hands over to the FSRS sentence card for long-term review | all |
 | — | **Word in a phrase** | the word's phrase with the word gapped, 3 options | picks | word (stage 4) |
 | — | **Word in a conversation** | line A, then word tiles for the reply that contains the word | assembles in order | word (stage 5) |
-| — | **Say it** *(off-ladder)* | the model clip + a mic button; after the take: model vs. you, optional per-word hint from the speech recogniser | records, listens to both, self-checks (or accepts the ≥ 60 % hint) | chunk, sentence, dialogue, cognate at stage ≥ 2 |
 
 Rules: correct → +1 stage; wrong → −1 (never below 1) and the item returns at the end of the
 session; an item advances at most 2 stages per day; stages ≥ 4 require a previous day's success.
 Minimal pairs use a single step type (A/B listening) and "mastered" = 3 correct in a row per pair.
 Letters: hear the name → pick the letter; see the letter → pick its sound anchor; then mastered.
-Dialogues master at stage 3 in Phase 0 and 4 elsewhere (no dictation of a reply). *Say it* never moves
-the stage: speech recognition for Slovak is too unreliable to grade with, so it is practice with a hint,
-not a test (and it can be switched off in Settings, with or without the recogniser).
+Dialogues master at stage 3 in Phase 0 and 4 elsewhere (no dictation of a reply).
+
+**Nothing is asked before it has been taught (D133).** Every item's first appearance is its *intro* card.
+Each kind carries an intro *version*; when the card changes materially (D132 gave every word its own
+gloss and a phrase, replacing a card that showed the letter's sound anchor as the meaning) the version is
+bumped and items introduced under the old card are presented again before they are asked anything.
+
+**No speaking step (D133).** The app cannot judge Slovak pronunciation — browser speech recognition for
+Slovak is far too unreliable — and a self-graded "did that sound right?" is something the learner can do
+better with the model clip alone, away from the app. So the output strand lives outside the app
+(the model clip, the roleplay prompts, a real conversation), not as a graded card inside it.
 
 ## 3. A session
 
@@ -56,8 +63,6 @@ not a test (and it can be switched off in Settings, with or without the recognis
    step, then reappears 3–6 steps later at stage 2.
 3. **Due items** from earlier sessions at their current stage (up to 8).
 4. One **Match** step grouping 4–5 items that are at stage ≥ 2.
-5. One or two **Say it** steps (output strand) on items already recognised (stage ≥ 2), never on
-   new ones, placed around 40 % and 80 % of the session. Skipped when speaking is off.
 6. **Misses** return at the end, one stage down.
 7. **Summary**: items advanced, accuracy, what comes back tomorrow; the unit's grammar note is
    offered (not forced) if a step touched its pattern.
@@ -94,7 +99,7 @@ boards of five) over everything from *done* lessons, filtered by type and unit �
 | 0.5 First twenty chunks | 20 chunks from 1.1–1.2 + 6 two-line dialogues | full ladder to stage 3 only (no typing yet); dialogues: hear A → pick the reply, by ear, then tiles |
 
 Nothing in Phase 0 asks the learner to produce a sentence. Typing appears in 0.4 on *single*
-words that are on screen. *Say it* appears once items are at stage ≥ 2 — repeating a model, not producing.
+words that are on screen.
 
 From Phase 1 on, every unit also carries 5–7 hand-authored two-line dialogues built from its own
 chunks (`pipeline/author_dialogues.py` → `content/dialogues.jsonl`, 151 exchanges over 26 units).

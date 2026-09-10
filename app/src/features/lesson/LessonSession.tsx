@@ -2,16 +2,16 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import type { Item, ItemState, Step, StepResult } from '../../engine/types'
 import { letterSeq, loadUnitById, loadUnitItems } from '../../engine/items'
-import { buildPractice, buildSession, maxStageFor, stepFor } from '../../engine/session'
+import { buildPractice, buildSession, introVersion, maxStageFor, stepFor } from '../../engine/session'
 import { lessonItems, lessonProgress, lessonsFor, nextLesson, type LessonDef, type LessonStatus } from '../../engine/lessons'
 import { advance, edb, getStates, newState, saveState } from '../../engine/store'
-import { db, getSetting } from '../../db/db'
+import { db } from '../../db/db'
 import { newCard } from '../../srs/scheduler'
 import { AudioButton, stopAudio } from '../../components/AudioButton'
 import { fmt, useLang, useT } from '../../i18n'
 import { DONE_COVER, WINNER_COVER } from '../../lib/covers'
 import { sfx } from '../../lib/sfx'
-import { ChoiceStep, ClozeStep, DialogueIntroStep, IntroStep, ListenTypeStep, MatchStep, PairABStep, ReplyStep, SpeakStep, TilesStep, TypeWordStep } from './Steps'
+import { ChoiceStep, ClozeStep, DialogueIntroStep, IntroStep, ListenTypeStep, MatchStep, PairABStep, ReplyStep, TilesStep, TypeWordStep } from './Steps'
 
 type Phase = 'loading' | 'running' | 'done'
 type Mode = 'lesson' | 'practice'
@@ -27,7 +27,6 @@ export function LessonSession() {
   const [i, setI] = useState(0)
   const [result, setResult] = useState<StepResult | null>(null)
   const [stats, setStats] = useState({ correct: 0, wrong: 0, advanced: 0 })
-  const [speechCheck, setSpeechCheck] = useState(true)
   const [lesson, setLesson] = useState<LessonDef | null>(null)
   const [defs, setDefs] = useState<LessonDef[]>([])
   const [mode, setMode] = useState<Mode>('lesson')
@@ -55,15 +54,13 @@ export function LessonSession() {
       const its = await loadUnitItems(unit); unitItems.current = its
       items.current = def ? lessonItems(def, its) : its
       setDefs(all); setLesson(def)
-      const [speaking, check] = await Promise.all([getSetting('speaking', true), getSetting('speechCheck', true)])
-      setSpeechCheck(check)
       const prog = def ? lessonProgress(def, states.current) : null
       startStatus.current = prog?.status ?? 'new'
       const practice = !!prog && (prog.status === 'done' || prog.status === 'mastered')
       setMode(practice ? 'practice' : 'lesson')
       const plan = practice
-        ? buildPractice(items.current, states.current, id, lang, { speaking, pool: its })
-        : buildSession(items.current, states.current, id, lang, { speaking, pool: its, newPerSession: def ? items.current.length : undefined, maxDue: def ? items.current.length : undefined })
+        ? buildPractice(items.current, states.current, id, lang, { pool: its })
+        : buildSession(items.current, states.current, id, lang, { pool: its, newPerSession: def ? items.current.length : undefined, maxDue: def ? items.current.length : undefined })
       setSteps(plan.steps); setI(0); setStats({ correct: 0, wrong: 0, advanced: 0 }); requeued.current.clear()
       setPhase(plan.steps.length ? 'running' : 'done')
     })()
@@ -75,9 +72,9 @@ export function LessonSession() {
 
   const onAnswer = async (r: StepResult) => {
     if (!step || result) return
-    const isIntro = step.type === 'intro', isSpeak = step.type === 'speak'
+    const isIntro = step.type === 'intro'
     // every verdict has a sound next to its colour
-    if (isSpeak) sfx.soft(); else if (!isIntro) sfx.result(r.correct, r.tier)
+    if (!isIntro) sfx.result(r.correct, r.tier)
     // intro cards have no feedback bar: record and move straight on
     if (!isIntro) setResult(r)
     const affected: Item[] = step.type === 'match' ? step.items : [step.item]
@@ -85,8 +82,8 @@ export function LessonSession() {
     for (const it of affected) {
       const st = states.current.get(it.ref.id) ?? newState(it.ref, unitIdRef.current)
       const before = st.stage
-      if (isIntro) { st.stage = Math.max(st.stage, 1); st.seen++; st.lastAt = Date.now() }
-      else if (isSpeak) { st.seen++; st.lastAt = Date.now(); if (r.correct) st.streak++ }   // practice, not a test: the stage stays
+      // an intro is the item being taught: record which card version was shown, never a verdict (D133)
+      if (isIntro) { st.stage = Math.max(st.stage, 1); st.seen++; st.lastAt = Date.now(); st.intro = introVersion(it.ref.kind) }
       else advance(st, r.correct, maxStageFor(it.ref.kind, unitIdRef.current))
       if (st.stage > before) advanced++
       states.current.set(it.ref.id, st); await saveState(st)
@@ -94,10 +91,10 @@ export function LessonSession() {
       if (st.stage >= maxStageFor(it.ref.kind, unitIdRef.current) && (it.ref.kind === 'sentence') && it.sentence && !(await db.cards.get(it.ref.id)))
         await db.cards.put(newCard(it.sentence, unitIdRef.current))
     }
-    if (!isSpeak) setStats(s => ({ correct: s.correct + (r.correct ? 1 : 0), wrong: s.wrong + (r.correct ? 0 : 1), advanced: s.advanced + advanced }))
+    setStats(s => ({ correct: s.correct + (r.correct ? 1 : 0), wrong: s.wrong + (r.correct ? 0 : 1), advanced: s.advanced + advanced }))
     if (isIntro) { await next(); return }
     // a miss comes back at the end, one stage down (once per item per session)
-    if (!r.correct && step.type !== 'match' && !isSpeak) {
+    if (!r.correct && step.type !== 'match') {
       const it = step.item
       if (!requeued.current.has(it.ref.id)) {
         requeued.current.add(it.ref.id)
@@ -151,7 +148,7 @@ export function LessonSession() {
   const it = stepItem(step)
   const showFeedback = result && step.type !== 'intro'
   const tone = !result ? '' : result.correct ? (result.tier === 'diacritics' ? 'warn' : 'ok') : 'bad'
-  const heading = !result ? '' : step.type === 'speak' ? (result.correct ? t.fb_speak_ok : t.fb_speak_meh) : result.correct ? (result.tier === 'diacritics' ? t.fb_diacritics : t.fb_correct) : t.fb_wrong
+  const heading = !result ? '' : result.correct ? (result.tier === 'diacritics' ? t.fb_diacritics : t.fb_correct) : t.fb_wrong
   return (
     <div className="page lesson-page fade" key={i}>
       <div className="topbar"><Link to={`/unit/${id}`} className="back" aria-label={t.back}>✕</Link>
@@ -169,7 +166,6 @@ export function LessonSession() {
       {step.type === 'typeword' && <TypeWordStep step={step} onAnswer={onAnswer} locked={!!result} />}
       {step.type === 'listentype' && <ListenTypeStep step={step} onAnswer={onAnswer} locked={!!result} />}
       {step.type === 'pairab' && <PairABStep step={step} onAnswer={onAnswer} locked={!!result} />}
-      {step.type === 'speak' && <SpeakStep step={step} onAnswer={onAnswer} locked={!!result} speechCheck={speechCheck} />}
       {showFeedback && (
         <div className={`feedback ${tone}`}>
           <h3>{heading}</h3>

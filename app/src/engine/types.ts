@@ -29,7 +29,7 @@ export type Item = {
   convo?: WordConvo
 }
 
-export type StepType = 'intro' | 'meaning' | 'form' | 'match' | 'tiles' | 'cloze' | 'typeword' | 'listentype' | 'pairab' | 'letterpick' | 'anchor' | 'reply' | 'speak'
+export type StepType = 'intro' | 'meaning' | 'form' | 'match' | 'tiles' | 'cloze' | 'typeword' | 'listentype' | 'pairab' | 'letterpick' | 'anchor' | 'reply'
 
 export type Step =
   | { type: 'intro'; item: Item }
@@ -44,14 +44,14 @@ export type Step =
   | { type: 'letterpick'; item: Item; options: Item[] }           // hear the letter name → pick the letter
   | { type: 'anchor'; item: Item; options: Item[] }               // see the letter → pick its sound anchor
   | { type: 'reply'; item: Item; options: Item[]; audioOnly: boolean } // hear/see line A → pick the reply (B) from 4
-  | { type: 'speak'; item: Item }                                 // say it: record, compare with the model, optional speech check
 
-export type StepResult = { correct: boolean; tier?: 'exact' | 'diacritics' | 'wrong'; typed?: string; heard?: string | null; score?: number }
+export type StepResult = { correct: boolean; tier?: 'exact' | 'diacritics' | 'wrong'; typed?: string }
 
 /** Mastery state per item, persisted. Stages: see curriculum/LEARNING-ENGINE.md §2. */
 export type ItemState = {
   id: string; unitId: string; kind: ItemKind
   stage: number          // 0 new … 6 mastered
+  intro?: number         // which version of the item's intro card was actually presented (D133)
   streak: number
   seen: number
   lastAt: number         // ms

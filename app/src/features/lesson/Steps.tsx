@@ -8,7 +8,6 @@ import { RegisterChip } from '../../components/RegisterChip'
 import { Pic } from '../../components/Pic'
 import { grade } from '../../lib/grade'
 import { stripDiacritics } from '../../lib/normalize'
-import { hasRecorder, hasSpeechCheck, startTake, type Take } from '../../lib/speech'
 import { useLang, useT } from '../../i18n'
 import { sfx } from '../../lib/sfx'
 import { letterSeq } from '../../engine/items'
@@ -264,79 +263,6 @@ export function PairABStep({ step, onAnswer, locked }: Props<Extract<Step, { typ
         })}
       </div>
       {picked && <p className="small muted center" style={{ margin: 0 }}>{lang === 'ro' ? it.meaning.ro : it.meaning.en}</p>}
-    </div>
-  )
-}
-
-/* ------------------------------------------------------------ say it (speaking) */
-/** Record → play "you" against the model; the platform recogniser (if any, and if allowed) marks the words it caught.
- *  Self-assessed when there is no recogniser or no microphone. Never moves the item's stage. */
-export function SpeakStep({ step, onAnswer, locked, speechCheck }: Props<Extract<Step, { type: 'speak' }>> & { speechCheck: boolean }) {
-  const t = useT(); const lang = useLang(); const it = step.item
-  const canRecord = hasRecorder()
-  const [phase, setPhase] = useState<'idle' | 'rec' | 'processing' | 'done' | 'nomic'>(canRecord ? 'idle' : 'nomic')
-  const [take, setTake] = useState<Take | null>(null)
-  const handle = useRef<{ stop: () => Promise<Take> } | null>(null)
-  const timer = useRef<number | undefined>(undefined)
-  const urls = useRef<string[]>([])
-  useEffect(() => () => { window.clearTimeout(timer.current); urls.current.forEach(u => URL.revokeObjectURL(u)) }, [])
-  const stop = async () => {
-    window.clearTimeout(timer.current)
-    const h = handle.current; if (!h) return
-    handle.current = null; setPhase('processing')
-    const tk = await h.stop(); if (tk.url) urls.current.push(tk.url)
-    sfx.pop(); setTake(tk); setPhase('done')
-  }
-  const start = async () => {
-    if (locked || phase === 'rec' || phase === 'processing') return
-    try {
-      handle.current = await startTake(it.sk, speechCheck && hasSpeechCheck())
-      setPhase('rec'); timer.current = window.setTimeout(() => void stop(), 7000)
-    } catch { setPhase('nomic') }
-  }
-  const finish = (ok: boolean) => onAnswer({ correct: ok, heard: take?.heard ?? null, score: take?.score ?? undefined })
-  const words = it.sk.split(/\s+/)
-  const scored = take?.score != null
-  return (
-    <div className="stack fade">
-      <p className="muted small" style={{ margin: 0 }}>{t.step_speak}</p>
-      <div className="card center">
-        {it.emoji && <Pic emoji={it.emoji} size={56} />}
-        <div className="sk big" style={{ fontSize: '1.75rem', marginTop: 6 }}>
-          {take?.hits.length ? words.map((w, i) => <span key={i} className={take.hits[i] ? 'hit' : 'miss'}>{w} </span>) : it.sk}
-        </div>
-        <Pronunciation ro={it.spell} ipa={it.ipa} />
-        <div className="muted">{meaningOf(it, lang)}</div>
-        <div className="row" style={{ justifyContent: 'center', marginTop: 12 }}>{it.audio && <AudioButton src={it.audio} slowSrc={it.audioSlow} autoPlay />}</div>
-      </div>
-      {phase === 'nomic' ? <div className="card small muted">{t.speak_nomic}</div> : (
-        <div className="center">
-          <button className={`mic ${phase === 'rec' ? 'on' : ''}`} onClick={() => (phase === 'rec' ? void stop() : void start())} disabled={locked || phase === 'processing'} aria-label={t.speak_record}>{phase === 'rec' ? '⏹' : '🎤'}</button>
-          <div className="small muted">{phase === 'rec' ? t.speak_recording : phase === 'processing' ? t.speak_processing : t.speak_tap}</div>
-        </div>
-      )}
-      {take && phase === 'done' && (
-        <div className="card">
-          <div className="row" style={{ gap: 8 }}>
-            {it.audio && <button className="btn ghost" style={{ minHeight: 40 }} onClick={() => void playAudio(it.audio!)}>▶ {t.speak_model}</button>}
-            {take.url && <button className="btn ghost" style={{ minHeight: 40 }} onClick={() => void playAudio(take.url!)}>▶ {t.speak_you}</button>}
-          </div>
-          {take.heard !== null && <p className="small" style={{ margin: '10px 0 0' }}>{t.speak_heard}: <i>{take.heard || '—'}</i> · {Math.round((take.score ?? 0) * 100)}%</p>}
-        </div>
-      )}
-      {(phase === 'done' || phase === 'nomic') && (scored
-        ? <div className="row" style={{ gap: 8 }}>
-            <button className="btn ghost" style={{ flex: 1 }} onClick={() => { setTake(null); setPhase('idle') }} disabled={locked}>{t.speak_again}</button>
-            <button className="btn primary" style={{ flex: 2 }} onClick={() => finish((take!.score ?? 0) >= 0.6)} disabled={locked}>{t.continue}</button>
-          </div>
-        : <div className="stack" style={{ gap: 8 }}>
-            <p className="small muted center" style={{ margin: 0 }}>{t.speak_selfcheck}</p>
-            <div className="row" style={{ gap: 8 }}>
-              {phase === 'done' && <button className="btn ghost" style={{ flex: 1 }} onClick={() => { setTake(null); setPhase('idle') }} disabled={locked}>{t.speak_again}</button>}
-              <button className="btn ghost" style={{ flex: 1 }} onClick={() => finish(false)} disabled={locked}>{t.speak_not_yet}</button>
-              <button className="btn primary" style={{ flex: 1 }} onClick={() => finish(true)} disabled={locked}>{t.speak_close}</button>
-            </div>
-          </div>)}
     </div>
   )
 }

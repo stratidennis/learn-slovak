@@ -5,7 +5,7 @@ const { SOUNDS, wavBlob } = await import('./sfx')
 /** The element fallback (the path that runs when Safari has interrupted the context) needs a valid WAV. */
 describe('sfx pre-rendering', () => {
   it('defines every sound the app asks for', () => {
-    for (const k of ['correct', 'warn', 'wrong', 'tap', 'pop', 'soft', 'complete', 'fanfare', 'tick', 'timeup']) {
+    for (const k of ['correct', 'warn', 'wrong', 'tap', 'pop', 'complete', 'fanfare', 'tick', 'timeup']) {
       expect(SOUNDS[k]?.length, k).toBeGreaterThan(0)
       for (const n of SOUNDS[k]) { expect(n.f).toBeGreaterThan(20); expect(n.dur).toBeGreaterThan(0); expect(n.dur).toBeLessThan(1) }
     }

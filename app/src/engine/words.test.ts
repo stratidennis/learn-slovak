@@ -2,7 +2,7 @@ import { describe, expect, it, vi } from 'vitest'
 import type { Item, ItemState } from './types'
 
 vi.mock('./store', () => ({ dayKey: (t = Date.now()) => new Date(t).toISOString().slice(0, 10) }))
-const { buildSession, maxStageFor, stepFor, roundRobin } = await import('./session')
+const { buildSession, buildPractice, maxStageFor, stepFor, roundRobin } = await import('./session')
 const { phraseItem, convoItem } = await import('./items')
 
 const word = (w: string, ro: string, phrase?: [string, number], convo?: [string, string, number]): Item => ({
@@ -63,7 +63,7 @@ describe('mixing (D132)', () => {
     expect(roundRobin([])).toEqual([])
   })
   it('never shows the same word twice in a row, and introduces it before drilling it', () => {
-    const plan = buildSession(pool, new Map([state(bare, 3)]), '0.4', 'ro', { newPerSession: 5, speaking: false })
+    const plan = buildSession(pool, new Map([state(bare, 3)]), '0.4', 'ro', { newPerSession: 5 })
     const ids = plan.steps.map(s => ('item' in s ? s.item.ref.id : 'match'))
     expect(ids.length).toBeGreaterThan(6)
     for (let i = 1; i < ids.length; i++) expect(ids[i]).not.toBe(ids[i - 1])
@@ -74,10 +74,66 @@ describe('mixing (D132)', () => {
     }
   })
   it('gives each new word more than one kind of exercise in a session', () => {
-    const plan = buildSession(pool, new Map(), '0.4', 'ro', { newPerSession: 5, speaking: false })
+    const plan = buildSession(pool, new Map(), '0.4', 'ro', { newPerSession: 5 })
     for (const it of plan.newItems) {
       const types = new Set(plan.steps.filter(s => 'item' in s && s.item.ref.id === it.ref.id).map(s => s.type))
       expect(types.size).toBeGreaterThanOrEqual(3)      // intro + two different drills
     }
+  })
+})
+
+describe('nothing is quizzed before it is taught (D133)', () => {
+  const legacy = (it: Item, stage: number, intro?: number): [string, ItemState] => [it.ref.id,
+    { id: it.ref.id, unitId: '0.4', kind: 'word', stage, streak: 1, seen: 3, lastAt: Date.now() - 86400000, stageAtDayStart: stage, dayKey: '2000-01-01', ...(intro ? { intro } : {}) }]
+
+  it('re-presents a word that was only ever introduced by the old card, then asks it at its stage', () => {
+    // stage 2 from the old two-rung ladder, no `intro` field: the card he saw glossed the word with the
+    // letter's sound anchor, so the word's meaning was never taught
+    const states = new Map([legacy(voda, 2), legacy(stlp, 2)])
+    const plan = buildSession(pool, states, '0.4', 'ro', { newPerSession: 0 })
+    for (const id of ['word:voda', 'word:stĺp']) {
+      const mine = plan.steps.filter(s => 'item' in s && s.item.ref.id === id)
+      expect(mine.length, id).toBeGreaterThanOrEqual(2)
+      expect(mine[0].type, id).toBe('intro')
+    }
+  })
+  it('leaves a word alone once it has seen the current intro card', () => {
+    const states = new Map([legacy(voda, 2, 2)])
+    const plan = buildSession([voda], states, '0.4', 'ro', { newPerSession: 0 })
+    expect(plan.steps.some(s => s.type === 'intro')).toBe(false)
+    expect(plan.steps.length).toBeGreaterThan(0)
+  })
+  it('does not re-present other kinds: only the word card changed', () => {
+    const chunk: Item = { ...voda, ref: { kind: 'chunk', id: 'chk:1.1:x' }, sk: 'Dobrý deň.', phrase: undefined, convo: undefined }
+    const st = new Map([[chunk.ref.id, { ...legacy(chunk, 2)[1], kind: 'chunk' as const, unitId: '1.1' }]])
+    const plan = buildSession([chunk], st, '1.1', 'ro', { newPerSession: 0 })
+    expect(plan.steps.some(s => s.type === 'intro')).toBe(false)
+  })
+  it('teaches before testing in redo mode too', () => {
+    const plan = buildPractice(pool, new Map([legacy(voda, 4)]), '0.4', 'ro')
+    const mine = plan.steps.filter(s => 'item' in s && s.item.ref.id === 'word:voda')
+    expect(mine[0]?.type).toBe('intro')
+  })
+  it('has no speaking step anywhere any more', () => {
+    for (const plan of [buildSession(pool, new Map(), '0.4', 'ro', { newPerSession: 5 }), buildPractice(pool, new Map(), '0.4', 'ro')])
+      expect(plan.steps.every(s => s.type !== ('speak' as string))).toBe(true)
+  })
+})
+
+describe('redo mode teaches then asks (D133)', () => {
+  const legacy2 = (it: Item): [string, ItemState] => [it.ref.id,
+    { id: it.ref.id, unitId: '0.4', kind: 'word', stage: 2, streak: 1, seen: 3, lastAt: 1, stageAtDayStart: 2, dayKey: '2000-01-01' }]
+  it('gives an untaught word its intro *and* a question, presentations first', () => {
+    const states = new Map([legacy2(voda), legacy2(stlp)])
+    const plan = buildPractice([voda, stlp], states, '0.4', 'ro')
+    expect(plan.steps.slice(0, 2).every(s => s.type === 'intro')).toBe(true)
+    for (const id of ['word:voda', 'word:stĺp']) {
+      const mine = plan.steps.filter(s => 'item' in s && s.item.ref.id === id)
+      expect(mine.length, id).toBe(2)
+      expect(mine[0].type, id).toBe('intro')
+      expect(mine[1].type, id).not.toBe('intro')
+    }
+    const ids = plan.steps.map(s => ('item' in s ? s.item.ref.id : 'match'))
+    for (let i = 1; i < ids.length; i++) expect(ids[i]).not.toBe(ids[i - 1])
   })
 })

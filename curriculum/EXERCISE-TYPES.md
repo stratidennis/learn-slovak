@@ -84,7 +84,11 @@ Design rules that apply to all of them:
   pronunciation micro-drill. (Optional Web Speech API transcription shown as a hint, never as a
   score — it is too unreliable for Slovak to grade with.)
 - **Needs:** audio, MediaRecorder.
-- **Built (2026-09-08) as the *Say it* step** of the lesson engine: model clip + mic, 7 s auto-stop,
+- **Removed (2026-09-10, D133).** Shipped 2026-09-08 as the *Say it* step and taken out again: the app
+  cannot validate Slovak pronunciation, a self-check needs no app, and the recorder froze the session
+  when `MediaRecorder.onstop` never fired on iOS (the step had no escape from its "processing" state).
+  The output strand now lives outside the app — the model clip and the roleplay prompts. Was:
+- ~~model clip + mic, 7 s auto-stop,
   "model / you" playback, per-word hit/miss colouring from the recogniser when one exists
   (`sk-SK`, diacritics-insensitive, one typo allowed on words ≥ 4 letters), ≥ 60 % passes;
   without a recogniser the learner self-checks. Never changes an item's stage. Settings: Speaking

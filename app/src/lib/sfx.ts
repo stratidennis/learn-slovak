@@ -36,8 +36,6 @@ export const SOUNDS: Record<string, Note[]> = {
   tap: [{ f: 880, at: 0, dur: 0.045, type: 'sine', gain: 0.08 }],
   /** a pair matched, a card flipped: quick upward blip */
   pop: [{ f: 660, at: 0, dur: 0.09, type: 'sine', gain: 0.14, to: 1320 }],
-  /** speaking step: encouraging, no verdict */
-  soft: [{ f: E5, at: 0, dur: 0.2, type: 'sine', gain: 0.1 }],
   /** a session or deck finished */
   complete: [{ f: C5, at: 0, dur: 0.16, type: 'triangle' }, { f: E5, at: 0.12, dur: 0.16, type: 'triangle' }, { f: G5, at: 0.24, dur: 0.34, type: 'triangle' }],
   /** a lesson or unit fully done: a small fanfare */
@@ -216,7 +214,6 @@ export const sfx = {
   wrong: () => emit('wrong'),
   tap: () => emit('tap'),
   pop: () => emit('pop'),
-  soft: () => emit('soft'),
   complete: () => emit('complete'),
   fanfare: () => emit('fanfare'),
   tick: () => emit('tick'),

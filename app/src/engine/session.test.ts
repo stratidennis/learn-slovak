@@ -46,9 +46,9 @@ describe('dialogue ladder', () => {
   })
 })
 
-describe('buildSession with dialogues and speaking', () => {
+describe('buildSession with dialogues', () => {
   it('presents the new dialogues, then drills them — never the same item twice in a row (D132)', () => {
-    const plan = buildSession(all, states, '0.5', 'ro', { speaking: true })
+    const plan = buildSession(all, states, '0.5', 'ro')
     expect(plan.newItems.map(i => i.ref.kind)).toEqual(['dialogue', 'dialogue', 'dialogue', 'dialogue'])
     // every new item still gets its intro, its seen-reply and its by-ear reply
     for (const it of plan.newItems) {
@@ -63,22 +63,5 @@ describe('buildSession with dialogues and speaking', () => {
     expect(plan.steps.filter(s => s.type === 'reply' && s.audioOnly).length).toBe(4)
     const ids = plan.steps.map(s => ('item' in s ? s.item.ref.id : 'match'))
     for (let i = 1; i < ids.length; i++) expect(ids[i]).not.toBe(ids[i - 1])
-  })
-  it('adds up to two say-it steps on recognised items only, never on new ones or pairs', () => {
-    const plan = buildSession(all, states, '0.5', 'ro', { speaking: true })
-    const speak = plan.steps.filter(s => s.type === 'speak')
-    expect(speak.length).toBeGreaterThanOrEqual(1); expect(speak.length).toBeLessThanOrEqual(2)
-    for (const s of speak) {
-      if (s.type !== 'speak') continue
-      expect(plan.newItems).not.toContain(s.item)
-      expect(states.get(s.item.ref.id)!.stage).toBeGreaterThanOrEqual(2)
-      expect(['chunk', 'sentence', 'dialogue', 'cognate']).toContain(s.item.ref.kind)
-    }
-    const idx = plan.steps.findIndex(s => s.type === 'speak')
-    expect(idx).toBeGreaterThanOrEqual(2)   // never the opening step
-  })
-  it('has no say-it steps when speaking is off', () => {
-    const plan = buildSession(all, states, '0.5', 'ro', { speaking: false })
-    expect(plan.steps.some(s => s.type === 'speak')).toBe(false)
   })
 })

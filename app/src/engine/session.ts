@@ -68,10 +68,18 @@ export function stepFor(item: Item, stage: number, pool: Item[], lang: Lang): St
 }
 export const maxStageFor = (kind: Item['ref']['kind'] | string, unitId: string) =>
   kind === 'pair' ? 1 : kind === 'letter' ? 3 : kind === 'cognate' ? 3 : kind === 'word' ? 6 : kind === 'dialogue' ? (unitId.startsWith('0.') ? 3 : 4) : unitId.startsWith('0.') ? 4 : 6
-const SPEAKABLE = new Set(['chunk', 'sentence', 'dialogue', 'cognate'])
 
-/** Build a ~12–18 step session: warm-up, new items (intro + first step, later a second step), due items, one match block, misses re-queued by the runner. */
-export function buildSession(items: Item[], states: Map<string, ItemState>, unitId: string, lang: Lang, opts: { newPerSession?: number; maxDue?: number; speaking?: boolean; pool?: Item[] } = {}): Plan {
+/** Which version of an item's intro card the learner must have seen. Bumped when the card itself changes
+ *  materially: D132 gave every word its own gloss and a phrase, so a word introduced under the old card
+ *  (which showed the *letter's* sound anchor as the meaning) has not really been taught (D133). A state
+ *  with no `intro` field predates the field and counts as version 1. */
+const INTRO_VERSION: Record<string, number> = { word: 2 }
+export const introVersion = (kind: string) => INTRO_VERSION[kind] ?? 1
+export const needsIntro = (st: ItemState | undefined, kind: string) => (st?.intro ?? 1) < introVersion(kind)
+
+/** Build a ~12–18 step session: warm-up, items to present (intro first, then two drills), due items,
+ *  one match block, misses re-queued by the runner. */
+export function buildSession(items: Item[], states: Map<string, ItemState>, unitId: string, lang: Lang, opts: { newPerSession?: number; maxDue?: number; pool?: Item[] } = {}): Plan {
   const newPerSession = opts.newPerSession ?? (unitId.startsWith('0.') ? 4 : 5)
   const maxDue = opts.maxDue ?? 8
   const today = dayKey()
@@ -81,9 +89,15 @@ export function buildSession(items: Item[], states: Map<string, ItemState>, unit
   const isNew = (it: Item) => !states.has(it.ref.id) || stage(it) === 0
   const seenToday = (it: Item) => states.get(it.ref.id)?.dayKey === today
 
-  const mastered = items.filter(isMastered)
-  const due = shuffle(items.filter(it => !isNew(it) && !isMastered(it))).sort((a, b) => (states.get(a.ref.id)!.lastAt) - (states.get(b.ref.id)!.lastAt)).slice(0, maxDue)
-  const fresh = items.filter(isNew).slice(0, Math.max(0, newPerSession - Math.floor(due.filter(seenToday).length / 3)))
+  const untaught = (it: Item) => needsIntro(states.get(it.ref.id), it.ref.kind)
+  const mastered = items.filter(it => isMastered(it) && !untaught(it))
+  const dueAll = shuffle(items.filter(it => !isNew(it) && !isMastered(it))).sort((a, b) => (states.get(a.ref.id)!.lastAt) - (states.get(b.ref.id)!.lastAt)).slice(0, maxDue)
+  const fresh = items.filter(isNew).slice(0, Math.max(0, newPerSession - Math.floor(dueAll.filter(seenToday).length / 3)))
+  // an item whose intro card the learner never actually saw is presented first, then asked at its stage —
+  // no quiz on a word before it has been taught (D133)
+  const reintro = dueAll.filter(untaught)
+  const due = dueAll.filter(it => !untaught(it))
+  const presented = [...fresh, ...reintro]
   const pool = opts.pool && opts.pool.length > items.length ? opts.pool : items   // distractors from the whole unit when the session is one lesson
 
   const steps: Step[] = []
@@ -92,53 +106,53 @@ export function buildSession(items: Item[], states: Map<string, ItemState>, unit
     const s = it.ref.kind === 'pair' ? stepFor(it, 0, pool, lang) : it.ref.kind === 'letter' ? stepFor(it, 1, pool, lang) : stepFor(it, 1, pool, lang)
     if (s) steps.push(s)
   }
-  // 2. new items, in clusters of three: the cluster is presented, then drilled round-robin. Introducing
-  //    one item and immediately drilling it twice put three cards for the same word back to back (D132).
-  for (const group of clusters(fresh, CLUSTER)) {
+  // 2. items to present, in clusters of three: the cluster is presented, then drilled round-robin.
+  //    Introducing one item and immediately drilling it twice put three cards for the same word back
+  //    to back (D132). A fresh item is drilled at stages 1 and 2; a re-introduced one at its own stage.
+  for (const group of clusters(presented, CLUSTER)) {
     for (const it of group) { const s = stepFor(it, 0, pool, lang); if (s) steps.push(s) }
-    steps.push(...roundRobin(group.map(it => [stepFor(it, 1, pool, lang), it.ref.kind === 'pair' ? null : stepFor(it, 2, pool, lang)].filter((s): s is Step => !!s))))
+    steps.push(...roundRobin(group.map(it => (fresh.includes(it)
+      ? [stepFor(it, 1, pool, lang), it.ref.kind === 'pair' ? null : stepFor(it, 2, pool, lang)]
+      : [stepFor(it, stage(it), pool, lang)]).filter((s): s is Step => !!s))))
   }
   // 3. due items at their stage
   const dueSteps: Step[] = []
   for (const it of due) { const s = stepFor(it, stage(it), pool, lang); if (s) dueSteps.push(s) }
   // 4. a match block from items at stage >= 2 (chunks/sentences/cognates only)
-  const matchable = items.filter(it => ['chunk', 'sentence', 'cognate'].includes(it.ref.kind) && (stage(it) >= 2 || fresh.includes(it)))
+  const matchable = items.filter(it => ['chunk', 'sentence', 'cognate'].includes(it.ref.kind) && !untaught(it) && (stage(it) >= 2 || fresh.includes(it)))
   const matchStep: Step | null = matchable.length >= 4 ? { type: 'match', items: shuffle(matchable).slice(0, Math.min(5, matchable.length)) } : null
   // interleave: due steps spread out, match near the end
   const all = interleave([...steps, ...shuffle(dueSteps)])
   if (matchStep) all.splice(Math.max(2, all.length - 2), 0, matchStep)
-  // 5. output strand: up to two "say it" steps on items already recognised (stage >= 2), never on new ones.
-  //    They never move the stage — recognition is unreliable and speaking is practice, not a test.
-  if (opts.speaking !== false) {
-    const speakable = shuffle(items.filter(it => SPEAKABLE.has(it.ref.kind) && stage(it) >= 2 && !fresh.includes(it))).slice(0, all.length >= 8 ? 2 : 1)
-    speakable.forEach((it, k) => insertApart(all, { type: 'speak', item: it }, Math.round(all.length * (k === 0 ? 0.4 : 0.8))))
-  }
-  return { steps: all, newItems: fresh, dueItems: due }
+  return { steps: all, newItems: presented, dueItems: due }
 }
 
 /** Redo a finished lesson (D129): every item gets one step. Items at their top stage are asked one rung
  *  below it (or a random recognition/production rung), so a redo is a real check rather than a replay of
  *  intros; unfinished items are asked at their current stage. Same scoring as a normal session. */
-export function buildPractice(items: Item[], states: Map<string, ItemState>, unitId: string, lang: Lang, opts: { speaking?: boolean; pool?: Item[] } = {}): Plan {
+export function buildPractice(items: Item[], states: Map<string, ItemState>, unitId: string, lang: Lang, opts: { pool?: Item[] } = {}): Plan {
   const pool = opts.pool && opts.pool.length > items.length ? opts.pool : items
   const stage = (it: Item) => states.get(it.ref.id)?.stage ?? 0
   const maxOf = (it: Item) => maxStageFor(it.ref.kind, unitId)
   const askAt = (it: Item) => {
     const s = stage(it), top = maxOf(it)
     if (it.ref.kind === 'pair') return 0
-    if (s <= 0) return 0
+    if (s <= 0 || needsIntro(states.get(it.ref.id), it.ref.kind)) return 0     // teach it before testing it (D133)
     if (s >= top) return Math.max(1, top - 1 - Math.floor(Math.random() * Math.min(2, top - 1)))
     return s
   }
-  const steps: Step[] = []
-  for (const it of shuffle(items)) { const s = stepFor(it, askAt(it), pool, lang); if (s) steps.push(s) }
-  const all = interleave(steps)
-  const matchable = items.filter(it => ['chunk', 'sentence', 'cognate'].includes(it.ref.kind) && stage(it) >= 1)
+  // an item that still needs teaching is presented first and asked afterwards, in the same session:
+  // roundRobin emits every queue's first step before any second step, so the presentations come first
+  const queues = shuffle(items).map(it => {
+    if (!needsIntro(states.get(it.ref.id), it.ref.kind)) {
+      const s = stepFor(it, askAt(it), pool, lang)
+      return s ? [s] : []
+    }
+    return [stepFor(it, 0, pool, lang), stepFor(it, Math.max(1, stage(it)), pool, lang)].filter((x): x is Step => !!x)
+  })
+  const all = interleave(roundRobin(queues))
+  const matchable = items.filter(it => ['chunk', 'sentence', 'cognate'].includes(it.ref.kind) && stage(it) >= 1 && !needsIntro(states.get(it.ref.id), it.ref.kind))
   if (matchable.length >= 4) all.splice(Math.max(1, Math.floor(all.length / 2)), 0, { type: 'match', items: shuffle(matchable).slice(0, Math.min(5, matchable.length)) })
-  if (opts.speaking !== false) {
-    const sp = shuffle(items.filter(it => SPEAKABLE.has(it.ref.kind) && stage(it) >= 2)).slice(0, 1)
-    for (const it of sp) all.splice(Math.min(all.length, Math.max(2, Math.round(all.length * 0.7))), 0, { type: 'speak', item: it })
-  }
   return { steps: all, newItems: [], dueItems: items }
 }
 
@@ -155,19 +169,6 @@ export function clusters<T>(list: T[], max: number): T[][] {
     out.push(list.slice(at, at + size)); at += size
   }
   return out
-}
-
-/** Insert near `idx`, but never touching another step on the same item. */
-function insertApart(all: Step[], step: Step, idx: number) {
-  const id = 'item' in step ? step.item.ref.id : 'match'
-  const same = (s: Step | undefined) => !!s && ('item' in s ? s.item.ref.id : 'match') === id
-  let at = Math.min(all.length, Math.max(2, idx))
-  for (let n = 0; n < all.length + 1; n++) {
-    const probe = at + (n % 2 ? -Math.ceil(n / 2) : Math.ceil(n / 2))
-    if (probe < 1 || probe > all.length) continue
-    if (!same(all[probe - 1]) && !same(all[probe])) { at = probe; break }
-  }
-  all.splice(at, 0, step)
 }
 
 /** One step from each queue in turn: A1 B1 C1 A2 B2 C2 — the same item never lands twice in a row. */
