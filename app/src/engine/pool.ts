@@ -12,10 +12,10 @@ export type PoolItem = Item & { unitId: string }
 export type PoolFilter = { kinds: ItemKind[]; units: string[] }     // empty list = everything
 export type Pool = { items: PoolItem[]; units: Unit[]; byUnit: Map<string, number>; byKind: Map<ItemKind, number> }
 
-/** Kinds that make sense as a two-sided card. Sound pairs are their own drill; the "type it" words
- *  carry no meaning of their own (their gloss is the letter's anchor). */
-export const CARD_KINDS: ItemKind[] = ['letter', 'cognate', 'chunk', 'dialogue', 'sentence']
-export const MATCH_KINDS: ItemKind[] = ['cognate', 'chunk', 'dialogue', 'sentence']
+/** Kinds that make sense as a two-sided card. Sound pairs are their own drill (no meaning to recall).
+ *  The 0.4 words carry their own gloss since D132, so they belong here too (D137). */
+export const CARD_KINDS: ItemKind[] = ['letter', 'cognate', 'word', 'chunk', 'dialogue', 'sentence']
+export const MATCH_KINDS: ItemKind[] = ['cognate', 'word', 'chunk', 'dialogue', 'sentence']
 
 export async function loadLearnedPool(allowed: ItemKind[] = CARD_KINDS): Promise<Pool> {
   const [units, rows] = await Promise.all([loadUnits(), db.items.toArray()])
