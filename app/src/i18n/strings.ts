@@ -64,7 +64,7 @@ const en = {
   letter_spell_name: 'when spelling', letter_in_word: 'in a word',
   practice_title: 'Practice', practice_hint: 'Everything you finished in lessons, shuffled. You choose what goes in.',
   practice_empty: 'Finish a lesson first — practice only draws on completed lessons.',
-  review_card_title: 'Review due', review_card_hint: 'Mastered sentences come back for dictation on a schedule.',
+  review_card_title: 'Review due', review_card_hint: 'Everything from your finished lessons comes back on a schedule — letters, sounds, words, phrases.',
   flashcards_title: 'Flashcards', flashcards_hint: 'One side shown, guess the other, tap to flip, judge yourself.',
   match_title: 'Speed match', match_hint: '60 seconds: pair Slovak with its meaning, as fast as you can.',
   pool_kinds: 'Types', pool_units: 'Units', pool_all: 'All', pool_count: '{n} items selected', pool_available: '{n} available',
@@ -81,6 +81,9 @@ const en = {
   // words in context (D132)
   word_in_phrase: 'in a phrase', step_word_cloze: 'The word in a phrase — fill the gap', step_word_tiles: 'Put the phrase in the right order',
   step_dlgcloze: 'Fill in the conversation', dlgcloze_hint: 'tap a gap to take a word back', build_label: 'Build',
+  // Recap (D138)
+  recap_title: 'Recap', recap_empty: 'Nothing to recap right now. Items from a finished lesson join the recap the next day.',
+  recap_next: 'Next items come due on {when}.', recap_more: 'Continue — {n} more due', recap_summary: '{ok} right · {bad} to see again soon',
 }
 const ro: typeof en = {
   app: 'Slovenčina',
@@ -136,7 +139,7 @@ const ro: typeof en = {
   letter_spell_name: 'când spui pe litere', letter_in_word: 'într-un cuvânt',
   practice_title: 'Exersează', practice_hint: 'Tot ce ai terminat în lecții, amestecat. Tu alegi ce intră.',
   practice_empty: 'Termină întâi o lecție — exersarea folosește doar lecțiile terminate.',
-  review_card_title: 'De recapitulat', review_card_hint: 'Propozițiile stăpânite revin la dictare, după program.',
+  review_card_title: 'De recapitulat', review_card_hint: 'Tot ce ai terminat în lecții revine după un program — litere, sunete, cuvinte, expresii.',
   flashcards_title: 'Cartonașe', flashcards_hint: 'Vezi o față, ghicește cealaltă, atinge ca să întorci, apreciază singur.',
   match_title: 'Potrivire contra cronometru', match_hint: '60 de secunde: potrivește slovaca cu sensul, cât de repede poți.',
   pool_kinds: 'Tipuri', pool_units: 'Unități', pool_all: 'Toate', pool_count: '{n} elemente selectate', pool_available: '{n} disponibile',
@@ -151,6 +154,8 @@ const ro: typeof en = {
   reset_confirm: 'Resetezi lecția? Elementele ei revin la „nou”.', reset_unit_confirm: 'Resetezi toată unitatea? Toate elementele revin la „nou”.', marked: 'Marcat ✓',
   word_in_phrase: 'într-o expresie', step_word_cloze: 'Cuvântul într-o expresie — completează', step_word_tiles: 'Pune expresia în ordinea corectă',
   step_dlgcloze: 'Completează conversația', dlgcloze_hint: 'atinge un gol ca să iei cuvântul înapoi', build_label: 'Versiune',
+  recap_title: 'Recapitulare', recap_empty: 'Nimic de recapitulat acum. Elementele dintr-o lecție terminată intră în recapitulare a doua zi.',
+  recap_next: 'Următoarele elemente revin {when}.', recap_more: 'Continuă — încă {n} de recapitulat', recap_summary: '{ok} corecte · {bad} revin curând',
 }
 export const STRINGS = { en, ro }
 export type Strings = typeof en

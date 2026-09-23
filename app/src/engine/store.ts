@@ -1,8 +1,6 @@
 import { db } from '../db/db'
 import type { ItemRef, ItemState } from './types'
 import { markStates, type LessonDef } from './lessons'
-import { loadUnitById, loadUnitItems } from './items'
-import { newCard } from '../srs/scheduler'
 
 export const edb = db
 export const dayKey = (t = Date.now()) => new Date(t).toISOString().slice(0, 10)
@@ -37,24 +35,16 @@ export function advance(s: ItemState, correct: boolean, maxStage = 6): ItemState
 export const saveState = (s: ItemState) => db.items.put(s)
 
 /** Mark one or more lessons as done / mastered by hand (D130) — e.g. finished on another device.
- *  Never lowers anything. Mastered sentences also get their long-term FSRS card, as a real session would. */
+ *  Never lowers anything. The caller runs `syncRecap()` afterwards, which enrols what became done (D138). */
 export async function markLessons(lessons: LessonDef[], level: 'done' | 'mastered'): Promise<number> {
   if (!lessons.length) return 0
   const unitId = lessons[0].unitId
   const states = await getStates(unitId)
   const changed = lessons.flatMap(l => markStates(l, states, level))
   await db.items.bulkPut(changed)
-  if (level === 'mastered') {
-    const unit = await loadUnitById(unitId)
-    if (unit) {
-      const items = await loadUnitItems(unit)
-      const want = new Set(lessons.flatMap(l => l.refs.filter(r => r.kind === 'sentence').map(r => r.id)))
-      for (const it of items) if (want.has(it.ref.id) && it.sentence && !(await db.cards.get(it.ref.id))) await db.cards.put(newCard(it.sentence, unitId))
-    }
-  }
   return changed.length
 }
-/** Forget the progress of one or more lessons: item states and the sentence cards they produced. Review history stays. */
+/** Forget the progress of one or more lessons: item states and the Recap cards they produced. Review history stays. */
 export async function resetLessons(lessons: LessonDef[]): Promise<void> {
   const ids = lessons.flatMap(l => l.refs.map(r => r.id))
   await db.transaction('rw', [db.items, db.cards], async () => { await db.items.bulkDelete(ids); await db.cards.bulkDelete(ids) })

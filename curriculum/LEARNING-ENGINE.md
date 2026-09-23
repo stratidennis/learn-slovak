@@ -34,7 +34,7 @@ has a stage stored on the device.
 | 3 | **Match / Tiles** | 4–5 pairs to match, or the meaning + shuffled word tiles (+1–2 distractors); for a dialogue, build the reply from tiles | matches / arranges | chunk, sentence, dialogue |
 | 4 | **Cloze / Type a word** | sentence with one blank (3 choices), or one missing word to type | picks / types (diacritics lenient) | chunk, sentence |
 | 5 | **Listen & type** | audio | types the whole thing (lenient → strict as it matures) | chunk, sentence |
-| 6 | **Mastered** | — | hands over to the FSRS sentence card for long-term review | all |
+| 6 | **Mastered** | — | long-term review is Recap's job (§3, D138) — every item of a done lesson is already enrolled | all |
 | — | **Word in a phrase** *or* **gapped conversation** | the word's phrase with the word gapped (3 options), or a two-line exchange with 2–3 words missing and one shared word bank — the engine mixes the two (D135) | picks / fills every gap | word (stage 4), cognate (stage 3) |
 | — | **Word in a conversation** | line A, then word tiles for the reply that contains the word | assembles in order | word (stage 5) |
 
@@ -89,7 +89,17 @@ forgotten item drops a stage and returns). Home shows "Up next" and one dot per 
 
 **Practice hub** (`/practice`): flashcards (self-graded, no ladder effect) and speed match (60 s,
 boards of five) over everything from *done* lessons, filtered by type and unit — the fluency strand
-(Nation) outside the ladder, plus the FSRS dictation review.
+(Nation) outside the ladder. Which kinds each mode takes lives in ONE table, `engine/kinds.ts`, typed over
+every item kind, so a new kind cannot be added without deciding (D137/D138).
+
+**Recap** (`/review`, D138): every item of every *done* lesson — any kind, any section — gets an FSRS card
+(`srs/recap.ts`). Enrolment is derived (`syncRecap`: taught items minus existing cards; runs on Home, Practice,
+Recap, after a lesson, after manual marking), first due a day after the item was last drilled, at most 30
+first reviews per day. A sitting is 20 cards round-robin across units; each is asked with the lesson ladder's
+own exercise (`stepFor`): an item still climbing gets its next rung (a right answer climbs it — Recap never
+lowers the ladder), a mastered one its hardest rung when stable, any rung when young or lapsed. A miss is
+rated Again and comes back once at the end, one rung easier. `engine/coverage.test.ts` runs every unit of the
+real content through this and fails if any item cannot be practised or recapped.
 
 ## 4. Phase 0, redone
 
@@ -111,6 +121,6 @@ audibly different. The learner always learns the reply (B); A is context.
 
 ## 5. What is kept from the earlier build
 
-The FSRS sentence card (listen & type) is now the *last* rung, reached only by mastered items;
+The FSRS scheduler now drives Recap for every kind (D138); the unit dictation screen still uses sentence cards;
 the chunk browser and the Alphabet reference stay as reference screens; grammar notes stay
 just-in-time; the pronunciation guide is shown on every step's feedback.

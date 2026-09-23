@@ -4,6 +4,7 @@ import { loadGrammar, loadUnits } from '../../data/loader'
 import type { GrammarNote, Unit } from '../../data/types'
 import type { ItemState } from '../../engine/types'
 import { getStates, markLessons, resetLessons } from '../../engine/store'
+import { syncRecap } from '../../srs/recap'
 import { kindCounts, lessonProgress, lessonsFor, nextLesson, type LessonDef, type LessonProgress } from '../../engine/lessons'
 import { fmt, useLang, useT } from '../../i18n'
 import { coverFor } from '../../lib/covers'
@@ -49,7 +50,7 @@ function MarkSheet({ sheet, defs, progress, onClose, onChanged }: { sheet: Sheet
   const [busy, setBusy] = useState(false)
   const targets = sheet.kind === 'lesson' ? [sheet.lesson] : defs
   const status = sheet.kind === 'lesson' ? sheet.progress.status : progress.every(p => p.status === 'mastered') ? 'mastered' : progress.every(p => p.status === 'done' || p.status === 'mastered') ? 'done' : progress.some(p => p.status !== 'new') ? 'started' : 'new'
-  const run = async (f: () => Promise<unknown>, sound: () => void) => { if (busy) return; setBusy(true); await f(); sound(); onChanged(); onClose() }
+  const run = async (f: () => Promise<unknown>, sound: () => void) => { if (busy) return; setBusy(true); await f(); await syncRecap(); sound(); onChanged(); onClose() }
   const reset = () => { if (!window.confirm(sheet.kind === 'lesson' ? t.reset_confirm : t.reset_unit_confirm)) return; void run(() => resetLessons(targets), sfx.tap) }
   const title = sheet.kind === 'lesson' ? `${t.lesson_word} ${sheet.lesson.n}` : t.unit_options
   return (

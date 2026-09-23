@@ -1,17 +1,16 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import type { Item, ItemState, Step, StepResult } from '../../engine/types'
-import { letterSeq, loadUnitById, loadUnitItems } from '../../engine/items'
+import { loadUnitById, loadUnitItems } from '../../engine/items'
 import { buildPractice, buildSession, introVersion, maxStageFor, stepFor } from '../../engine/session'
 import { lessonItems, lessonProgress, lessonsFor, nextLesson, type LessonDef, type LessonStatus } from '../../engine/lessons'
 import { advance, edb, getStates, newState, saveState } from '../../engine/store'
-import { db } from '../../db/db'
-import { newCard } from '../../srs/scheduler'
-import { AudioButton, stopAudio } from '../../components/AudioButton'
+import { syncRecap } from '../../srs/recap'
+import { stopAudio } from '../../components/AudioButton'
 import { fmt, useLang, useT } from '../../i18n'
 import { DONE_COVER, WINNER_COVER } from '../../lib/covers'
 import { sfx } from '../../lib/sfx'
-import { ChoiceStep, ClozeStep, DialogueIntroStep, DlgClozeStep, IntroStep, ListenTypeStep, MatchStep, PairABStep, ReplyStep, TilesStep, TypeWordStep } from './Steps'
+import { StepView } from './StepView'
 
 type Phase = 'loading' | 'running' | 'done'
 type Mode = 'lesson' | 'practice'
@@ -68,7 +67,6 @@ export function LessonSession() {
   }, [id, n, lang]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const step = steps[i]
-  const stepItem = (s: Step | undefined): Item | null => s && 'item' in s ? s.item : null
   const total = useMemo(() => steps.length, [steps])
 
   const onAnswer = async (r: StepResult) => {
@@ -88,9 +86,6 @@ export function LessonSession() {
       else advance(st, r.correct, maxStageFor(it.ref.kind, unitIdRef.current))
       if (st.stage > before) advanced++
       states.current.set(it.ref.id, st); await saveState(st)
-      // mastered sentences hand over to the long-term FSRS card
-      if (st.stage >= maxStageFor(it.ref.kind, unitIdRef.current) && (it.ref.kind === 'sentence') && it.sentence && !(await db.cards.get(it.ref.id)))
-        await db.cards.put(newCard(it.sentence, unitIdRef.current))
     }
     setStats(s => ({ correct: s.correct + (r.correct ? 1 : 0), wrong: s.wrong + (r.correct ? 0 : 1), advanced: s.advanced + advanced }))
     if (isIntro) { await next(); return }
@@ -131,6 +126,7 @@ export function LessonSession() {
       if (kind === 'session') sfx.complete(); else sfx.fanfare()
       setDoneKind(kind)
       await edb.sessions.add({ unitId: id, lessonId: lesson?.id, mode, at: Date.now(), steps: steps.length, correct: stats.correct, advanced: stats.advanced })
+      await syncRecap()      // a lesson that is now done hands its items to Recap (D138)
       setPhase('done')
     } else setI(i + 1)
   }
@@ -157,10 +153,6 @@ export function LessonSession() {
       </div></div>
     )
   }
-  const it = stepItem(step)
-  const showFeedback = result && step.type !== 'intro'
-  const tone = !result ? '' : result.correct ? (result.tier === 'diacritics' ? 'warn' : 'ok') : 'bad'
-  const heading = !result ? '' : result.correct ? (result.tier === 'diacritics' ? t.fb_diacritics : t.fb_correct) : t.fb_wrong
   return (
     <div className="page lesson-page fade" key={i}>
       <div className="topbar"><Link to={`/unit/${id}`} className="back" aria-label={t.back}>✕</Link>
@@ -169,26 +161,7 @@ export function LessonSession() {
           {lesson && <div className="small muted" style={{ marginTop: 4 }}>{id} · {t.lesson_word} {lesson.n}{mode === 'practice' ? ` · ↻ ${t.redo_lesson}` : ''}</div>}
         </div>
         <span className="muted small">{i + 1}/{total}</span></div>
-      {step.type === 'intro' && (step.item.ref.kind === 'dialogue' ? <DialogueIntroStep step={step} onAnswer={onAnswer} locked={!!result} /> : <IntroStep step={step} onAnswer={onAnswer} locked={!!result} />)}
-      {(step.type === 'meaning' || step.type === 'form' || step.type === 'letterpick' || step.type === 'anchor') && <ChoiceStep step={step} onAnswer={onAnswer} locked={!!result} />}
-      {step.type === 'reply' && <ReplyStep step={step} onAnswer={onAnswer} locked={!!result} />}
-      {step.type === 'match' && <MatchStep step={step} onAnswer={onAnswer} locked={!!result} />}
-      {step.type === 'tiles' && <TilesStep step={step} onAnswer={onAnswer} locked={!!result} />}
-      {step.type === 'cloze' && <ClozeStep step={step} onAnswer={onAnswer} locked={!!result} />}
-      {step.type === 'dlgcloze' && <DlgClozeStep step={step} onAnswer={onAnswer} locked={!!result} />}
-      {step.type === 'typeword' && <TypeWordStep step={step} onAnswer={onAnswer} locked={!!result} />}
-      {step.type === 'listentype' && <ListenTypeStep step={step} onAnswer={onAnswer} locked={!!result} />}
-      {step.type === 'pairab' && <PairABStep step={step} onAnswer={onAnswer} locked={!!result} />}
-      {showFeedback && (
-        <div className={`feedback ${tone}`}>
-          <h3>{heading}</h3>
-          {it && step.type !== 'match' && <div className="row between" style={{ alignItems: 'flex-start' }}>
-            <div><div className="ans">{it.sk}</div>{it.spell && it.ref.kind !== 'letter' && <div className="guide-ro small">{it.spell}</div>}<div className="small muted">{lang === 'ro' ? it.meaning.ro : it.meaning.en}</div></div>
-            {it.audio && <AudioButton src={it.audio} seq={letterSeq(it)} slowSrc={it.audioSlow} compact />}
-          </div>}
-          <button className="btn primary block" style={{ marginTop: 12 }} onClick={next} autoFocus>{t.continue}</button>
-        </div>
-      )}
+      <StepView step={step} result={result} onAnswer={onAnswer} onNext={next} />
     </div>
   )
 }

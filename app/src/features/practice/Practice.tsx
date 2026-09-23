@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { db, getSetting } from '../../db/db'
 import { loadLearnedPool } from '../../engine/pool'
+import { syncRecap } from '../../srs/recap'
 import { fmt, useT } from '../../i18n'
 
 /** The practice hub (D129): reusable, generative exercises over everything already learned. */
@@ -11,7 +12,7 @@ export function Practice() {
   const [available, setAvailable] = useState<number | null>(null)
   const [best, setBest] = useState(0)
   useEffect(() => {
-    db.cards.where('due').below(Date.now()).count().then(setDue)
+    syncRecap().then(() => db.cards.where('due').belowOrEqual(Date.now()).count()).then(setDue)
     loadLearnedPool().then(p => setAvailable(p.items.length))
     getSetting('matchBest', 0).then(setBest)
   }, [])

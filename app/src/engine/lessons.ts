@@ -6,7 +6,7 @@
 // item sits at its top stage.
 import type { Unit } from '../data/types'
 import type { Item, ItemRef, ItemState } from './types'
-import { maxStageFor } from './session'
+import { introVersion, maxStageFor } from './session'
 
 export type LessonDef = { id: string; unitId: string; n: number; refs: ItemRef[] }
 export type LessonStatus = 'new' | 'started' | 'done' | 'mastered'
@@ -76,6 +76,7 @@ export function markStates(l: LessonDef, states: Map<string, ItemState>, level: 
     if (cur && cur.stage >= target) continue
     const st: ItemState = cur ? { ...cur } : { id: r.id, unitId: l.unitId, kind: r.kind, stage: 0, streak: 0, seen: 0, lastAt: 0, stageAtDayStart: 0, dayKey: '' }
     st.stage = target; st.seen = Math.max(st.seen, 1); st.lastAt = now; st.dayKey = today; st.stageAtDayStart = target
+    st.intro = introVersion(r.kind)     // marked done elsewhere = taught elsewhere: no intro card again (D138)
     if (level === 'mastered') st.streak = Math.max(st.streak, 3)
     out.push(st)
   }
@@ -93,6 +94,12 @@ export function kindCounts(l: LessonDef): [string, number][] {
   const c = new Map<string, number>()
   for (const r of l.refs) c.set(r.kind, (c.get(r.kind) ?? 0) + 1)
   return [...c.entries()]
+}
+
+/** The ids a unit has *taught*: every item of every done or mastered lesson. The one definition of "learned"
+ *  shared by the practice pool and Recap enrolment (D138), so the two can never disagree about a section. */
+export function learnedIds(unit: Pick<Unit, 'id' | 'items'>, states: Map<string, ItemState>): Set<string> {
+  return new Set(lessonsFor(unit).filter(l => { const s = lessonProgress(l, states).status; return s === 'done' || s === 'mastered' }).flatMap(l => l.refs.map(r => r.id)))
 }
 
 /** Group every stored item state by unit, for Home. */

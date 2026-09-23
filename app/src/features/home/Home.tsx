@@ -9,6 +9,7 @@ import { LanguageToggle } from '../../components/LanguageToggle'
 import { fmt, useLang, useT } from '../../i18n'
 import { lessonProgress, lessonsFor, nextLesson, statesByUnit, type LessonDef, type LessonProgress } from '../../engine/lessons'
 import type { ItemState } from '../../engine/types'
+import { syncRecap } from '../../srs/recap'
 
 type UnitMap = { defs: LessonDef[]; progress: LessonProgress[]; next: LessonDef | null; done: number }
 type Stats = { due: Record<string, number>; dueAll: number; known: number; learning: number; coverage: number; maps: Record<string, UnitMap> }
@@ -20,6 +21,7 @@ export function Home() {
   const [st, setSt] = useState<Stats | null>(null)
   useEffect(() => {
     (async () => {
+      await syncRecap()        // finished lessons hand their items to Recap before anything is counted (D138)
       const [cards, lemmas, cov, itemRows, unitList] = await Promise.all([db.cards.toArray(), db.lemmas.toArray(), loadCoverage(), db.items.toArray(), loadUnits()])
       setUnits(unitList)
       const now = Date.now(), due: Record<string, number> = {}

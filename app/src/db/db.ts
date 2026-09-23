@@ -2,9 +2,10 @@ import Dexie, { type Table } from 'dexie'
 import type { Card as FsrsCard } from 'ts-fsrs'
 
 export type CardRow = {
-  id: string            // sentence id, e.g. "tat:408366"
+  id: string            // the item's ref id: "tat:408366", "word:auto", "letter:ä", …
   unitId: string
-  mode: 'listen_type'
+  mode: 'listen_type' | 'item'   // 'listen_type': a unit-dictation sentence card; 'item': any item Recap schedules (D138)
+  kind?: string         // the item's kind; absent on pre-D138 rows, which are all sentences
   lemmas: string[]
   fsrs: FsrsCard
   due: number           // ms epoch, indexed

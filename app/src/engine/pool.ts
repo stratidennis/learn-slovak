@@ -5,17 +5,17 @@ import { loadUnits } from '../data/loader'
 import type { Unit } from '../data/types'
 import { db } from '../db/db'
 import { loadUnitItems } from './items'
-import { lessonProgress, lessonsFor, statesByUnit } from './lessons'
+import { ALL_KINDS, KIND_PRACTICE } from './kinds'
+import { learnedIds, statesByUnit } from './lessons'
 import type { Item, ItemKind, ItemState } from './types'
 
 export type PoolItem = Item & { unitId: string }
 export type PoolFilter = { kinds: ItemKind[]; units: string[] }     // empty list = everything
 export type Pool = { items: PoolItem[]; units: Unit[]; byUnit: Map<string, number>; byKind: Map<ItemKind, number> }
 
-/** Kinds that make sense as a two-sided card. Sound pairs are their own drill (no meaning to recall).
- *  The 0.4 words carry their own gloss since D132, so they belong here too (D137). */
-export const CARD_KINDS: ItemKind[] = ['letter', 'cognate', 'word', 'chunk', 'dialogue', 'sentence']
-export const MATCH_KINDS: ItemKind[] = ['cognate', 'word', 'chunk', 'dialogue', 'sentence']
+/** Which kinds each mode takes comes from the one table in engine/kinds.ts (D138) — never a list here. */
+export const CARD_KINDS: ItemKind[] = ALL_KINDS.filter(k => KIND_PRACTICE[k].card)
+export const MATCH_KINDS: ItemKind[] = ALL_KINDS.filter(k => KIND_PRACTICE[k].match)
 
 export async function loadLearnedPool(allowed: ItemKind[] = CARD_KINDS): Promise<Pool> {
   const [units, rows] = await Promise.all([loadUnits(), db.items.toArray()])
@@ -24,8 +24,7 @@ export async function loadLearnedPool(allowed: ItemKind[] = CARD_KINDS): Promise
   const byUnit = new Map<string, number>(), byKind = new Map<ItemKind, number>()
   const withProgress = units.filter(u => states.has(u.id))
   const loaded = await Promise.all(withProgress.map(async u => {
-    const st = states.get(u.id)!
-    const doneIds = new Set(lessonsFor(u).filter(l => { const s = lessonProgress(l, st).status; return s === 'done' || s === 'mastered' }).flatMap(l => l.refs.map(r => r.id)))
+    const doneIds = learnedIds(u, states.get(u.id)!)
     if (!doneIds.size) return [] as PoolItem[]
     return (await loadUnitItems(u)).filter(it => doneIds.has(it.ref.id) && allowed.includes(it.ref.kind)).map(it => ({ ...it, unitId: u.id }))
   }))

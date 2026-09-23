@@ -7,7 +7,13 @@ const f = fsrs(generatorParameters({ request_retention: 0.88, enable_fuzz: true 
 
 export function newCard(s: Sentence, unitId: string): CardRow {
   const c = createEmptyCard(new Date())
-  return { id: s.id, unitId, mode: 'listen_type', lemmas: s.lemmas, fsrs: c, due: c.due.getTime(), reps: 0, lapses: 0, createdAt: Date.now() }
+  return { id: s.id, unitId, mode: 'listen_type', kind: 'sentence', lemmas: s.lemmas, fsrs: c, due: c.due.getTime(), reps: 0, lapses: 0, createdAt: Date.now() }
+}
+
+/** A Recap card for any taught item (D138), first due at `due`. */
+export function newItemCard(ref: { id: string; kind: string }, unitId: string, due: number, now = Date.now()): CardRow {
+  const c = createEmptyCard(new Date(due))
+  return { id: ref.id, unitId, mode: 'item', kind: ref.kind, lemmas: [], fsrs: c, due, reps: 0, lapses: 0, createdAt: now }
 }
 
 /** Map a graded answer to an FSRS rating: wrong → Again, diacritics-only → Hard, right → Good/Easy. */
@@ -32,9 +38,9 @@ export async function dueCards(unitId?: string, now = Date.now()): Promise<CardR
 
 /** A lemma counts as "learning" after its first correct answer and "known" once a card carrying
  *  it has ≥ 3 reps with stability > 7 days (≈ you would still recall it next week). */
-export async function updateLemmas(card: CardRow, correct: boolean) {
+export async function updateLemmas(card: CardRow, correct: boolean, lemmas = card.lemmas) {
   const now = Date.now()
-  for (const lemma of card.lemmas) {
+  for (const lemma of lemmas) {
     const row = (await db.lemmas.get(lemma)) ?? { lemma, status: 'learning' as const, firstSeen: now, good: 0, bad: 0 }
     if (correct) row.good++; else row.bad++
     if (card.fsrs.stability > 7 && card.reps >= 3 && correct) row.status = 'known'
